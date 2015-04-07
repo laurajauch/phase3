@@ -40,3 +40,40 @@ Widget:
 		text: "Save"
 		pos: (550, 50)
 		color: (.6, 1, .3, .8)
+
+		name: 'DropDown'
+		__safe_id: [dropdown.__self__]
+
+	Button:
+		id: btn
+		pos: (50, 400)
+		text: 'Pick Something,\nNerd'
+		on_release: dropdown.open(self)
+		size_hint_y: None
+		height: '48dp'
+
+	Widget
+
+	DropDown:
+
+		id: dropdown
+		on_parent: self.dismiss()
+		on_select: btn.text = 'Jeff picked: {}'.format(args[1])
+
+		Button:
+			text: 'Value A'
+			size_hint_y: None
+			height: '48dp'
+			on_release: dropdown.select('A')
+
+		Button:
+			text: 'Value B'
+			size_hint_y: None
+			height: '48dp'
+			on_release: dropdown.select('B')
+
+		Button:
+			text: 'Value C'
+			size_hint_y: None
+			height: '48dp'
+			on_release: dropdown.select('C')
