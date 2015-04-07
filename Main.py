@@ -8,6 +8,7 @@ from kivy.uix.button import Button
 from kivy.base import runTouchApp
 
 class testApp(App):
+    #Design elements are containted in the test.kv file which is kivy looks for when the program starts.
     pass
 
 
