@@ -46,7 +46,8 @@ Widget:
 
 	Button:
 		id: btn
-		pos: (50, 400)
+		pos: (50, 550)
+		width: '196dp'
 		text: 'Pick Something,\nNerd'
 		on_release: dropdown.open(self)
 		size_hint_y: None
@@ -61,19 +62,13 @@ Widget:
 		on_select: btn.text = 'Jeff picked: {}'.format(args[1])
 
 		Button:
-			text: 'Value A'
+			text: 'Stokes'
 			size_hint_y: None
 			height: '48dp'
-			on_release: dropdown.select('A')
+			on_release: dropdown.select('Stokes')
 
 		Button:
-			text: 'Value B'
+			text: 'Navier-Stokes'
 			size_hint_y: None
 			height: '48dp'
-			on_release: dropdown.select('B')
-
-		Button:
-			text: 'Value C'
-			size_hint_y: None
-			height: '48dp'
-			on_release: dropdown.select('C')
+			on_release: dropdown.select('Navier-Stokes')
