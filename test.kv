@@ -9,7 +9,8 @@ Widget:
 			size: self.size
 
 		Rectangle:
-			source: 'jeff sax.jpg'
+			id: plot
+			source: 'data/jeff sax.jpg'
 			pos: (370, 300)
 			size: (450, 400)
 		
@@ -66,9 +67,11 @@ Widget:
 			size_hint_y: None
 			height: '48dp'
 			on_release: dropdown.select('Stokes')
+			on_release: btn.background_normal = 'data/JeffPeg.jpg'
 
 		Button:
 			text: 'Navier-Stokes'
 			size_hint_y: None
 			height: '48dp'
 			on_release: dropdown.select('Navier-Stokes')
+			on_release: btn.background_normal = 'data/jeff.jpg'
