@@ -1,9 +1,13 @@
 #:kivy 1.0
-
 Widget:
+
+	__safe_id: [dropdown1.__self__]
+	__safe_id: [dropdown2.__self__]
+	__safe_id: [dropdown3.__self__]
+
 	canvas:
 		Color:
-			rgba: .5, .8, .8, .6
+			rgba: .1, .2, .3, .8
 		Rectangle:
 			pos: self.pos
 			size: self.size
@@ -13,15 +17,53 @@ Widget:
 			source: 'data/jeff sax.jpg'
 			pos: (370, 300)
 			size: (450, 400)
-		
+	Label:
+		text: 'Welcome to the PyCamellia Incompressible Flow Solver!'
+		pos: (133, 530)
+		font_size: 13
+
+	Label:
+		text: 'Reynolds \n Number:'
+		font_size: 12
+		pos: (170, 430)
+
+
+	Label:
+		text: 'Inflow Conditions:'
+		pos: (50, 370)
+
+	Label:
+		text: 'Outflow Conditions:'
+		pos: (50, 250)
+
+	Label:
+		text: 'Energy Error: ... Solution Reporting Area'
+		pos: (460, 225)
+	
+
+	TextInput:
+
+		multiline: False
+		height: '30dp'
+		width: '50dp'
+		pos: (253, 465)
 
 	Button:
-		height: 3
-		background_color: (1, .1, .1, .8)
+		background_color: 
+		height: 5
+		font_size: 20
+		text: "Reset"
+		pos: (660, 270)
+		color: (0, 0, 0, 1)
+
+
+	Button:
+		height: 5
+		background_color: (1, .1, .1, .9)
 		font_name: 'DroidSans'
-		font_size: 25
+		font_size: 20
 		text: "Solve"
-		pos: (100, 50)
+		pos: (120, 50)
 		color: (0, 0, 0, 1)
 		on_press: print "success"
 
@@ -47,34 +89,129 @@ Widget:
 
 	Button:
 		id: btn
-		pos: (50, 550)
-		width: '196dp'
-		text: 'Pick Something,\nNerd'
+		pos: (50, 525)
+		width: '250dp'
+		height: '30dp'
+		text: 'Problem Type'
 		on_release: dropdown.open(self)
 		size_hint_y: None
-		height: '48dp'
-
-	Widget
 
 	DropDown:
 
 		id: dropdown
 		on_parent: self.dismiss()
-		on_select: btn.text = 'Jeff picked: {}'.format(args[1])
+		on_select: btn.text = '{}'.format(args[1])
 
 		Button:
 			text: 'Stokes'
 			size_hint_y: None
-			height: '48dp'
+			height: '30dp'
 			on_release: dropdown.select('Stokes')
-			on_release: btn.background_normal = 'data/JeffPeg.jpg'
 
 		Button:
 			text: 'Navier-Stokes'
 			size_hint_y: None
-			height: '48dp'
+			height: '30dp'
 			on_release: dropdown.select('Navier-Stokes')
-<<<<<<< HEAD
-			on_release: btn.background_normal = 'data/jeff.jpg'
-=======
->>>>>>> 96c23a5a1dca3acd78dce67512fa793ab439a5f4
+
+
+	Button:
+		id: btn1
+		pos: (50, 465)
+		width: '100dp'
+		height: '30dp'
+		text: 'State'
+		on_release: dropdown1.open(self)
+		size_hint_y: None
+	
+	DropDown:
+
+		id: dropdown1
+		on_parent: self.dismiss()
+		on_select: btn1.text = '{}'.format(args[1])
+
+		Button:
+			text: 'Steady State'
+			size_hint_y: None
+			height: '30dp'
+			on_release: dropdown1.select('Steady State')
+		
+		Button:
+			text: 'Transient'
+			size_hint_y: None
+			height: '30dp'
+			on_release: dropdown1.select('Transient')
+
+	Button:
+		id: btn2
+		pos: (50, 105)
+		width: '100dp'
+		height: '30dp'
+		text: 'Refine'
+		on_release: dropdown2.open(self)
+		size_hint_y: None
+
+	DropDown:
+
+		id: dropdown2
+		on_parent: self.dismiss()
+		on_select: btn2.text = '{}'.format(args[1])
+
+		Button:
+			text: 'h-auto'
+			size_hint_y: None
+			height: '30dp'
+			on_release: dropdown2.select('h-auto')
+		
+		Button:
+			text: 'p-auto'
+			size_hint_y: None
+			height: '30dp'
+			on_release: dropdown2.select('p-auto')
+	Button:
+		id: btn3
+		pos: (195, 105)
+		width: '120dp'
+		height: '30dp'
+		text: 'Plot'
+		on_release: dropdown3.open(self)
+		size_hint_y: None
+
+	DropDown:
+
+		id: dropdown3
+		on_parent: self.dismiss()
+		on_select: btn3.text = '{}'.format(args[1])
+
+		Button:
+			text: 'Mesh'
+			size_hint_y: None
+			height: '30dp'
+			on_release: dropdown3.select('Mesh')
+		
+		Button:
+			text: 'Error'
+			size_hint_y: None
+			height: '30dp'
+			on_release: dropdown3.select('Error')
+
+		Button:
+			text: 'u1'
+			size_hint_y: None
+			height: '30dp'
+			on_release: dropdown3.select('u1')
+
+		Button:
+			text: 'u2'
+			size_hint_y: None
+			height: '30dp'
+			on_release: dropdown3.select('u2')
+
+		Button:
+			text: 'Stream Function'
+			font_size: 13
+			size_hint_y: None
+			height: '30dp'
+			on_release: dropdown3.select('Stream Function')
+
+			
