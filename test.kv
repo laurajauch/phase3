@@ -1,9 +1,6 @@
 #:kivy 1.0
 Widget:
 
-	__safe_id: [dropdown1.__self__]
-	__safe_id: [dropdown2.__self__]
-	__safe_id: [dropdown3.__self__]
 
 	canvas:
 		Color:
@@ -154,6 +151,9 @@ Widget:
 		on_release: dropdown2.open(self)
 		size_hint_y: None
 
+		name: 'DropDown'
+		__safe_id: [dropdown2.__self__]
+
 	DropDown:
 
 		id: dropdown2
@@ -179,6 +179,9 @@ Widget:
 		text: 'Plot'
 		on_release: dropdown3.open(self)
 		size_hint_y: None
+
+		name: 'DropDown'
+		__safe_id: [dropdown3.__self__]
 
 	DropDown:
 
