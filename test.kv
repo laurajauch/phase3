@@ -12,8 +12,8 @@ Widget:
 		Rectangle:
 			id: plot
 			source: 'data/jeff sax.jpg'
-			pos: (370, 300)
-			size: (450, 400)
+			pos: (370, 270)
+			size: (450, 450)
 	Label:
 		text: 'Welcome to the PyCamellia Incompressible Flow Solver!'
 		pos: (133, 530)
@@ -27,15 +27,15 @@ Widget:
 
 	Label:
 		text: 'Inflow Conditions:'
-		pos: (50, 370)
+		pos: (50, 387)
 
 	Label:
 		text: 'Outflow Conditions:'
-		pos: (50, 250)
+		pos: (50, 212)
 
 	Label:
-		text: 'Energy Error: ... Solution Reporting Area'
-		pos: (460, 225)
+		text: 'Solution Reporting Area'
+		pos: (500, 200)
 	
 
 	TextInput:
@@ -48,45 +48,47 @@ Widget:
 	Button:
 		background_color: 
 		height: 5
-		font_size: 20
+		font_name: 'DroidSans'
+		font_size: 15
 		text: "Reset"
-		pos: (660, 270)
-		color: (0, 0, 0, 1)
+		pos: (250, 133)
+		color: (1, 1, 1, 1)
 
 
 	Button:
 		height: 5
 		background_color: (1, .1, .1, .9)
 		font_name: 'DroidSans'
-		font_size: 20
+		font_size: 15
 		text: "Solve"
-		pos: (120, 50)
-		color: (0, 0, 0, 1)
-		on_press: print "success"
+		pos: (130, 60)
+		color: (1, 1, 1, 1)
 
 
 	Button:
 		background_color: 
 		height: 5
-		font_size: 20
+		font_size: 15
+		font_name: 'DroidSans'
 		text: "Load"
-		pos: (400, 50)
-		color: (0, 0, 0, 1)
+		pos: (410, 60)
+		color: (1, 1, 1, 1)
 
 	Button:
 		background_color: 
 		height: 5
-		font_size: 20
+		font_size: 15
+		font_name: 'DroidSans'
 		text: "Save"
-		pos: (550, 50)
-		color: (.6, 1, .3, .8)
+		pos: (570, 60)
+		color: (1, 1, 1, 1)
 
 		name: 'DropDown'
 		__safe_id: [dropdown.__self__]
 
 	Button:
 		id: btn
-		pos: (50, 525)
+		pos: (50, 521)
 		width: '250dp'
 		height: '30dp'
 		text: 'Problem Type'
@@ -146,7 +148,7 @@ Widget:
 
 	Button:
 		id: btn2
-		pos: (50, 105)
+		pos: (250, 215)
 		width: '100dp'
 		height: '30dp'
 		text: 'Refine'
@@ -175,7 +177,7 @@ Widget:
 			on_release: dropdown2.select('p-auto')
 	Button:
 		id: btn3
-		pos: (195, 105)
+		pos: (240, 167)
 		width: '120dp'
 		height: '30dp'
 		text: 'Plot'
@@ -222,4 +224,241 @@ Widget:
 			height: '30dp'
 			on_release: dropdown3.select('Stream Function')
 
-			
+	#Inflow conditions
+	#Inflow 1
+	Label:
+		text: 'x = '
+		pos: (20, 355)
+	
+
+	TextInput:
+		multiline: False
+		height: '27dp'
+		width: '40dp'
+		pos: (85, 395)
+		font_size: 12
+
+
+	Label:
+		text: 'y = '
+		pos: (106, 355)
+
+	TextInput:
+		multiline: False
+		height: '27dp'
+		width: '40dp'
+		pos: (171, 395)
+		font_size: 12
+
+	Label:
+		text: 'velocity = '
+		pos: (205, 355)
+
+	TextInput:
+		multiline: False
+		height: '27dp'
+		width: '60dp'
+		pos: (290, 395)
+		font_size: 11
+	
+	#Inflow 2
+	Label:
+		text: 'x = '
+		pos: (20, 323)
+	
+
+	TextInput:
+		multiline: False
+		height: '27dp'
+		width: '40dp'
+		pos: (85, 360)
+		font_size: 12
+
+
+	Label:
+		text: 'y = '
+		pos: (106, 323)
+
+	TextInput:
+		multiline: False
+		height: '27dp'
+		width: '40dp'
+		pos: (171, 360)
+		font_size: 12
+
+	Label:
+		text: 'velocity = '
+		pos: (205, 323)
+
+	TextInput:
+		multiline: False
+		height: '27dp'
+		width: '60dp'
+		pos: (290, 360)
+		font_size: 11
+
+	#Inflow 3
+	Label:
+		text: 'x = '
+		pos: (20, 287)
+	
+
+	TextInput:
+		multiline: False
+		height: '27dp'
+		width: '40dp'
+		pos: (85, 325)
+		font_size: 12
+
+
+	Label:
+		text: 'y = '
+		pos: (106, 287)
+
+	TextInput:
+		multiline: False
+		height: '27dp'
+		width: '40dp'
+		pos: (171, 325)
+		font_size: 12
+
+	Label:
+		text: 'velocity = '
+		pos: (205, 287)
+
+	TextInput:
+		multiline: False
+		height: '27dp'
+		width: '60dp'
+		pos: (290, 325)
+		font_size: 11	
+
+	#Inflow 4
+	Label:
+		text: 'x = '
+		pos: (20, 251)
+	
+
+	TextInput:
+		multiline: False
+		height: '27dp'
+		width: '40dp'
+		pos: (85, 290)
+		font_size: 12
+
+
+	Label:
+		text: 'y = '
+		pos: (106, 251)
+
+	TextInput:
+		multiline: False
+		height: '27dp'
+		width: '40dp'
+		pos: (171, 290)
+		font_size: 12
+
+	Label:
+		text: 'velocity = '
+		pos: (205, 251)
+
+	TextInput:
+		multiline: False
+		height: '27dp'
+		width: '60dp'
+		pos: (290, 290)
+		font_size: 11
+
+
+	#Outflow Conditions
+	#Outflow 1
+	Label:
+		text: 'x = '
+		pos: (20, 182)
+
+	TextInput:
+		multiline: False
+		height: '27dp'
+		width: '40dp'
+		font_size: 12
+		pos: (85, 220)
+	
+	Label:
+		text: 'y = '
+		pos: (106, 182)
+     
+	TextInput:
+		multiline: False
+		height: '27dp'
+		width: '40dp'
+		font_size: 12
+		pos: (171, 220)
+	
+	#Outflow 2
+	Label:
+		text: 'x = '
+		pos: (20, 147)
+
+	TextInput:
+		multiline: False
+		height: '27dp'
+		width: '40dp'
+		font_size: 12
+		pos: (85, 185)
+	
+	Label:
+		text: 'y = '
+		pos: (106, 147)
+     
+	TextInput:
+		multiline: False
+		height: '27dp'
+		width: '40dp'
+		font_size: 12
+		pos: (171, 185)
+
+	#Outflow 3
+	Label:
+		text: 'x = '
+		pos: (20, 113)
+
+	TextInput:
+		multiline: False
+		height: '27dp'
+		width: '40dp'
+		font_size: 12
+		pos: (85, 150)
+	
+	Label:
+		text: 'y = '
+		pos: (106, 113)
+     
+	TextInput:
+		multiline: False
+		height: '27dp'
+		width: '40dp'
+		font_size: 12
+		pos: (171, 150)
+
+	#Outflow 4
+	Label:
+		text: 'x = '
+		pos: (20, 78)
+
+	TextInput:
+		multiline: False
+		height: '27dp'
+		width: '40dp'
+		font_size: 12
+		pos: (85, 115)
+	
+	Label:
+		text: 'y = '
+		pos: (106, 78)
+     
+	TextInput:
+		multiline: False
+		height: '27dp'
+		width: '40dp'
+		font_size: 12
+		pos: (171, 115)
