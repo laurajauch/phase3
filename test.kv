@@ -107,6 +107,7 @@ Widget:
 			height: '30dp'
 			on_release: dropdown.select('Stokes')
 			on_release: reynolds.disabled = True
+			on_release: transient.disabled = False
 
 		Button:
 			text: 'Navier-Stokes'
@@ -114,7 +115,8 @@ Widget:
 			height: '30dp'
 			on_release: dropdown.select('Navier-Stokes')
 			on_release: reynolds.disabled = False
-
+			on_release: transient.disabled = True
+			on_release: dropdown1.select('Steady State')
 
 	Button:
 		id: btn1
@@ -135,12 +137,14 @@ Widget:
 		on_select: btn1.text = '{}'.format(args[1])
 
 		Button:
+			id: steady
 			text: 'Steady State'
 			size_hint_y: None
 			height: '30dp'
 			on_release: dropdown1.select('Steady State')
 		
 		Button:
+			id: transient
 			text: 'Transient'
 			size_hint_y: None
 			height: '30dp'
