@@ -46,6 +46,7 @@ Widget:
 
 	#Filename entry text field
 	TextInput:
+		id: filename
 		multiline: False
 		height: '30dp'
 		width: '120dp'
@@ -67,16 +68,21 @@ Widget:
 
 	#Polynomial Order entry Text field
 	TextInput:
+		id: polyOrder
 		multiline: False
 		height: '30dp'
 		width: '50dp'
 		pos: (250, 440)
+		background_color: (1,1,1,1) #defaults to white
+		on_focus: polyOrder.background_color=(1,1,1,1) #if red, reset to white
 
 	Label:
 		text: '         Mesh \nDimensions:'
 		font_size: 12
 		pos: (30,407)
+	#Mesh Dimensions Label
 	TextInput:
+		id: meshDim
 		multiline: False
 		height: '30dp'
 		width: '50dp'
@@ -87,6 +93,7 @@ Widget:
 
 	#Reset button - should clear all fields
 	Button:
+		id: reset
 		background_color: 
 		height: 5
 		font_name: 'DroidSans'
@@ -97,6 +104,7 @@ Widget:
 
 	#Solve button - should initiate input check and solution
 	Button:
+		id: solve
 		height: 5
 		background_color: (1, .1, .1, .9)
 		font_name: 'DroidSans'
@@ -107,6 +115,7 @@ Widget:
 
 	#File load button, should load solution
 	Button:
+		id: load
 		background_color: 
 		height: 5
 		font_size: 15
@@ -117,6 +126,7 @@ Widget:
 
 	#File save button, should save current solution
 	Button:
+		id: save
 		background_color: 
 		height: 5
 		font_size: 15
