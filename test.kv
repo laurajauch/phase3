@@ -1,7 +1,7 @@
 #:kivy 1.0
 Widget:
 
-
+	#background color, plotting window
 	canvas:
 		Color:
 			rgba: .1, .2, .3, .8
@@ -22,7 +22,7 @@ Widget:
 	Label:
 		text: 'Reynolds \n Number:'
 		font_size: 12
-		pos: (170, 430)
+		pos: (165, 451)
 
 
 	Label:
@@ -42,16 +42,50 @@ Widget:
 
 	Label:
 		text: "Filename: "
-		pos: (410, 65)
-	
+		pos: (420, 55)
 
+	#Filename entry text field
+	TextInput:
+		multiline: False
+		height: '30dp'
+		width: '120dp'
+		pos: (504, 90)
+
+	#Reynolds number entry text field
 	TextInput:
 		id: reynolds
 		multiline: False
 		height: '30dp'
 		width: '50dp'
-		pos: (253, 465)
+		pos: (250, 485)
 
+	#Polynomial Order Label
+	Label:
+		text: "Polynomial\n         Order:"
+		font_size: 12
+		pos: (164, 407)
+
+	#Polynomial Order entry Text field
+	TextInput:
+		multiline: False
+		height: '30dp'
+		width: '50dp'
+		pos: (250, 440)
+
+	Label:
+		text: '         Mesh \nDimensions:'
+		font_size: 12
+		pos: (30,407)
+	TextInput:
+		multiline: False
+		height: '30dp'
+		width: '50dp'
+		pos: (122 , 440)
+
+
+
+
+	#Reset button - should clear all fields
 	Button:
 		background_color: 
 		height: 5
@@ -61,7 +95,7 @@ Widget:
 		pos: (250, 133)
 		color: (1, 1, 1, 1)
 
-
+	#Solve button - should initiate input check and solution
 	Button:
 		height: 5
 		background_color: (1, .1, .1, .9)
@@ -71,7 +105,7 @@ Widget:
 		pos: (130, 35)
 		color: (1, 1, 1, 1)
 
-
+	#File load button, should load solution
 	Button:
 		background_color: 
 		height: 5
@@ -81,6 +115,7 @@ Widget:
 		pos: (410, 60)
 		color: (1, 1, 1, 1)
 
+	#File save button, should save current solution
 	Button:
 		background_color: 
 		height: 5
@@ -90,12 +125,13 @@ Widget:
 		pos: (570, 60)
 		color: (1, 1, 1, 1)
 
+	#Problem Type dropdown menue
 		name: 'DropDown'
 		__safe_id: [dropdown.__self__]
 
 	Button:
 		id: btn
-		pos: (50, 521)
+		pos: (50, 527)
 		width: '250dp'
 		height: '30dp'
 		text: 'Problem Type'
@@ -125,9 +161,10 @@ Widget:
 			on_release: transient.disabled = True
 			on_release: dropdown1.select('Steady State')
 
+	#State selection dropdown menu
 	Button:
 		id: btn1
-		pos: (50, 465)
+		pos: (50, 485)
 		width: '100dp'
 		height: '30dp'
 		text: 'State'
@@ -157,6 +194,7 @@ Widget:
 			height: '30dp'
 			on_release: dropdown1.select('Transient')
 
+	#Refinement selection dropdown menu
 	Button:
 		id: btn2
 		pos: (250, 215)
@@ -186,6 +224,8 @@ Widget:
 			size_hint_y: None
 			height: '30dp'
 			on_release: dropdown2.select('p-auto')
+
+	#Plotting selection dropdown menu
 	Button:
 		id: btn3
 		pos: (240, 167)
@@ -287,14 +327,25 @@ Widget:
 		font_size: 12
 
 	Label:
-		text: 'velocity = '
-		pos: (205, 303)
+		text: 'x = '
+		pos: (149, 303)
 
 	TextInput:
 		multiline: False
 		height: '27dp'
-		width: '60dp'
-		pos: (290, 340)
+		width: '50dp'
+		pos: (210, 340)
+		font_size: 11
+
+	Label:
+		text: 'y = '
+		pos: (236, 303)
+
+	TextInput:
+		multiline: False
+		height: '27dp'
+		width: '50dp'
+		pos: (300, 340)
 		font_size: 11
 
 	#Inflow 3
@@ -312,21 +363,30 @@ Widget:
 
 
 	Label:
-		text: 'velocity = '
-		pos: (205, 267)
+		text: 'x = '
+		pos: (149, 267)
 
 	TextInput:
 		multiline: False
 		height: '27dp'
-		width: '60dp'
-		pos: (290, 305)
+		width: '50dp'
+		pos: (210, 305)
 		font_size: 11	
+	Label:
+		text: 'y = '
+		pos: (236, 267)
+
+	TextInput:
+		multiline: False
+		height: '27dp'
+		width: '50dp'
+		pos: (300, 305)
+		font_size: 11
 
 	#Inflow 4
 	Label:
 		text: '4.'
-		pos: (20, 231)
-	
+		pos: (20, 231)	
 
 	TextInput:
 		multiline: False
@@ -336,16 +396,26 @@ Widget:
 		font_size: 12
 
 	Label:
-		text: 'velocity = '
-		pos: (205, 231)
+		text: 'x = '
+		pos: (149, 231)
 
 	TextInput:
 		multiline: False
 		height: '27dp'
-		width: '60dp'
-		pos: (290, 270)
+		width: '50dp'
+		pos: (210, 270)
 		font_size: 11
 
+	Label:
+		text: 'y = '
+		pos: (236, 231)
+
+	TextInput:
+		multiline: False
+		height: '27dp'
+		width: '50dp'
+		pos: (300, 270)
+		font_size: 11
 
 	#Outflow Conditions
 	#Outflow 1
