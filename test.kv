@@ -22,7 +22,7 @@ Widget:
 	Label:
 		text: 'Reynolds \n Number:'
 		font_size: 12
-		pos: (165, 451)
+		pos: (225, 451)
 
 
 	Label:
@@ -42,14 +42,14 @@ Widget:
 
 	Label:
 		text: "Filename: "
-		pos: (420, 55)
+		pos: (440, 55)
 
 	#Filename entry text field
 	TextInput:
 		multiline: False
 		height: '30dp'
 		width: '120dp'
-		pos: (504, 90)
+		pos: (527, 90)
 
 	#Reynolds number entry text field
 	TextInput:
@@ -57,32 +57,46 @@ Widget:
 		multiline: False
 		height: '30dp'
 		width: '50dp'
-		pos: (250, 485)
+		pos: (304, 485)
 
 	#Polynomial Order Label
 	Label:
 		text: "Polynomial\n         Order:"
 		font_size: 12
-		pos: (164, 407)
+		pos: (107, 451)
 
 	#Polynomial Order entry Text field
 	TextInput:
 		multiline: False
 		height: '30dp'
 		width: '50dp'
-		pos: (250, 440)
+		pos: (193, 485)
 
+	#Mesh Dimensions
 	Label:
-		text: '         Mesh \nDimensions:'
+		text: '            Mesh\nDimensions:'
 		font_size: 12
-		pos: (30,407)
+		pos: (16,407)
 	TextInput:
 		multiline: False
 		height: '30dp'
-		width: '50dp'
-		pos: (122 , 440)
+		width: '80dp'
+		pos: (108 , 440)
+		font_size: 13
+		hint_text: '3.0 x 5.0'
 
-
+	#Mesh Elements
+	Label:
+		text: '      Mesh\nElements:'
+		font_size: 12
+		pos: (178,407)
+	TextInput:
+		multiline: False
+		height: '30dp'
+		width: '60dp'
+		pos: (265 , 440)
+		font_size: 13
+		hint_text: '4 x 6'
 
 
 	#Reset button - should clear all fields
@@ -92,7 +106,7 @@ Widget:
 		font_name: 'DroidSans'
 		font_size: 15
 		text: "Reset"
-		pos: (250, 133)
+		pos: (230, 112)
 		color: (1, 1, 1, 1)
 
 	#Solve button - should initiate input check and solution
@@ -102,7 +116,7 @@ Widget:
 		font_name: 'DroidSans'
 		font_size: 15
 		text: "Solve"
-		pos: (130, 35)
+		pos: (141, 50)
 		color: (1, 1, 1, 1)
 
 	#File load button, should load solution
@@ -112,7 +126,7 @@ Widget:
 		font_size: 15
 		font_name: 'DroidSans'
 		text: "Load"
-		pos: (410, 60)
+		pos: (420, 50)
 		color: (1, 1, 1, 1)
 
 	#File save button, should save current solution
@@ -122,16 +136,16 @@ Widget:
 		font_size: 15
 		font_name: 'DroidSans'
 		text: "Save"
-		pos: (570, 60)
+		pos: (580, 50)
 		color: (1, 1, 1, 1)
 
-	#Problem Type dropdown menue
+	#Problem Type dropdown menu
 		name: 'DropDown'
 		__safe_id: [dropdown.__self__]
 
 	Button:
 		id: btn
-		pos: (50, 527)
+		pos: (56, 527)
 		width: '250dp'
 		height: '30dp'
 		text: 'Problem Type'
@@ -164,7 +178,7 @@ Widget:
 	#State selection dropdown menu
 	Button:
 		id: btn1
-		pos: (50, 485)
+		pos: (20, 485)
 		width: '100dp'
 		height: '30dp'
 		text: 'State'
@@ -197,7 +211,7 @@ Widget:
 	#Refinement selection dropdown menu
 	Button:
 		id: btn2
-		pos: (250, 215)
+		pos: (230, 195)
 		width: '100dp'
 		height: '30dp'
 		text: 'Refine'
@@ -228,7 +242,7 @@ Widget:
 	#Plotting selection dropdown menu
 	Button:
 		id: btn3
-		pos: (240, 167)
+		pos: (220, 146)
 		width: '120dp'
 		height: '30dp'
 		text: 'Plot'
