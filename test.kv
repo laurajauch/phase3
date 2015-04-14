@@ -51,6 +51,9 @@ Widget:
 		height: '30dp'
 		width: '120dp'
 		pos: (527, 90)
+		background_color: (1,1,1,1) #defaults to white
+		#if red, reset to white:
+		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	#Reynolds number entry text field
 	TextInput:
@@ -59,6 +62,9 @@ Widget:
 		height: '30dp'
 		width: '50dp'
 		pos: (304, 485)
+		background_color: (1,1,1,1) #defaults to white
+		#if red, reset to white:
+		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	#Polynomial Order Label
 	Label:
@@ -73,7 +79,8 @@ Widget:
 		height: '30dp'
 		width: '50dp'
 		background_color: (1,1,1,1) #defaults to white
-		on_focus: polyOrder.background_color=(1,1,1,1) #if red, reset to white
+		#if red, reset to white:
+		on_focus: polyOrder.background_color=(1,1,1,1) 
 		pos: (193, 485)
 
 	#Mesh Dimensions
@@ -92,6 +99,9 @@ Widget:
 		pos: (108 , 440)
 		font_size: 13
 		hint_text: '3.0 x 5.0'
+		background_color: (1,1,1,1) #defaults to white
+		#if red, reset to white:
+		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	#Mesh Elements
 	Label:
@@ -105,6 +115,9 @@ Widget:
 		pos: (265 , 440)
 		font_size: 13
 		hint_text: '4 x 6'
+		background_color: (1,1,1,1) #defaults to white
+		#if red, reset to white:
+		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 
 	#Reset button - should clear all fields
@@ -316,6 +329,9 @@ Widget:
 		pos: (85, 375)
 		font_size: 12
 		hint_text: "x > 5, y = 9"
+		background_color: (1,1,1,1) #defaults to white
+		#if red, reset to white:
+		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	Label:
 		text: 'x ='
@@ -328,6 +344,10 @@ Widget:
 		pos: (210, 375)
 		font_size: 11
 		hint_text: "x*4"
+		background_color: (1,1,1,1) #defaults to white
+		#if red, reset to white:
+		on_focus: polyOrder.background_color=(1,1,1,1) 
+
 	Label:
 		text: 'y ='
 		pos: (234, 338)
@@ -339,6 +359,9 @@ Widget:
 		pos: (300, 375)
 		font_size: 11
 		hint_text: "y*4"
+		background_color: (1,1,1,1) #defaults to white
+		#if red, reset to white:
+		on_focus: polyOrder.background_color=(1,1,1,1) 
 	
 	#Inflow 2
 	Label:
@@ -352,6 +375,9 @@ Widget:
 		width: '80dp'
 		pos: (85, 340)
 		font_size: 12
+		background_color: (1,1,1,1) #defaults to white
+		#if red, reset to white:
+		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	Label:
 		text: 'x = '
@@ -363,6 +389,9 @@ Widget:
 		width: '50dp'
 		pos: (210, 340)
 		font_size: 11
+		background_color: (1,1,1,1) #defaults to white
+		#if red, reset to white:
+		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	Label:
 		text: 'y = '
@@ -374,6 +403,9 @@ Widget:
 		width: '50dp'
 		pos: (300, 340)
 		font_size: 11
+		background_color: (1,1,1,1) #defaults to white
+		#if red, reset to white:
+		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	#Inflow 3
 	Label:
@@ -387,6 +419,9 @@ Widget:
 		width: '80dp'
 		pos: (85, 305)
 		font_size: 12
+		background_color: (1,1,1,1) #defaults to white
+		#if red, reset to white:
+		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 
 	Label:
@@ -399,6 +434,10 @@ Widget:
 		width: '50dp'
 		pos: (210, 305)
 		font_size: 11	
+		background_color: (1,1,1,1) #defaults to white
+		#if red, reset to white:
+		on_focus: polyOrder.background_color=(1,1,1,1) 
+
 	Label:
 		text: 'y = '
 		pos: (236, 267)
@@ -409,6 +448,9 @@ Widget:
 		width: '50dp'
 		pos: (300, 305)
 		font_size: 11
+		background_color: (1,1,1,1) #defaults to white
+		#if red, reset to white:
+		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	#Inflow 4
 	Label:
@@ -421,6 +463,9 @@ Widget:
 		width: '80dp'
 		pos: (85, 270)
 		font_size: 12
+		background_color: (1,1,1,1) #defaults to white
+		#if red, reset to white:
+		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	Label:
 		text: 'x = '
@@ -432,6 +477,9 @@ Widget:
 		width: '50dp'
 		pos: (210, 270)
 		font_size: 11
+		background_color: (1,1,1,1) #defaults to white
+		#if red, reset to white:
+		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	Label:
 		text: 'y = '
@@ -443,6 +491,9 @@ Widget:
 		width: '50dp'
 		pos: (300, 270)
 		font_size: 11
+		background_color: (1,1,1,1) #defaults to white
+		#if red, reset to white:
+		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	#Outflow Conditions
 	#Outflow 1
@@ -457,6 +508,9 @@ Widget:
 		font_size: 12
 		pos: (85, 200)
 		hint_text: "x = 9, y < 3"
+		background_color: (1,1,1,1) #defaults to white
+		#if red, reset to white:
+		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	
 	#Outflow 2
@@ -470,6 +524,9 @@ Widget:
 		width: '80dp'
 		font_size: 12
 		pos: (85, 165)
+		background_color: (1,1,1,1) #defaults to white
+		#if red, reset to white:
+		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 
 	#Outflow 3
@@ -483,6 +540,9 @@ Widget:
 		width: '80dp'
 		font_size: 12
 		pos: (85, 130)
+		background_color: (1,1,1,1) #defaults to white
+		#if red, reset to white:
+		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	#Outflow 4
 	Label:
@@ -495,4 +555,7 @@ Widget:
 		width: '80dp'
 		font_size: 12
 		pos: (85, 95)
+		background_color: (1,1,1,1) #defaults to white
+		#if red, reset to white:
+		on_focus: polyOrder.background_color=(1,1,1,1) 
 
