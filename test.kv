@@ -13,7 +13,7 @@ Widget:
 			id: plot
 			source: 'data/jeff sax.jpg'
 			pos: (370, 270)
-			size: (450, 450)
+			size: (426, 420)
 	Label:
 		text: 'Welcome to the PyCamellia Incompressible Flow Solver!'
 		pos: (133, 530)
@@ -27,15 +27,22 @@ Widget:
 
 	Label:
 		text: 'Inflow Conditions:'
-		pos: (50, 387)
+		pos: (50, 367)
 
 	Label:
 		text: 'Outflow Conditions:'
-		pos: (50, 212)
+		pos: (50, 192)
+	Label:
+		text: 'Velocity:'
+		pos: (170, 367)
 
 	Label:
 		text: 'Solution Reporting Area'
 		pos: (500, 200)
+
+	Label:
+		text: "Filename: "
+		pos: (410, 65)
 	
 
 	TextInput:
@@ -61,7 +68,7 @@ Widget:
 		font_name: 'DroidSans'
 		font_size: 15
 		text: "Solve"
-		pos: (130, 60)
+		pos: (130, 35)
 		color: (1, 1, 1, 1)
 
 
@@ -231,238 +238,164 @@ Widget:
 	#Inflow conditions
 	#Inflow 1
 	Label:
-		text: 'x = '
-		pos: (20, 355)
+		text: '1. '
+		pos: (20, 335)
 	
 
 	TextInput:
 		multiline: False
 		height: '27dp'
-		width: '40dp'
-		pos: (85, 395)
+		width: '80dp'
+		pos: (85, 375)
 		font_size: 12
-
+		hint_text: "x > 5, y = 9"
 
 	Label:
-		text: 'y = '
-		pos: (106, 355)
+		text: 'x ='
+		pos: (147, 338)
 
 	TextInput:
 		multiline: False
 		height: '27dp'
-		width: '40dp'
-		pos: (171, 395)
-		font_size: 12
-
-	Label:
-		text: 'velocity = '
-		pos: (205, 355)
-
-	TextInput:
-		multiline: False
-		height: '27dp'
-		width: '60dp'
-		pos: (290, 395)
+		width: '50dp'
+		pos: (210, 375)
 		font_size: 11
+		hint_text: "x*4"
+	Label:
+		text: 'y ='
+		pos: (234, 338)
+
+	TextInput:
+		multiline: False
+		height: '27dp'
+		width: '50dp'
+		pos: (300, 375)
+		font_size: 11
+		hint_text: "y*4"
 	
 	#Inflow 2
 	Label:
-		text: 'x = '
-		pos: (20, 323)
+		text: '2.'
+		pos: (20, 303)
 	
 
 	TextInput:
 		multiline: False
 		height: '27dp'
-		width: '40dp'
-		pos: (85, 360)
-		font_size: 12
-
-
-	Label:
-		text: 'y = '
-		pos: (106, 323)
-
-	TextInput:
-		multiline: False
-		height: '27dp'
-		width: '40dp'
-		pos: (171, 360)
+		width: '80dp'
+		pos: (85, 340)
 		font_size: 12
 
 	Label:
 		text: 'velocity = '
-		pos: (205, 323)
+		pos: (205, 303)
 
 	TextInput:
 		multiline: False
 		height: '27dp'
 		width: '60dp'
-		pos: (290, 360)
+		pos: (290, 340)
 		font_size: 11
 
 	#Inflow 3
 	Label:
-		text: 'x = '
-		pos: (20, 287)
+		text: '3.'
+		pos: (20, 267)
 	
 
 	TextInput:
 		multiline: False
 		height: '27dp'
-		width: '40dp'
-		pos: (85, 325)
+		width: '80dp'
+		pos: (85, 305)
 		font_size: 12
 
-
-	Label:
-		text: 'y = '
-		pos: (106, 287)
-
-	TextInput:
-		multiline: False
-		height: '27dp'
-		width: '40dp'
-		pos: (171, 325)
-		font_size: 12
 
 	Label:
 		text: 'velocity = '
-		pos: (205, 287)
+		pos: (205, 267)
 
 	TextInput:
 		multiline: False
 		height: '27dp'
 		width: '60dp'
-		pos: (290, 325)
+		pos: (290, 305)
 		font_size: 11	
 
 	#Inflow 4
 	Label:
-		text: 'x = '
-		pos: (20, 251)
+		text: '4.'
+		pos: (20, 231)
 	
 
 	TextInput:
 		multiline: False
 		height: '27dp'
-		width: '40dp'
-		pos: (85, 290)
-		font_size: 12
-
-
-	Label:
-		text: 'y = '
-		pos: (106, 251)
-
-	TextInput:
-		multiline: False
-		height: '27dp'
-		width: '40dp'
-		pos: (171, 290)
+		width: '80dp'
+		pos: (85, 270)
 		font_size: 12
 
 	Label:
 		text: 'velocity = '
-		pos: (205, 251)
+		pos: (205, 231)
 
 	TextInput:
 		multiline: False
 		height: '27dp'
 		width: '60dp'
-		pos: (290, 290)
+		pos: (290, 270)
 		font_size: 11
 
 
 	#Outflow Conditions
 	#Outflow 1
 	Label:
-		text: 'x = '
-		pos: (20, 182)
+		text: '1.'
+		pos: (20, 162)
 
 	TextInput:
 		multiline: False
 		height: '27dp'
-		width: '40dp'
+		width: '80dp'
 		font_size: 12
-		pos: (85, 220)
-	
-	Label:
-		text: 'y = '
-		pos: (106, 182)
-     
-	TextInput:
-		multiline: False
-		height: '27dp'
-		width: '40dp'
-		font_size: 12
-		pos: (171, 220)
+		pos: (85, 200)
+		hint_text: "x = 9, y < 3"
+
 	
 	#Outflow 2
 	Label:
-		text: 'x = '
-		pos: (20, 147)
+		text: '2. '
+		pos: (20, 127)
 
 	TextInput:
 		multiline: False
 		height: '27dp'
-		width: '40dp'
+		width: '80dp'
 		font_size: 12
-		pos: (85, 185)
-	
-	Label:
-		text: 'y = '
-		pos: (106, 147)
-     
-	TextInput:
-		multiline: False
-		height: '27dp'
-		width: '40dp'
-		font_size: 12
-		pos: (171, 185)
+		pos: (85, 165)
+
 
 	#Outflow 3
 	Label:
-		text: 'x = '
-		pos: (20, 113)
+		text: '3. '
+		pos: (20, 93)
 
 	TextInput:
 		multiline: False
 		height: '27dp'
-		width: '40dp'
+		width: '80dp'
 		font_size: 12
-		pos: (85, 150)
-	
-	Label:
-		text: 'y = '
-		pos: (106, 113)
-     
-	TextInput:
-		multiline: False
-		height: '27dp'
-		width: '40dp'
-		font_size: 12
-		pos: (171, 150)
+		pos: (85, 130)
 
 	#Outflow 4
 	Label:
-		text: 'x = '
-		pos: (20, 78)
+		text: '4.'
+		pos: (20, 58)
 
 	TextInput:
 		multiline: False
 		height: '27dp'
-		width: '40dp'
+		width: '80dp'
 		font_size: 12
-		pos: (85, 115)
-	
-	Label:
-		text: 'y = '
-		pos: (106, 78)
-     
-	TextInput:
-		multiline: False
-		height: '27dp'
-		width: '40dp'
-		font_size: 12
-		pos: (171, 115)
+		pos: (85, 95)
+
