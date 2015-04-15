@@ -1,8 +1,8 @@
 from ConditionParser import *
 from ParseFunction import *
-#from FormUtils import *
 from Singleton import *
-import re
+from FormUtils import *
+from ParsingUtils import *
 
 # The memento doesn't care about any of the data, it just passes it around
 class Memento:
@@ -172,25 +172,4 @@ class InputData:
 	            return False
 	    self.addVariable("wallRegions", Regions)
 	    return True
-	    
 
-"""
-Some methods for formatting data input
-"""
-def stringToDims(inputstr):
-    try:
-        tokenList = re.split('x', inputstr)
-        x = float(tokenList[0])
-        y = float(tokenList[1])
-        return [x,y]
-    except:
-        raise ValueError
-
-def stringToElements(inputstr):
-    try:
-        tokenList = re.split('x', inputstr)
-        x = int(tokenList[0])
-        y = int(tokenList[1])
-        return [x,y]
-    except:
-        raise ValueError

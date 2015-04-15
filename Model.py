@@ -34,7 +34,7 @@ class Model(object):
             
 
     def solve(self):
-        SolveFormulation.solve(self.form)
+        FormUtils.solve(self.form)
 
     def plot(self):
         #Plotter.plot()
