@@ -21,8 +21,23 @@ class Model(object):
     Coming Soon: determining wall regions
     """
     def enterData(self, data):
+        self.inputData = InputData.Instance()
         errorMsg = {} #True for stored data, false for errors
-        
+        errorMsg["stokes"] = inputData.storeStokes(data["stokes"])
+        errorMsg["transient"] = inputData.storeState(data["transient"])
+        if not inputData.getVariable("stokes"):
+            errorMsg["reynolds"] = inputData.storeReynolds(data["reynolds"])
+        errorMsg["meshDimensions"] = inputData.storeMeshDims(data["meshDimensions"])
+        errorMsg["polyOrder"] = inputData.storePolyOrder(data["polyOrder"])
+        inflowError = inputData.storeInflows(data["inflowRegions"],data["inflowX"],data["inflowY"])
+        errorMsg["inflowRegions"] = inflowError[0]
+        errorMsg["inflowX"] = inflowError[1]
+        errorMsg["inflowY"] = inflowError[2]
+        errorMsg["outflowRegions"] = inputData.storeOutflows(data["outflowRegions"])
+        errorMsg["wallRegions"] = False #need to figure out what to store
+        return errorMsg
+            
+
     def solve(self):
         FormUtils.solve(self.form)
 
@@ -87,5 +102,5 @@ class Model(object):
             print("No solution was found with the name \"%s\"" % command)
             
 
-    if __name)) == '__main__':
+    if __name__ == '__main__':
         pass
