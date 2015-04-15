@@ -1,14 +1,20 @@
 import kivy
 kivy.require('1.0.7')
-
-
 from kivy.app import App
-from kivy.uix.dropdown import DropDown
-from kivy.uix.button import Button
-from kivy.base import runTouchApp
 
+"""
+Main
+
+The driver for the PyCamellia GUI. Main also assumes the
+responsibility of reading and writing to the view (test.kv).
+"""
+
+"""
+Design elements are contained in the test.kv file
+which kivy will look in when the program starts as
+a result of this empty class.
+"""
 class testApp(App):
-    #Design elements are containted in the test.kv file which is kivy looks for when the program starts.
     pass
 
 
