@@ -1,4 +1,4 @@
-import SolveFormulation
+import FormUtils
 import InputData
 
 """
@@ -10,6 +10,7 @@ class Model(object):
 
     def __init___(self):
         self.form = None
+        self.inputData = InputData.Instance()
            
 
     #precondition
@@ -17,7 +18,18 @@ class Model(object):
     #coming soon: determining wall regions
     def enterData(self, data):
         errorMsg = {} #True for stored data, false for errors
-        
+        errorMsg["stokes"] = inputData.storeStokes(data["stokes"])
+        errorMsg["transient"] = inputData.storeState(data["transient"])
+        if not inputData.getVariable("stokes"):
+            errorMsg["reynolds"] = inputData.storeReynolds(data["reynolds"])
+        errorMsg["meshDimensions"] = inputData.storeMeshDims(data["meshDimensions"])
+        errorMsg["polyOrder"] = inputData.storePolyOrder(data["polyOrder"])
+        inflowError = inputData.storeInflows(data["inflowRegions"],data["inflowX"],data["inflowY"])
+        errorMsg["inflowRegions"] = inflowError[0]
+        errorMsg["inflowX"] = inflowError[1]
+        errorMsg["inflowY"] = inflowError[2]
+        errorMsg["outflowRegions"] = inputData.storeOutflows(data["outflowRegions"])
+        errorMsg["wallRegions"] = False #need to figure out what to store
             
 
     def solve(self):
@@ -27,7 +39,7 @@ class Model(object):
         #Plotter.plot()
         pass
         
-    def refine(self:
+    def refine(self):
         pass
 
     
@@ -41,5 +53,5 @@ class Model(object):
 
 
 
-    if __name)) == '__main__':
+    if __name__ == '__main__':
         pass

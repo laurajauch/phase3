@@ -1,6 +1,7 @@
 from ConditionParser import *
 from ParseFunction import *
-from SolveFormulation import *
+#from FormUtils import *
+from Singleton import *
 import re
 
 # The memento doesn't care about any of the data, it just passes it around
@@ -12,6 +13,7 @@ class Memento:
     def set(self, dataMap):
         self.dataMap = dataMap
 
+@Singleton
 class InputData:
     def __init__(self):
         self.vars = {} # to collect all the variables
@@ -100,34 +102,39 @@ class InputData:
 		except ValueError:
 			return False
 	    
-	def storenumInflows(self, datum):
+	def storenumInflows(self, datum): #not used
 	    try:
 	        self.addVariable("numInflows", int(datum))
 	    except ValueError:
 	        return False
 	        
 	def storeInflows(self, rawRegions, rawYs, rawXs):
+	    numInflows = len(rawRegions)
 	    Regions = []
 	    Ys = []
 	    Xs = []
 	    i = 1
-	    while i <= self.numInflows:
+	    success = [[0]*numInflows for i in range(3)]
+	    while i <= numInflows:
 	        try:
 	            Regions.append(stringToFilter(rawRegions[i]))
+	            success[0][i]=True
 	        except ValueError:
-	            return False
+	            pass
 	        try:
 	            Ys.append(stringToFilter(rawYs[i]))
+	            success[1][i]=True
 	        except ValueError:
-	            return False
+	            pass
 	        try:
 	            Xs.append(stringToFilter(rawXs[i]))
+	            success[2][i]=True
 	        except ValueError:
-	            return False
+	            pass
 	    self.addVariable("inflowRegions", Regions)
 	    self.addVariable("inflowX", Xs)
 	    self.addVariable("inflowY", Ys)
-	    return True
+	    return success
 	    
 	    
     def storenumOutflows(self, datum): #not used?
