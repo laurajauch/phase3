@@ -30,6 +30,7 @@ class Model(object):
         errorMsg["inflowY"] = inflowError[2]
         errorMsg["outflowRegions"] = inputData.storeOutflows(data["outflowRegions"])
         errorMsg["wallRegions"] = False #need to figure out what to store
+        return errorMsg
             
 
     def solve(self):
