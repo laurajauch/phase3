@@ -3,11 +3,14 @@ kivy.require('1.0.7')
 from kivy.app import App
 
 """
-Main
+Controller
 
 The driver for the PyCamellia GUI. Main also assumes the
 responsibility of reading and writing to the view (test.kv).
 """
+class Controller(self):
+
+
 
 """
 Design elements are contained in the test.kv file
