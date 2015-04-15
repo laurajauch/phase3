@@ -13,8 +13,8 @@ class Memento:
         self.dataMap = dataMap
 
 class InputData:
-    def __init__(self, stokesOrNot):
-        self.vars = {"stokes": stokesOrNot} # to collect all the variables
+    def __init__(self):
+        self.vars = {} # to collect all the variables
 
         # Stokes: stokesTrue, transient, dims [], numElements[], mesh, 
         #   polyOrder, inflow tuple (numInflows, [inflow regions], [x velocities], [y velocities]),
@@ -43,12 +43,18 @@ class InputData:
 
 	def storeReynolds(self, datum):
 	    try:
-            self.addVariable("reynolds",int(datum))
-            return True
+	        self.addVariable("reynolds",int(datum))
+	        return True
 	    except ValueError:
 	        return False
 
-
+    def storeStokes(self, datum):
+        try:
+            self.addVariable("stokes", bool(datum)) #true for stokes, false for Nstokes
+            return True
+        except ValueError:
+            return False
+	
 	def storeState(self, datum):
             try:
                 datumL = datum.lower().strip()
@@ -100,7 +106,7 @@ class InputData:
 	    except ValueError:
 	        return False
 	        
-	def storeInflows(self, rawRegions, rawYs, rawXs)
+	def storeInflows(self, rawRegions, rawYs, rawXs):
 	    Regions = []
 	    Ys = []
 	    Xs = []
@@ -124,37 +130,37 @@ class InputData:
 	    return True
 	    
 	    
-def storenumOutflows(self, datum): 
+    def storenumOutflows(self, datum): #not used?
 	    try:
 	        self.addVariable("numOutflows", int(datum))
 	    except ValueError:
 	        return False
 	        
-	def storeOutflows(self, rawRegions)
+    def storeOutflows(self, rawRegions):
 	    Regions = []
 	    Ys = []
 	    Xs = []
 	    i = 1
-	    while i <= self.numInflows:
+	    for region in rawRegions:
 	        try:
-	            Regions.append(stringToFilter(rawRegions[i]))
+	            Regions.append(stringToFilter(region))
 	        except ValueError:
 	            return False
 	    self.addVariable("outflowRegions", Regions)
 	    return True
 	    
-	def storenumWalls(self, datum):
+    def storenumWalls(self, datum): #not used?
 	    try:
 	         inputData.addVariable("numWalls", int(datum))
 	    except ValueError:
 	        return False
 	        
-	def storeWalls(self, datum):
+    def storeWalls(self, datum):
 	    Regions = []
 	    i = 1
-	    while i <= self.numWalls:
+	    for region in rawRegions:
 	        try:
-	            Regions.append(stringToFilter(rawRegions[i]))
+	            Regions.append(stringToFilter(region))
 	        except ValueError:
 	            return False
 	    self.addVariable("wallRegions", Regions)
