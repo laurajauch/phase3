@@ -1,5 +1,6 @@
 from PyCamellia import *
 from FormUtils import *
+from InputData import *
 import unittest
 
 """

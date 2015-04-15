@@ -1,8 +1,9 @@
 from TestFormUtils import * 
+from TestInputData import *
 import unittest
 
 testSuite = unittest.makeSuite(TestFormUtils)
-#testSuite.addTest(unittest.makeSuite(Test))
+testSuite.addTest(unittest.makeSuite(TestInputData))
 
 testRunner = unittest.TextTestRunner()
 
