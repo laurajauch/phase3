@@ -20,3 +20,6 @@ def stringToElements(inputstr):
         return [x,y]
     except:
         raise ValueError
+
+def checkInputValidity(data):
+    pass
