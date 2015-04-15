@@ -1,6 +1,7 @@
 import kivy
 kivy.require('1.0.7')
 from kivy.app import App
+from Model import *
 
 """
 Controller
@@ -8,9 +9,11 @@ Controller
 The driver for the PyCamellia GUI. Main also assumes the
 responsibility of reading and writing to the view (test.kv).
 """
-class Controller(self):
-
-
+class Controller(object):
+    def run(self):
+        self.model = Model()
+        testApp().run()
+    
 
 """
 Design elements are contained in the test.kv file
@@ -23,5 +26,6 @@ class testApp(App):
 
 
 if __name__ == '__main__':
-    testApp().run()
+    controller = Controller()
+    controller.run()
 
