@@ -1,17 +1,27 @@
+import SolveFormulation
 
 """
-Model.py
+Model
 
 The mediator between the view (test.kv, run with Main.py) 
 and the controller components.
 """
 
-class Model():
+class Model(object):
+
+    def __init___(self):
+        self.form = None
+           
 
 
+    def solve(self):
+        SolveFormulation.solve()
 
+    def plot(self):
+        #Plotter.plot()
+        pass
 
-
+    
 
 
 
