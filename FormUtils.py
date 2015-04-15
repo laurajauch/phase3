@@ -241,13 +241,13 @@ def solve(data):
 	numElements = data.getVariable("numElements")
 	x0 = [0.,0.]
 	polyOrder = data.getVariable("polyOrder")
-	numInflows = data.getVariable("numInflows")
+	#numInflows = data.getVariable("numInflows")
 	inflowRegions = data.getVariable("inflowRegions")
 	inflowX = data.getVariable("inflowX")
 	inflowY = data.getVariable("inflowY")
-	numOutflows = data.getVariable("numOutflows")
+	#numOutflows = data.getVariable("numOutflows")
 	outflowRegions = data.getVariable("outflowRegions")
-	numWalls = data.getVariable("numWalls")
+	#numWalls = data.getVariable("numWalls")
 	wallRegions = data.getVariable("wallRegions")
 	meshTopo = MeshFactory.rectilinearMeshTopology(dims, numElements, x0)
 
@@ -269,7 +269,7 @@ def solve(data):
 	    form = steadyNonlinearInit(spaceDim, Re, dims, numElements, polyOrder)
 	
 	i = 0
-	while i < numInflows:
+	while i < len(inflowRegions):
 	    inflowFunction = Function.vectorize(inflowX[i], inflowY[i])
 	    if transient:
 	        form.addInflowCondition(inflowRegions[i], timeRamp*inflowFunction)
@@ -278,8 +278,8 @@ def solve(data):
 	    i += 1
 	    
 	i = 0
-	while i < numOutflows:
-	    form.addOutflowCondition(outflowRegions[i])
+	for i in outflowRegions:
+	    form.addOutflowCondition(i)
 	    i += 1  
 	i = 1
 	for i in wallRegions:
