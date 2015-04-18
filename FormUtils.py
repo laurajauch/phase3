@@ -4,6 +4,15 @@ from time import *
 DEBUG = True # IMPORTANT, needs to be True in order to run tests
 spaceDim = 2 # always two because we aren't handling anything 3D
 
+#MANUAL ENUM#
+TRANSIENTLINEAR = 0
+STEADYLINEAR = 1
+STEADYNONLINEAR = 2
+
+H = 0
+P = 1
+
+
 """
 A class of utility functions to make creating and solving formulations
 more conveniently. This also allows testing and adjustments to be made 
@@ -57,25 +66,25 @@ def steadyLinearSolve(form):
 
 # -------------------------------------------------------------
 
-def steadyLinearHAutoRefine(form):
-    print("Automatically refining in h...")
+def linearHAutoRefine(form):
+    #print("Automatically refining in h...")
     form.hRefine()
-    mesh = form.solution().mesh();
-    elementCount = mesh.numActiveElements()
-    globalDofCount = mesh.numGlobalDofs()
-    print("New mesh has %i elements and %i degrees of freedom." % (elementCount, globalDofCount))
+    #mesh = form.solution().mesh();
+    #elementCount = mesh.numActiveElements()
+    #globalDofCount = mesh.numGlobalDofs()
+    #print("New mesh has %i elements and %i degrees of freedom." % (elementCount, globalDofCount))
     steadyLinearSolve(form)
-    return form
+    #return form
 
-def steadyLinearPAutoRefine(form):
-    print("Automatically refining in p...")
+def linearPAutoRefine(form):
+    #print("Automatically refining in p...")
     form.pRefine()
-    mesh = form.solution().mesh();
-    elementCount = mesh.numActiveElements()
-    globalDofCount = mesh.numGlobalDofs()
-    print("New mesh has %i elements and %i degrees of freedom." % (elementCount, globalDofCount))
+    #mesh = form.solution().mesh();
+    #elementCount = mesh.numActiveElements()
+    #globalDofCount = mesh.numGlobalDofs()
+    #print("New mesh has %i elements and %i degrees of freedom." % (elementCount, globalDofCount))
     steadyLinearSolve(form)
-    return form
+    #return form
 
 def linearHManualRefine(form,cellList):
     print("Manually refining in h..."),
@@ -178,24 +187,24 @@ def steadyNonlinearSolve(form):
 # -------------------------------------------------------------
 
 def nonlinearHAutoRefine(form):
-    print("Automatically refining in h..."),
+    #print("Automatically refining in h..."),
     form.hRefine()
-    mesh = form.solution().mesh()
-    elementCount = mesh.numActiveElements()
-    globalDofCount = mesh.numGlobalDofs() 
-    print("New mesh has %i elements and %i degrees of freedom." % (elementCount, globalDofCount))
+    #mesh = form.solution().mesh()
+    #elementCount = mesh.numActiveElements()
+    #globalDofCount = mesh.numGlobalDofs() 
+    #print("New mesh has %i elements and %i degrees of freedom." % (elementCount, globalDofCount))
     steadyNonlinearSolve(form)
-    return form
+    #return form
 
 def nonlinearPAutoRefine(form):
-    print("Automatically refining in p..."),
+    #print("Automatically refining in p..."),
     form.pRefine()
-    mesh = form.solution().mesh()
-    elementCount = mesh.numActiveElements()
-    globalDofCount = mesh.numGlobalDofs()
-    print("New mesh has %i elements and %i degrees of freedom." % (elementCount, globalDofCount))
+    #mesh = form.solution().mesh()
+    #elementCount = mesh.numActiveElements()
+    #globalDofCount = mesh.numGlobalDofs()
+    #print("New mesh has %i elements and %i degrees of freedom." % (elementCount, globalDofCount))
     steadyNonlinearSolve(form)
-    return form
+    #return form
 
 def nonlinearHManualRefine(form, cellList):
     print("Manually refining in h..."),
@@ -226,7 +235,41 @@ def nonlinearPManualRefine(form, cellList):
 # -------------------------------------------------------------
 
 def solve(data):
-	spaceDim = 2
+	ret = init(data)	
+        form = ret[0] 
+        fType = ret[1]
+
+	if fType == TRANSIENTLINEAR:
+		transientLinearSolve(form)
+	elif fType == STEADYLINEAR:
+		steadyLinearSolve(form)
+	elif fType == STEADYNONLINEAR:
+		steadyNonlinearSolve(form)
+		
+	return form 
+
+#---------------------------------------------------------
+def autoRefine(data,refType): # refType: 0 is h, 1 is p
+	ret = init(data)	
+        form = ret[0] 
+        fType = ret[1]	
+
+        if refType == H:
+            if fType == STEADYLINEAR or fType == TRANSIENTLINEAR:
+                linearHAutoRefine(form)
+            elif fType == STEADYNONLINEAR:
+                nonlinearHAutoRefine(form)
+        elif refType == P:
+            if fType == STEADYLINEAR or fType == TRANSIENTLINEAR:
+                linearPAutoRefine(form)
+            elif fType == STEADYNONLINEAR:
+                nonlinearPAutoRefine(form)
+		
+	return form 
+
+#-----------------------------------------------------------
+def init(data):
+    	spaceDim = 2
 	useConformingTraces = True
 	mu = 1.0
 	x0 = [0.,0.]
@@ -251,21 +294,19 @@ def solve(data):
 	wallRegions = data.getVariable("wallRegions")
 	meshTopo = MeshFactory.rectilinearMeshTopology(dims, numElements, x0)
 
-
-	transientLinear = False
-	steadyLinear = False
-	steadyNonlinear = False
+        #initialize type to 0
+        fType = 0
 
 	if stokes:
 	    if transient:
-	        transientLinear = True
+                fType = TRANSIENTLINEAR
 		form = transientLinearInit(spaceDim, dims, numElements, polyOrder, dt)
 	        timeRamp = TimeRamp.timeRamp(form.getTimeFunction(),1.0)
 	    else:
-		steadyLinear = True
+		fType = STEADYLINEAR
 		form = steadyLinearInit(dims, numElements, polyOrder)
 	else:
-	    steadyNonlinear = True
+	    fType = STEADYNONLINEAR
 	    form = steadyNonlinearInit(spaceDim, Re, dims, numElements, polyOrder)
 	
 	i = 0
@@ -284,14 +325,5 @@ def solve(data):
 	i = 1
 	for i in wallRegions:
 	    form.addWallCondition(i)
-	
 
-	if transientLinear:
-		transientLinearSolve(form)
-	elif steadyLinear:
-		steadyLinearSolve(form)
-	elif steadyNonlinear:
-		steadyNonlinearSolve(form)
-
-		
-	return form 
+        return (form,fType)

@@ -45,8 +45,12 @@ class Model(object):
         #Plotter.plot()
         pass
         
-    def refine(self):
-        pass
+    
+    def refine(self, data, int type, bool isAuto): # type: 0 is h, 1 is p
+        if(isAuto):
+            FormUtils.autoRefine(data, type)
+        elif(!isAuto):
+            FormUtils.manualRefine(data, type)
 
     """
     Save to the specified file
