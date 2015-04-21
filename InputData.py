@@ -1,6 +1,5 @@
 from ConditionParser import *
 from ParseFunction import *
-from Singleton import *
 from FormUtils import *
 from ParsingUtils import *
 
@@ -15,7 +14,6 @@ class Memento:
     def set(self, dataMap):
         self.dataMap = dataMap
 
-@Singleton
 class InputData:
     def __init__(self):
         self.vars = {} # to collect all the variables
@@ -28,29 +26,27 @@ class InputData:
 
     def setForm(self, form):
         self.vars["form"] = form
+    
     def getForm(self):
         try:
             return self.vars["form"]
         except:
             print("InputData does not contain form")
+    
     def addVariable(self, string, var):
         self.vars[string] = var
+    
     def getVariable(self, string):
         try: 
             return self.vars[string]
         except:
             pass
+    
     def createMemento(self):
         return Memento(self.vars)
+    
     def setMemento(self, memento):
         self.vars = memento.get()
-
-	def storeReynolds(self, datum):
-	    try:
-	        self.addVariable("reynolds",int(datum))
-	        return True
-	    except ValueError:
-	        return False
 
     def storeStokes(self, datum):
         try:
@@ -58,6 +54,13 @@ class InputData:
             return True
         except ValueError:
             return False
+            
+	def storeReynolds(self, datum):
+	    try:
+	        self.addVariable("reynolds",int(datum))
+	        return True
+	    except ValueError:
+	        return False
 	
 	def storeState(self, datum):
             try:
