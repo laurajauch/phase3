@@ -1,9 +1,11 @@
 from ConditionParser import *
 from ParseFunction import *
-from SolveFormulation import *
-import re
+from FormUtils import *
+from ParsingUtils import *
 
-# The memento doesn't care about any of the data, it just passes it around
+"""
+The memento doesn't care about any of the data, it just passes it around
+"""
 class Memento:
     def __init__(self, dataMap):
         self.set(dataMap)
@@ -13,8 +15,8 @@ class Memento:
         self.dataMap = dataMap
 
 class InputData:
-    def __init__(self, stokesOrNot):
-        self.vars = {"stokes": stokesOrNot} # to collect all the variables
+    def __init__(self):
+        self.vars = {} # to collect all the variables
 
         # Stokes: stokesTrue, transient, dims [], numElements[], mesh, 
         #   polyOrder, inflow tuple (numInflows, [inflow regions], [x velocities], [y velocities]),
@@ -24,31 +26,42 @@ class InputData:
 
     def setForm(self, form):
         self.vars["form"] = form
+    
     def getForm(self):
         try:
             return self.vars["form"]
         except:
             print("InputData does not contain form")
+    
     def addVariable(self, string, var):
         self.vars[string] = var
+    
     def getVariable(self, string):
         try: 
             return self.vars[string]
         except:
             pass
+    
     def createMemento(self):
         return Memento(self.vars)
+    
     def setMemento(self, memento):
         self.vars = memento.get()
 
+    def storeStokes(self, datum):
+        try:
+            self.addVariable("stokes", bool(datum)) #true for stokes, false for Nstokes
+            return True
+        except ValueError:
+            return False
+            
 	def storeReynolds(self, datum):
 	    try:
-            self.addVariable("reynolds",int(datum))
-            return True
+	        self.addVariable("reynolds",int(datum))
+	        return True
 	    except ValueError:
 	        return False
-
-
+	
 	def storeState(self, datum):
             try:
                 datumL = datum.lower().strip()
@@ -94,90 +107,74 @@ class InputData:
 		except ValueError:
 			return False
 	    
-	def storenumInflows(self, datum):
+	def storenumInflows(self, datum): #not used
 	    try:
 	        self.addVariable("numInflows", int(datum))
 	    except ValueError:
 	        return False
 	        
-	def storeInflows(self, rawRegions, rawYs, rawXs)
+	def storeInflows(self, rawRegions, rawYs, rawXs):
+	    numInflows = len(rawRegions)
 	    Regions = []
 	    Ys = []
 	    Xs = []
 	    i = 1
-	    while i <= self.numInflows:
+	    success = [[0]*numInflows for i in range(3)]
+	    while i <= numInflows:
 	        try:
 	            Regions.append(stringToFilter(rawRegions[i]))
+	            success[0][i]=True
 	        except ValueError:
-	            return False
+	            pass
 	        try:
 	            Ys.append(stringToFilter(rawYs[i]))
+	            success[1][i]=True
 	        except ValueError:
-	            return False
+	            pass
 	        try:
 	            Xs.append(stringToFilter(rawXs[i]))
+	            success[2][i]=True
 	        except ValueError:
-	            return False
+	            pass
 	    self.addVariable("inflowRegions", Regions)
 	    self.addVariable("inflowX", Xs)
 	    self.addVariable("inflowY", Ys)
-	    return True
+	    return success
 	    
 	    
-def storenumOutflows(self, datum): 
+    def storenumOutflows(self, datum): #not used?
 	    try:
 	        self.addVariable("numOutflows", int(datum))
 	    except ValueError:
 	        return False
 	        
-	def storeOutflows(self, rawRegions)
+    def storeOutflows(self, rawRegions):
 	    Regions = []
 	    Ys = []
 	    Xs = []
 	    i = 1
-	    while i <= self.numInflows:
+	    for region in rawRegions:
 	        try:
-	            Regions.append(stringToFilter(rawRegions[i]))
+	            Regions.append(stringToFilter(region))
 	        except ValueError:
 	            return False
 	    self.addVariable("outflowRegions", Regions)
 	    return True
 	    
-	def storenumWalls(self, datum):
+    def storenumWalls(self, datum): #not used?
 	    try:
 	         inputData.addVariable("numWalls", int(datum))
 	    except ValueError:
 	        return False
 	        
-	def storeWalls(self, datum):
+    def storeWalls(self, datum):
 	    Regions = []
 	    i = 1
-	    while i <= self.numWalls:
+	    for region in rawRegions:
 	        try:
-	            Regions.append(stringToFilter(rawRegions[i]))
+	            Regions.append(stringToFilter(region))
 	        except ValueError:
 	            return False
 	    self.addVariable("wallRegions", Regions)
 	    return True
-	    
 
-"""
-Some methods for formatting data input
-"""
-def stringToDims(inputstr):
-    try:
-        tokenList = re.split('x', inputstr)
-        x = float(tokenList[0])
-        y = float(tokenList[1])
-        return [x,y]
-    except:
-        raise ValueError
-
-def stringToElements(inputstr):
-    try:
-        tokenList = re.split('x', inputstr)
-        x = int(tokenList[0])
-        y = int(tokenList[1])
-        return [x,y]
-    except:
-        raise ValueError
