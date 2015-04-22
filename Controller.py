@@ -17,11 +17,14 @@ The driver for the PyCamellia GUI. Main also assumes the
 responsibility of reading and writing to the view (test.kv).
 """
 class Controller(object):
-    def run(self):
-        #self.model = Model()
-        testApp(self).run()
+
+
+    def __init__(self):
+        self.model = Model()
         """This method is called when one of the plot choices is pressed"""
     def plot(self, plotType):
+       
+
         print(plotType)
         #self.fig = self.model.plot(plotType)
         #self.image = fig2png(self.fig)

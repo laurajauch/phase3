@@ -1,5 +1,6 @@
 import FormUtils
 from InputData import *
+from Plotter import *
 
 """
 Model
@@ -40,8 +41,8 @@ class Model(object):
     def solve(self):
         FormUtils.solve(self.form)
 
-    def plot(self):
-        #Plotter.plot()
+    def plot(self, plotType):
+        Plotter.plot(form, plotType)
         pass
         
     
