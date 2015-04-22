@@ -106,7 +106,7 @@ class Controller(object):
 """
 ViewApp
 
-Design elements are contained in the test.kv file
+Design elements are contained in the PyCamellia.kv file
 which kivy will look in when the program starts as
 a result of this empty class.
 """
@@ -118,7 +118,7 @@ class ViewApp(App):
     """
     def build(self):
         self.controller = Controller()
-        return Builder.load_file('View.kv')
+        return Builder.load_file('PyCamellia.kv')
 
     def refine(self, input):
         self.controller.refine(input)
