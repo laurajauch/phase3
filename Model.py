@@ -38,13 +38,15 @@ class Model(object):
     """
     def solve(self, data):
         (valid, errors) = testData(data)
-        if not valid:
+        try:
+            assert valid
+            storeData(data)
+            FormUtils.solve(inputData["form"])
+            return inputData["form"]
+        except:
             # need way to say controller.setErrors(errors)
             pass
-        else:
-            # do more stuff first then...
-            storeData(data)
-            FormUtils.solve(self.form)
+        
             
     """
     Test the given data to see if it is valid
@@ -64,7 +66,9 @@ class Model(object):
     Store the given data in the InputData instance
     """
     def storeData(self, data):
-        # do things to format data correctly then...python static
+        # do things to format data correctly then...
+        data["inflows"] = ParsingUtils.formatInflows(data["inflows"])
+        data["outflows"] = ParsingUtils.formatOutflows(data["outflows"])
         self.inputData.setVariables(data)
 
     """
