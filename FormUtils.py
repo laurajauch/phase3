@@ -250,22 +250,28 @@ def solve(data):
 
 #---------------------------------------------------------
 def autoRefine(data,refType): # refType: 0 is h, 1 is p
-	ret = init(data)	
-        form = ret[0] 
-        fType = ret[1]	
+    ret = init(data)	
+    form = ret[0] 
+    fType = ret[1]	
 
-        if refType == H:
-            if fType == STEADYLINEAR or fType == TRANSIENTLINEAR:
-                linearHAutoRefine(form)
-            elif fType == STEADYNONLINEAR:
-                nonlinearHAutoRefine(form)
-        elif refType == P:
-            if fType == STEADYLINEAR or fType == TRANSIENTLINEAR:
-                linearPAutoRefine(form)
-            elif fType == STEADYNONLINEAR:
-                nonlinearPAutoRefine(form)
-		
-	return form 
+    if refType == H:
+        if fType == STEADYLINEAR or fType == TRANSIENTLINEAR:
+            linearHAutoRefine(form)
+        elif fType == STEADYNONLINEAR:
+            nonlinearHAutoRefine(form)
+    elif refType == P:
+        if fType == STEADYLINEAR or fType == TRANSIENTLINEAR:
+            linearPAutoRefine(form)
+        elif fType == STEADYNONLINEAR:
+            nonlinearPAutoRefine(form)
+	
+    return form 
+#-----------------------------------------------------------
+#                  NOT IMPLEMENTED
+############################################################
+def manualRefine(data,refType):
+    return form
+    
 
 #-----------------------------------------------------------
 def init(data):
