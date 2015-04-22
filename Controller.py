@@ -79,14 +79,16 @@ class Controller(object):
     Retrieve the text from the GUI.
     """
     def getText(self):
-        # should be in this format
-        #data["type"] = string
+        #data = {}
+        #data["type"] = ViewApp.btn.text
+        #print(data["type"])
         #data["state"] = string
         #data["polyOrder"] = string
         #data["numElements"] = string
         #data["meshDimensions"] = string
         #data["inflow"] = [strings]
         #data["outflow"] = [strings]
+        #return data
         pass
 
     """
@@ -118,7 +120,8 @@ class ViewApp(App):
     """
     def build(self):
         self.controller = Controller()
-        return Builder.load_file('View.kv')
+        self.root = Builder.load_file('View.kv')
+        return self.root
 
     def refine(self, input):
         self.controller.refine(input)
@@ -127,8 +130,16 @@ class ViewApp(App):
     def reset(self):
         self.controller.pressReset()
     def solve(self):
-        data = self.controller.getText()
-        self.controller.pressSolve(data)
+        data = {}
+        data["type"] = self.root.ids.probType.text
+        data["state"] = self.root.ids.stateType.text
+        data["polyOrder"] = self.root.ids.polyOrder.text
+        data["numElements"] = self.root.ids.meshElems.text
+        data["meshDimensions"] = self.root.ids.meshDim.text
+        #data["inflow"] = [strings]
+        #data["outflow"] = [strings]
+        print(data)
+        #self.controller.pressSolve(data)
     def load(self):
         filename = self.controller.getFilename()
         self.controller.pressLoad(filename)

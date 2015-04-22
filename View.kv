@@ -1,4 +1,7 @@
 #:kivy 1.0
+
+
+
 Widget:
 
 	#background color, plotting window
@@ -116,6 +119,7 @@ Widget:
 		font_size: 12
 		pos: (178,407)
 	TextInput:
+		id:meshElems
 		multiline: False
 		height: '30dp'
 		width: '60dp'
@@ -149,6 +153,7 @@ Widget:
 		text: "Solve"
 		pos: (141, 50)
 		color: (1, 1, 1, 1)
+		on_release: app.solve()
 
 	#File load button, should load solution
 	Button:
@@ -177,7 +182,7 @@ Widget:
 		__safe_id: [dropdown.__self__]
 
 	Button:
-		id: btn
+		id: probType
 		pos: (56, 527)
 		width: '250dp'
 		height: '30dp'
@@ -189,7 +194,7 @@ Widget:
 
 		id: dropdown
 		on_parent: self.dismiss()
-		on_select: btn.text = '{}'.format(args[1])
+		on_select: probType.text = '{}'.format(args[1])
 
 		Button:
 			text: 'Stokes'
@@ -210,7 +215,7 @@ Widget:
 
 	#State selection dropdown menu
 	Button:
-		id: btn1
+		id: stateType
 		pos: (18, 485)
 		width: '100dp'
 		height: '30dp'
