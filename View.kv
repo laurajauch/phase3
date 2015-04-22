@@ -66,15 +66,12 @@ Widget:
 		pos: (527, 90)
 
 	#Reynolds number entry text field
-	TextInput:
+	PyTextInput:
 		id: reynolds
 		multiline: False
 		height: '30dp'
 		width: '50dp'
 		pos: (304, 485)
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	#Polynomial Order Label
 	Label:
@@ -133,6 +130,7 @@ Widget:
 		text: "Reset"
 		pos: (220, 112)
 		color: (1, 1, 1, 1)
+		on_release: app.reset()
 
 	#Solve button - should initiate input check and solution
 	Button:
@@ -223,7 +221,7 @@ Widget:
 
 		id: dropdown1
 		on_parent: self.dismiss()
-		on_select: btn1.text = '{}'.format(args[1])
+		on_select: stateType.text = '{}'.format(args[1])
 
 		Button:
 			id: steady
@@ -336,46 +334,37 @@ Widget:
 		pos: (20, 335)
 	
 
-	TextInput:
+	PyTextInput:
 		multiline: False
 		height: '27dp'
 		width: '80dp'
 		pos: (85, 375)
 		font_size: 12
 		hint_text: "x > 5, y = 9"
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	Label:
 		text: 'x ='
 		pos: (147, 338)
 
-	TextInput:
+	PyTextInput:
 		multiline: False
 		height: '27dp'
 		width: '50dp'
 		pos: (210, 375)
 		font_size: 11
 		hint_text: "x*4"
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	Label:
 		text: 'y ='
 		pos: (234, 338)
 
-	TextInput:
+	PyTextInput:
 		multiline: False
 		height: '27dp'
 		width: '50dp'
 		pos: (300, 375)
 		font_size: 11
 		hint_text: "y*4"
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 	
 	#Inflow 2
 	Label:
@@ -383,43 +372,34 @@ Widget:
 		pos: (20, 303)
 	
 
-	TextInput:
+	PyTextInput:
 		multiline: False
 		height: '27dp'
 		width: '80dp'
 		pos: (85, 340)
 		font_size: 12
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	Label:
 		text: 'x = '
 		pos: (149, 303)
 
-	TextInput:
+	PyTextInput:
 		multiline: False
 		height: '27dp'
 		width: '50dp'
 		pos: (210, 340)
 		font_size: 11
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	Label:
 		text: 'y = '
 		pos: (236, 303)
 
-	TextInput:
+	PyTextInput:
 		multiline: False
 		height: '27dp'
 		width: '50dp'
 		pos: (300, 340)
 		font_size: 11
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	#Inflow 3
 	Label:
@@ -427,87 +407,69 @@ Widget:
 		pos: (20, 267)
 	
 
-	TextInput:
+	PyTextInput:
 		multiline: False
 		height: '27dp'
 		width: '80dp'
 		pos: (85, 305)
 		font_size: 12
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 
 	Label:
 		text: 'x = '
 		pos: (149, 267)
 
-	TextInput:
+	PyTextInput:
 		multiline: False
 		height: '27dp'
 		width: '50dp'
 		pos: (210, 305)
 		font_size: 11	
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	Label:
 		text: 'y = '
 		pos: (236, 267)
 
-	TextInput:
+	PyTextInput:
 		multiline: False
 		height: '27dp'
 		width: '50dp'
 		pos: (300, 305)
 		font_size: 11
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	#Inflow 4
 	Label:
 		text: '4.'
 		pos: (20, 231)	
 
-	TextInput:
+	PyTextInput:
 		multiline: False
 		height: '27dp'
 		width: '80dp'
 		pos: (85, 270)
 		font_size: 12
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	Label:
 		text: 'x = '
 		pos: (149, 231)
 
-	TextInput:
+	PyTextInput:
 		multiline: False
 		height: '27dp'
 		width: '50dp'
 		pos: (210, 270)
 		font_size: 11
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	Label:
 		text: 'y = '
 		pos: (236, 231)
 
-	TextInput:
+	PyTextInput:
 		multiline: False
 		height: '27dp'
 		width: '50dp'
 		pos: (300, 270)
 		font_size: 11
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	#Outflow Conditions
 	#Outflow 1
@@ -515,16 +477,14 @@ Widget:
 		text: '1.'
 		pos: (20, 162)
 
-	TextInput:
+	PyTextInput:
+		id: out1
 		multiline: False
 		height: '27dp'
 		width: '80dp'
 		font_size: 12
 		pos: (85, 200)
 		hint_text: "x = 9, y < 3"
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	
 	#Outflow 2
@@ -532,15 +492,13 @@ Widget:
 		text: '2. '
 		pos: (20, 127)
 
-	TextInput:
+	PyTextInput:
+		id: out2
 		multiline: False
 		height: '27dp'
 		width: '80dp'
 		font_size: 12
 		pos: (85, 165)
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 
 	#Outflow 3
@@ -548,28 +506,24 @@ Widget:
 		text: '3. '
 		pos: (20, 93)
 
-	TextInput:
+	PyTextInput:
+		id: out3
 		multiline: False
 		height: '27dp'
 		width: '80dp'
 		font_size: 12
-		pos: (85, 130)
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
+		pos: (85, 130) 
 
 	#Outflow 4
 	Label:
 		text: '4.'
 		pos: (20, 58)
 
-	TextInput:
+	PyTextInput:
+		id: out4
 		multiline: False
 		height: '27dp'
 		width: '80dp'
 		font_size: 12
 		pos: (85, 95)
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
