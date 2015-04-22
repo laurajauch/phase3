@@ -1,6 +1,8 @@
 import FormUtils
+#import Plotter
+import ParsingUtils
 from InputData import *
-from Plotter import *
+
 
 """
 Model
@@ -14,16 +16,47 @@ class Model(object):
         self.form = None
         self.inputData = InputData()
         self.errorMsg = {} #True indicates stored data, false indicates an error
+
+    """
+    """
+    #def 
+
+
+    """
+    """
+    def testData(self, data):
+        errors = ParsingUtils.checkValidInput(data)
+        valid = True
+        for key, value in errors.iteritems():
+            if value is False:
+                valid = False
+
+        return (valid, errors)
         
     """
-    Precondition: data contains the following in a dictionary - Navier/Stokes, Transient/Steady, Renolds 
-    (Navier only), mesh dimensions, initial number of elements, polynomial order, 
+    Precondition: data contains the following in a dictionary - 
+    Navier/Stokes, Transient/Steady, Renolds (Navier only), 
+    mesh dimensions, initial number of elements, polynomial order, 
     inflow regions list, inflow x velocity list, inflow y velocity list, outflow regions list
     Param: data The data...
 
     Coming Soon: determining wall regions
     """
     def enterData(self, data):
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
         self.errorMsg["stokes"] = self.inputData.storeStokes(data["stokes"])
         self.errorMsg["transient"] = self.inputData.storeState(data["transient"])
         if not self.inputData.getVariable("stokes"):
@@ -102,7 +135,7 @@ class Model(object):
                 elementCount = mesh.numActiveElements()
                 globalDofCount = mesh.numGlobalDofs()
                 
-        except (OSError, IOError):
+        except:
             print("No solution was found with the name \"%s\"" % command)
             
 
