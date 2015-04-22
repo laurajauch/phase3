@@ -14,16 +14,12 @@ class Model(object):
 
     def __init__(self):
         self.inputData = InputData()
-        self.errorMsg = {} #True indicates stored data, false indicates an error
-
+       
     """
     Called when refine is pressed
     """
-    def refine(self, rtype, isAuto): # type: 0 is h, 1 is p
-        if(isAuto):
-            FormUtils.autoRefine(data, rtype)
-        elif( not isAuto):
-            FormUtils.manualRefine(data, rtype)
+    def refine(self, rtype): # type: 0 is h, 1 is p
+        FormUtils.autoRefine(data, rtype)
             
     """
     Called when plot is pressed
@@ -35,7 +31,7 @@ class Model(object):
     Called when reset is pressed
     """
     def reset(self):
-        pass
+        self.inputData = InputData()
 
     """
     Called when solve is pressed
@@ -47,7 +43,7 @@ class Model(object):
             pass
         else:
             # do more stuff first then...
-            # storeData(inputData)
+            storeData(data)
             FormUtils.solve(self.form)
             
     """
@@ -68,7 +64,8 @@ class Model(object):
     Store the given data in the InputData instance
     """
     def storeData(self, data):
-        pass
+        # do things to format data correctly then...python static
+        self.inputData.setVariables(data)
 
     """
     Save to the specified file
@@ -122,37 +119,7 @@ class Model(object):
                 
         except:
             print("No solution was found with the name \"%s\"" % command)
-    
-  
 
-
- # not used anymore but havent updated input data---------------------------------------     
-    """
-    Precondition: data contains the following in a dictionary - 
-    Navier/Stokes, Transient/Steady, Renolds (Navier only), 
-    mesh dimensions, initial number of elements, polynomial order, 
-    inflow regions list, inflow x velocity list, inflow y velocity list, outflow regions list
-    Param: data The data...
-
-    Coming Soon: determining wall regions
-    """
-    def enterData(self, data):
-        self.errorMsg["stokes"] = self.inputData.storeStokes(data["stokes"])
-        self.errorMsg["transient"] = self.inputData.storeState(data["transient"])
-        if not self.inputData.getVariable("stokes"):
-            errorMsg["reynolds"] = self.inputData.storeReynolds(data["reynolds"])
-        self.errorMsg["meshDimensions"] = self.inputData.storeMeshDims(data["meshDimensions"])
-        self.errorMsg["polyOrder"] = self.inputData.storePolyOrder(data["polyOrder"])
-        inflowError = self.inputData.storeInflows(data["inflowRegions"],data["inflowX"],data["inflowY"])
-        self.errorMsg["inflowRegions"] = inflowError[0]
-        self.errorMsg["inflowX"] = inflowError[1]
-        self.errorMsg["inflowY"] = inflowError[2]
-        self.errorMsg["outflowRegions"] = self.inputData.storeOutflows(data["outflowRegions"])
-        self.errorMsg["wallRegions"] = False #need to figure out what to store
-        return self.errorMsg
-
-
-
-
+ 
     if __name__ == '__main__':
         pass

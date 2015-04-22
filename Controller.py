@@ -24,8 +24,8 @@ class Controller(object):
     """
     Do this when refine is pressed.
     """
-    def pressRefine(self, refineType):
-        #Model.refine(self, rType, isAuto)
+    def pressRefine(self, rType):
+        Model.refine(self, rType)
         print(refineType)
 
     """
@@ -108,9 +108,11 @@ class Controller(object):
 """
 ViewApp
 
-Design elements are contained in the test.kv file
-which kivy will look in when the program starts as
-a result of this empty class.
+Design elements are contained in the PyCamellia.kv file
+which kivy will look in when the program starts.
+
+Kivy requires this class for interacting with view (PyCamellia.kv),
+although it is somewhat redundant to Controller.
 """
 class ViewApp(App):
     
