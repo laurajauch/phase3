@@ -10,6 +10,7 @@ from kivy.core.image.img_pygame import ImageLoaderPygame
 from kivy.properties import ObjectProperty
 from kivy.uix.image import Image
 from kivy.lang import Builder
+from kivy.uix.textinput import TextInput
 """
 Controller
 
@@ -145,7 +146,7 @@ class ViewApp(App):
     def getFilename(self):
         filename = self.root.ids.filename.text
         if filename == '':
-            self.root.ids.filename.background_color = (1,0,0,1)
+            self.root.ids.filename.highlight()
         return filename
     def load(self):
         filename = self.getFilename()
@@ -153,6 +154,10 @@ class ViewApp(App):
     def save(self):
         filename = self.getFilename()
         #self.controller.pressSave(filename)
+
+class PyTextInput(TextInput):
+    def highlight(self):
+        self.background_color=(1,0,0,1)
 
 if __name__ == '__main__':
     ViewApp().run()

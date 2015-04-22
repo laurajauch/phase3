@@ -83,14 +83,11 @@ Widget:
 		pos: (107, 451)
 
 	#Polynomial Order entry Text field
-	TextInput:
+	PyTextInput:
 		id: polyOrder
 		multiline: False
 		height: '30dp'
 		width: '50dp'
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 		pos: (193, 485)
 
 	#Mesh Dimensions
@@ -101,7 +98,7 @@ Widget:
 	#Mesh Dimensions Label
 		pos: (16,407)
 
-	TextInput:
+	PyTextInput:
 		id: meshDim
 		multiline: False
 		height: '30dp'
@@ -109,16 +106,13 @@ Widget:
 		pos: (108 , 440)
 		font_size: 13
 		hint_text: '3.0 x 5.0'
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	#Mesh Elements
 	Label:
 		text: '      Mesh\nElements:'
 		font_size: 12
 		pos: (178,407)
-	TextInput:
+	PyTextInput:
 		id:meshElems
 		multiline: False
 		height: '30dp'
@@ -126,9 +120,6 @@ Widget:
 		pos: (265 , 440)
 		font_size: 13
 		hint_text: '4 x 6'
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 
 	#Reset button - should clear all fields
