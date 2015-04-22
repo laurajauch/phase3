@@ -98,7 +98,7 @@ class Controller(object):
     """
     Set the input errors on the GUI
     """
-    def setErrors(self):
+    def setErrors(self, errors):
         pass
 
 
