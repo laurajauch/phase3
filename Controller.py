@@ -10,6 +10,7 @@ from kivy.core.image.img_pygame import ImageLoaderPygame
 from kivy.properties import ObjectProperty
 from kivy.uix.image import Image
 from kivy.lang import Builder
+from kivy.uix.textinput import TextInput
 """
 Controller
 
@@ -79,15 +80,7 @@ class Controller(object):
     Retrieve the text from the GUI.
     """
     def getText(self):
-        rawData = {}
-        rawData["type"] = string
-        rawData["state"] = string
-        rawData["polyOrder"] = string
-        rawData["numElements"] = string
-        rawData["meshDimensions"] = string
-        #rawData["inflow"] = strings [(condition ,xVelocity, yVelocity)]
-        #rawData["outflow"] =  [strings]
-        return rawData
+        pass
 
     """
     Retrieve the filename from the text box in the GUI
@@ -121,7 +114,9 @@ class ViewApp(App):
     """
     def build(self):
         self.controller = Controller()
-        return Builder.load_file('PyCamellia.kv')
+        # Setting root as the instance variable needed to reference the GUI
+        self.root = Builder.load_file('View.kv')
+        return self.root
 
     def refine(self, input):
         self.controller.refine(input)
@@ -130,14 +125,30 @@ class ViewApp(App):
     def reset(self):
         self.controller.pressReset()
     def solve(self):
-        rawData = self.controller.getText()
-        self.controller.pressSolve(rawData)
+        data = {}
+        data["type"] = self.root.ids.probType.text
+        data["state"] = self.root.ids.stateType.text
+        data["polyOrder"] = self.root.ids.polyOrder.text
+        data["numElements"] = self.root.ids.meshElems.text
+        data["meshDimensions"] = self.root.ids.meshDim.text
+        #data["inflow"] = [strings]
+        #data["outflow"] = [strings]
+        #self.controller.pressSolve(data)
+    def getFilename(self):
+        filename = self.root.ids.filename.text
+        if filename == '':
+            self.root.ids.filename.highlight()
+        return filename
     def load(self):
-        filename = self.controller.getFilename()
-        self.controller.pressLoad(filename)
+        filename = self.getFilename()
+        #self.controller.pressLoad(filename)
     def save(self):
-        filename = self.controller.getFilename()
-        self.controller.pressSave(filename)
+        filename = self.getFilename()
+        #self.controller.pressSave(filename)
+
+class PyTextInput(TextInput):
+    def highlight(self):
+        self.background_color=(1,0,0,1)
 
 if __name__ == '__main__':
     ViewApp().run()

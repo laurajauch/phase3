@@ -1,4 +1,10 @@
 #:kivy 1.0
+
+<PyTextInput@TextInput>:
+	background_color: (1,1,1,1) #defaults to white
+	#if red, reset to white:
+	on_focus: self.background_color=(1,1,1,1)
+
 Widget:
 
 	#background color, plotting window
@@ -52,15 +58,12 @@ Widget:
 		pos: (440, 55)
 
 	#Filename entry text field
-	TextInput:
+	PyTextInput:
 		id: filename
 		multiline: False
 		height: '30dp'
 		width: '120dp'
 		pos: (527, 90)
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	#Reynolds number entry text field
 	TextInput:
@@ -80,14 +83,11 @@ Widget:
 		pos: (107, 451)
 
 	#Polynomial Order entry Text field
-	TextInput:
+	PyTextInput:
 		id: polyOrder
 		multiline: False
 		height: '30dp'
 		width: '50dp'
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 		pos: (193, 485)
 
 	#Mesh Dimensions
@@ -98,7 +98,7 @@ Widget:
 	#Mesh Dimensions Label
 		pos: (16,407)
 
-	TextInput:
+	PyTextInput:
 		id: meshDim
 		multiline: False
 		height: '30dp'
@@ -106,25 +106,20 @@ Widget:
 		pos: (108 , 440)
 		font_size: 13
 		hint_text: '3.0 x 5.0'
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	#Mesh Elements
 	Label:
 		text: '      Mesh\nElements:'
 		font_size: 12
 		pos: (178,407)
-	TextInput:
+	PyTextInput:
+		id:meshElems
 		multiline: False
 		height: '30dp'
 		width: '60dp'
 		pos: (265 , 440)
 		font_size: 13
 		hint_text: '4 x 6'
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 
 	#Reset button - should clear all fields
@@ -149,6 +144,7 @@ Widget:
 		text: "Solve"
 		pos: (141, 50)
 		color: (1, 1, 1, 1)
+		on_release: app.solve()
 
 	#File load button, should load solution
 	Button:
@@ -160,6 +156,7 @@ Widget:
 		text: "Load"
 		pos: (420, 50)
 		color: (1, 1, 1, 1)
+		on_release: app.load()
 
 	#File save button, should save current solution
 	Button:
@@ -171,13 +168,14 @@ Widget:
 		text: "Save"
 		pos: (580, 50)
 		color: (1, 1, 1, 1)
+		on_release: app.save()
 
 	#Problem Type dropdown menu
 		name: 'DropDown'
 		__safe_id: [dropdown.__self__]
 
 	Button:
-		id: btn
+		id: probType
 		pos: (56, 527)
 		width: '250dp'
 		height: '30dp'
@@ -189,7 +187,7 @@ Widget:
 
 		id: dropdown
 		on_parent: self.dismiss()
-		on_select: btn.text = '{}'.format(args[1])
+		on_select: probType.text = '{}'.format(args[1])
 
 		Button:
 			text: 'Stokes'
@@ -210,7 +208,7 @@ Widget:
 
 	#State selection dropdown menu
 	Button:
-		id: btn1
+		id: stateType
 		pos: (18, 485)
 		width: '100dp'
 		height: '30dp'
