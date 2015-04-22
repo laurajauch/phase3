@@ -35,12 +35,14 @@ class Model(object):
 
     """
     Called when solve is pressed
+    data: the raw data as it was taken from the GUI
+    return: the solved form
     """
-    def solve(self, data):
-        (valid, errors) = testData(data)
+    def solve(self, rawData):
+        (valid, errors) = testData(rawData)
         try:
             assert valid
-            storeData(data)
+            storeData(rawData)
             FormUtils.solve(inputData["form"])
             return inputData["form"]
         except:
@@ -53,8 +55,8 @@ class Model(object):
     valid: True if data is valid, else False if data is invalid
     errors: A map from field to boolean, True if error, False if no error
     """
-    def testData(self, data):
-        errors = ParsingUtils.checkValidInput(data)
+    def testData(self, rawData):
+        errors = ParsingUtils.checkValidInput(rawData)
         valid = True
         for key, value in errors.iteritems():
             if value is False:

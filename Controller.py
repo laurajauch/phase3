@@ -79,15 +79,15 @@ class Controller(object):
     Retrieve the text from the GUI.
     """
     def getText(self):
-        data = {}
-        data["type"] = string
-        data["state"] = string
-        data["polyOrder"] = string
-        data["numElements"] = string
-        data["meshDimensions"] = string
-        #data["inflow"] = strings [(condition ,xVelocity, yVelocity)]
-        #data["outflow"] =  [strings]
-        return data
+        rawData = {}
+        rawData["type"] = string
+        rawData["state"] = string
+        rawData["polyOrder"] = string
+        rawData["numElements"] = string
+        rawData["meshDimensions"] = string
+        #rawData["inflow"] = strings [(condition ,xVelocity, yVelocity)]
+        #rawData["outflow"] =  [strings]
+        return rawData
 
     """
     Retrieve the filename from the text box in the GUI
@@ -130,8 +130,8 @@ class ViewApp(App):
     def reset(self):
         self.controller.pressReset()
     def solve(self):
-        data = self.controller.getText()
-        self.controller.pressSolve(data)
+        rawData = self.controller.getText()
+        self.controller.pressSolve(rawData)
     def load(self):
         filename = self.controller.getFilename()
         self.controller.pressLoad(filename)
