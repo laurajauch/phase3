@@ -24,8 +24,8 @@ class Controller(object):
     """
     Do this when refine is pressed.
     """
-    def pressRefine(self, refineType):
-        #Model.refine(self, rType, isAuto)
+    def pressRefine(self, rType):
+        Model.refine(self, rType)
         print(refineType)
 
     """
@@ -79,15 +79,15 @@ class Controller(object):
     Retrieve the text from the GUI.
     """
     def getText(self):
-        # should be in this format
-        #data["type"] = string
-        #data["state"] = string
-        #data["polyOrder"] = string
-        #data["numElements"] = string
-        #data["meshDimensions"] = string
-        #data["inflow"] = [strings]
-        #data["outflow"] = [strings]
-        pass
+        data = {}
+        data["type"] = string
+        data["state"] = string
+        data["polyOrder"] = string
+        data["numElements"] = string
+        data["meshDimensions"] = string
+        #data["inflow"] = strings [(condition ,xVelocity, yVelocity)]
+        #data["outflow"] =  [strings]
+        return data
 
     """
     Retrieve the filename from the text box in the GUI
@@ -97,6 +97,7 @@ class Controller(object):
     
     """
     Set the input errors on the GUI
+    errors: A map from field to boolean, True if error, False if no error
     """
     def setErrors(self, errors):
         pass
@@ -107,8 +108,10 @@ class Controller(object):
 ViewApp
 
 Design elements are contained in the PyCamellia.kv file
-which kivy will look in when the program starts as
-a result of this empty class.
+which kivy will look in when the program starts.
+
+Kivy requires this class for interacting with view (PyCamellia.kv),
+although it is somewhat redundant to Controller.
 """
 class ViewApp(App):
     

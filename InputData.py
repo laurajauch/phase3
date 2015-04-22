@@ -41,6 +41,9 @@ class InputData:
         self.vars = memento.get()
 
 # Generic Variable ---------------------------------
+    def setVariables(self, data):
+        self.vars = data
+
     def addVariable(self, string, var):
         self.vars[string] = var
     
@@ -60,72 +63,7 @@ class InputData:
         except:
             print("InputData does not contain form")
 
-#---------------------------------------------------
-    def storeStokes(self, datum):
-        try:
-            self.addVariable("stokes", bool(datum)) #true for stokes, false for Nstokes
-            return True
-        except ValueError:
-            return False
-            
-	def storeReynolds(self, datum):
-	    try:
-	        self.addVariable("reynolds",int(datum))
-	        return True
-	    except ValueError:
-	        return False
-	
-    def storeState(self, datum):
-        try:
-            datumL = datum.lower().strip()
-            if datumL == "transient" or datumL == "steady state":
-                if datumL == "steady state":
-                    self.addVariable("transient", False) # steady state
-                    return True
-                elif (not self.getVariable("stokes")) and datumL == "transient":
-                    print("Transient solves are not supported for Navier-Stokes")
-                    return False
-                else:
-                    self.addVariable("transient", True)
-                    return True
-            else:
-                return False
-        except AttributeError:
-            return False
-	    
-    def storeMeshDims(self, datum):
-        try:
-            dims = stringToDims(str(datum).strip())
-            self.addVariable("meshDimensions", dims)
-            return True
-        except ValueError:
-            return False
-		
-    def storeNumElements(self, inputData, datum):
-        try:
-            numElements = stringToElements(str(datum).strip())
-            self.addVariable("numElements", numElements)
-            return True
-        except ValueError:
-            return False
-	    
-	def storePolyOrder(self, inputData, datum):
-            try:
-                    order = int(datum)
-                    if order <= 9 and order >= 1:
-                        self.addVariable("polyOrder",order)
-                        return True
-                    else:
-                        return False
-            except ValueError:
-                    return False
-
-    def storeNumInflows(self, datum): #not used
-        try:
-            self.addVariable("numInflows", int(datum))
-        except ValueError:
-            return False
-
+# not used -----------------------------------------
     def storeInflows(self, rawRegions, rawYs, rawXs):
         numInflows = len(rawRegions)
         Regions = []
@@ -154,12 +92,7 @@ class InputData:
         self.addVariable("inflowY", Ys)
         return success
 
-	    
-    def storeNumOutflows(self, datum): #not used?
-	    try:
-	        self.addVariable("numOutflows", int(datum))
-	    except ValueError:
-	        return False
+
 	        
     def storeOutflows(self, rawRegions):
 	    Regions = []
@@ -173,12 +106,7 @@ class InputData:
 	            return False
 	    self.addVariable("outflowRegions", Regions)
 	    return True
-	    
-    def storeNumWalls(self, datum): #not used?
-	    try:
-	         inputData.addVariable("numWalls", int(datum))
-	    except ValueError:
-	        return False
+
 	        
     def storeWalls(self, datum):
 	    Regions = []
