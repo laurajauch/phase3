@@ -28,7 +28,7 @@ data: A dictionary containing the data to be tested
 return: errors A dictionary mapping string description to boolean, 
 False if field was valid, True if field was invalid
 """
-def checkInputValidity(data):
+def checkValidInput(data):
     errors = {}
      
 
@@ -65,24 +65,25 @@ def checkInputValidity(data):
             
     # inflowConditions: 
     try:
-        stringToFilter(str(data["inflow"]))
+        for item in data["inflow"]:
+            stringToFilter(str(item))
         errors["inflow"] = False
     except:
         errors["inflow"] = True
                 
     # outflowConditions:
     try:
-        stringToFilter(str(data["outflow"]))
+        for item in data["inflow"]:
+            stringToFilter(str(item))
         errors["outflow"] = False
     except:
         errors["outflow"] = True
-                    
-    # loadFile: 
+
+"""
+"""
+def checkValidFile(filename):
     try:
-        os.path.isfile(str(data["loadFile"])) 
-        errors["loadFile"] = False
+        os.path.isfile(str(filename)) 
+        return False
     except:
-        errors["loadFile"] = True
-
-
-    return errors
+        return True

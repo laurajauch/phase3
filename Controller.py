@@ -18,19 +18,18 @@ responsibility of reading and writing to the view (test.kv).
 """
 class Controller(object):
 
-
     def __init__(self):
         self.model = Model()
         
     """
-    This method is called when one of the refine choices is pressed
+    Do this when refine is pressed.
     """
-    def pressRefine(self,rType, isAuto):
-        Model.refine(self, rType, isAuto)
+    def pressRefine(self, refineType):
+        #Model.refine(self, rType, isAuto)
         print(refineType)
 
     """
-    This method is called when one of the plot choices is pressed
+    Do this when plot is pressed.
     """
     def pressPlot(self, plotType):
         print(plotType)
@@ -51,20 +50,37 @@ class Controller(object):
     Do this when reset is pressed.
     """
     def pressReset(self):
+        self.model.reset()
         pass
 
     """
     Do this when solve is pressed.
     """
-    def pressSolve(self):
-        data = getText()
-
+    def pressSolve(self, data):
+        self.model.solve(data)
 
     """
-    Retrieve the text from the GUI
+    Do this when load is pressed.
+    """
+    def pressLoad(self, filename):
+        self.model.load(filename)
+
+    """
+    Do this when save is pressed.
+    """
+    def pressSave(self, filename):
+        self.model.save(filename)
+
+
+
+# Screen Accessors & Mutators ------------------------------------
+   
+    """
+    Retrieve the text from the GUI.
     """
     def getText(self):
-        # should be in this format 
+        # should be in this format
+        #data["type"] = string
         #data["state"] = string
         #data["polyOrder"] = string
         #data["numElements"] = string
@@ -74,7 +90,7 @@ class Controller(object):
         pass
 
     """
-    
+    Retrieve the filename from the text box in the GUI
     """
     def getFilename(self):
         pass
@@ -85,39 +101,41 @@ class Controller(object):
     def setErrors(self):
         pass
 
-    """
-    Do this when load is pressed.
-    """
-    def pressLoad(self, filename):
-        model.load(filename)
-
-    """
-    Do this when save is pressed.
-    """
-    def pressSave(self, filename):
-        model.save(filename)
 
 
 """
+ViewApp
+
 Design elements are contained in the test.kv file
 which kivy will look in when the program starts as
 a result of this empty class.
 """
-class viewApp(App):
+class ViewApp(App):
     
-    def refine(self, input):
-        self.controller.refine(input)
-    def plot(self, input):
-        self.controller.pressPlot(input)
     """
-    Added this build function so we can maipulate testApp when it is created. 
+    Added this build function so we can maipulate viewApp when it is created. 
     We just need to specify which .kv file we are building from.
     """
     def build(self):
         self.controller = Controller()
         return Builder.load_file('View.kv')
-        
+
+    def refine(self, input):
+        self.controller.refine(input)
+    def plot(self, input):
+        self.controller.pressPlot(input)
+    def reset(self):
+        self.controller.pressReset()
+    def solve(self):
+        data = self.controller.getText()
+        self.controller.pressSolve(data)
+    def load(self):
+        filename = self.controller.getFilename()
+        self.controller.pressLoad(filename)
+    def save(self):
+        filename = self.controller.getFilename()
+        self.controller.pressSave(filename)
 
 if __name__ == '__main__':
-    viewApp().run()
+    ViewApp().run()
 
