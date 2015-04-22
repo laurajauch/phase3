@@ -24,61 +24,106 @@ def stringToElements(inputstr):
     except:
         raise ValueError
 
-# the following 3 methods are not correct
-def formatInflows(self, rawRegions, rawYs, rawXs):
-        numInflows = len(rawRegions)
-        Regions = []
-        Ys = []
-        Xs = []
-        i = 1
-        success = [[0]*numInflows for i in range(3)]
-        while i <= numInflows:
-            try:
-                Regions.append(stringToFilter(rawRegions[i]))
-                success[0][i]=True
-            except ValueError:
-                pass
-            try:
-                Ys.append(stringToFilter(rawYs[i]))
-                success[1][i]=True
-            except ValueError:
-                pass
-            try:
-                Xs.append(stringToFilter(rawXs[i]))
-                success[2][i]=True
-            except ValueError:
-                pass
+# the following 3 methods are not correct yet
+def stringToInflows(rawRegions, rawYs, rawXs):
+    numInflows = len(rawRegions)
+    Regions = []
+    Ys = []
+    Xs = []
+    i = 1
+    success = [[0]*numInflows for i in range(3)]
+    while i <= numInflows:
+        try:
+            Regions.append(stringToFilter(rawRegions[i]))
+            success[0][i]=True
+        except ValueError:
+            pass
+        try:
+            Ys.append(stringToFilter(rawYs[i]))
+            success[1][i]=True
+        except ValueError:
+            pass
+        try:
+            Xs.append(stringToFilter(rawXs[i]))
+            success[2][i]=True
+        except ValueError:
+            pass
         self.addVariable("inflowRegions", Regions)
         self.addVariable("inflowX", Xs)
         self.addVariable("inflowY", Ys)
         return success
 
+def stringToOutflows(rawRegions):
+    Regions = []
+    Ys = []
+    Xs = []
+    i = 1
+    for region in rawRegions:
+        try:
+            Regions.append(stringToFilter(region))
+        except ValueError:
+            return False
+        self.addVariable("outflowRegions", Regions)
+        return True
 
-	        
-    def formatOutflows(self, rawRegions):
-	    Regions = []
-	    Ys = []
-	    Xs = []
-	    i = 1
-	    for region in rawRegions:
-	        try:
-	            Regions.append(stringToFilter(region))
-	        except ValueError:
-	            return False
-	    self.addVariable("outflowRegions", Regions)
-	    return True
+def stringToWalls(datum): # not used?
+    Regions = []
+    i = 1
+    for region in rawRegions:
+        try:
+            Regions.append(stringToFilter(region))
+        except ValueError:
+            return False
+        self.addVariable("wallRegions", Regions)
+        return True
 
-	        
-    def formatWalls(self, datum): # not used?
-	    Regions = []
-	    i = 1
-	    for region in rawRegions:
-	        try:
-	            Regions.append(stringToFilter(region))
-	        except ValueError:
-	            return False
-	    self.addVariable("wallRegions", Regions)
-	    return True
+def formatRawData(rawData):
+    data ={}
+
+    # stokes: boolean
+    if rawData["stokes"] == "stokes":
+        data["stokes"] = True
+    else:
+        data["stokes"] = False
+        
+    # reynolds: float/int
+    data["reynolds"] = int(rawData["reynolds"])
+    
+    # transient: boolean
+    if rawData["transient"] == "transient":
+        data["transient"] = True
+    else:
+        data["transient"] = False
+        
+    # meshDimensions: [float, float]
+    data["meshDimensions"] = stringToDims(rawData["meshDimensions"])
+
+    # numElements: [int, int]
+    data["numElements"] = stringToElements(rawData["numElements"])
+    
+    # polyOrder: int
+    data["polyOrder"] = int(rawData["polyOrder"])
+        
+    # inflowRegions, inflowX, inflowY: string
+    regions = []
+    xVel = []
+    yVel = []
+    for item in rawData["inflow"]:
+        (region, x, y) = item
+        regions.append(region)
+        xVel.append(x)
+        yVel.append(y)
+    data["inflowRegions"] = regions
+    data["inflowX"] = xVel
+    data["inflowY"] = yVel
+    
+    # outflowRegions: string
+    data["outflowRegions"] = rawData["outflow"]
+
+    # wallRegions: string
+    # ?
+
+    return data
 
 #--------------------------------------------------------------
 

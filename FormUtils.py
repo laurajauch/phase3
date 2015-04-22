@@ -25,15 +25,12 @@ def energyPerCell(form):
             print("Energy error for cell %i: %0.3f" % (cellID, perCellError[cellID]))
     return perCellError
 
-# unused
 def addWall(form, newWall):
     form.addWallCondition(newWall)
-
-# unused
+   
 def addInflow(form, newInflow, newVelocity):
     form.addInflowCondition(newInflow, newVelocity)
 
-# unused
 def addOutflow(form, newOutflow):
     form.addOutflowCondition(newOutflow)
 

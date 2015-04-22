@@ -43,8 +43,8 @@ class Model(object):
         try:
             assert valid
             storeData(rawData)
-            FormUtils.solve(inputData["form"])
-            return inputData["form"]
+            self.inputData["form"] = FormUtils.solve(self.inputData)
+            return self.inputData["form"]
         except:
             # need way to say controller.setErrors(errors)
             pass
@@ -67,10 +67,8 @@ class Model(object):
     """
     Store the given data in the InputData instance
     """
-    def storeData(self, data):
-        # do things to format data correctly then...
-        data["inflows"] = ParsingUtils.formatInflows(data["inflows"])
-        data["outflows"] = ParsingUtils.formatOutflows(data["outflows"])
+    def storeData(self, rawData):
+        data = ParsingUtils.formatRawData(rawData)              
         self.inputData.setVariables(data)
 
     """
@@ -85,11 +83,7 @@ class Model(object):
         output = memento.get()
         if len(output) >= 9:
             del output["form"]
-            del output["inflowRegions"]
-            del output["inflowX"]
-            del output["inflowY"]
-            del output["outflowRegions"]
-            del output["wallRegions"]
+            # don't need to delete anything else since strings
             
             saveFile = open(filename, 'wb')
             pickle.dump(memento, saveFile)
@@ -99,7 +93,10 @@ class Model(object):
     Param: filename The name fo the file to load from
     """
     def load(self, filename):
+        valid = checkValidFile(filename)
         try:           
+            assert valid
+
             loadFile = open(filename)
             memento = pickle.load(loadFile)
             loadFile.close()
@@ -124,6 +121,7 @@ class Model(object):
                 globalDofCount = mesh.numGlobalDofs()
                 
         except:
+            # do something to tell the GUI that it was an invalid filename
             print("No solution was found with the name \"%s\"" % command)
 
  
