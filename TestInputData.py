@@ -28,10 +28,12 @@ ramp = (1-H_right) * H_left + (1./rampWidth) * (1-H_left) * x + (1./rampWidth) *
 zero = Function.constant(0)
 topVelocity = Function.vectorize(ramp,zero)
 
-stokes = True
-nStokes = False
-nStokesInputData = InputData(nStokes)
-stokesInputData = InputData(stokes)
+stokes = "True"
+nStokes = "False"
+nStokesInputData = InputData()
+nStokesInputData.storeStokes(nStokes)
+stokesInputData = InputData()
+stokesInputData.storeStokes(stokes)
 form = steadyLinearInit(dims, numElements, polyOrderNum)
 reynolds = Reynolds.Instance()
 state = State.Instance()

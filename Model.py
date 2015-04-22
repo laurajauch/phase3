@@ -1,5 +1,6 @@
 import FormUtils
-import InputData
+from InputData import *
+from Plotter import *
 
 """
 Model
@@ -9,11 +10,13 @@ the PyCamellia solver at all times.
 """
 class Model(object):
 
-    def __init___(self):
+    def __init__(self):
         self.form = None
+        self.inputData = InputData()
+        self.errorMsg = {} #True indicates stored data, false indicates an error
         
     """
-    Precondition: data contains the following - Navier/Stokes, Transient/Steady, Renolds 
+    Precondition: data contains the following in a dictionary - Navier/Stokes, Transient/Steady, Renolds 
     (Navier only), mesh dimensions, initial number of elements, polynomial order, 
     inflow regions list, inflow x velocity list, inflow y velocity list, outflow regions list
     Param: data The data...
@@ -21,36 +24,33 @@ class Model(object):
     Coming Soon: determining wall regions
     """
     def enterData(self, data):
-        self.inputData = InputData.Instance()
-        errorMsg = {} #True for stored data, false for errors
-        errorMsg["stokes"] = inputData.storeStokes(data["stokes"])
-        errorMsg["transient"] = inputData.storeState(data["transient"])
-        if not inputData.getVariable("stokes"):
-            errorMsg["reynolds"] = inputData.storeReynolds(data["reynolds"])
-        errorMsg["meshDimensions"] = inputData.storeMeshDims(data["meshDimensions"])
-        errorMsg["polyOrder"] = inputData.storePolyOrder(data["polyOrder"])
-        inflowError = inputData.storeInflows(data["inflowRegions"],data["inflowX"],data["inflowY"])
-        errorMsg["inflowRegions"] = inflowError[0]
-        errorMsg["inflowX"] = inflowError[1]
-        errorMsg["inflowY"] = inflowError[2]
-        errorMsg["outflowRegions"] = inputData.storeOutflows(data["outflowRegions"])
-        errorMsg["wallRegions"] = False #need to figure out what to store
-        return errorMsg
-            
-
+        self.errorMsg["stokes"] = self.inputData.storeStokes(data["stokes"])
+        self.errorMsg["transient"] = self.inputData.storeState(data["transient"])
+        if not self.inputData.getVariable("stokes"):
+            errorMsg["reynolds"] = self.inputData.storeReynolds(data["reynolds"])
+        self.errorMsg["meshDimensions"] = self.inputData.storeMeshDims(data["meshDimensions"])
+        self.errorMsg["polyOrder"] = self.inputData.storePolyOrder(data["polyOrder"])
+        inflowError = self.inputData.storeInflows(data["inflowRegions"],data["inflowX"],data["inflowY"])
+        self.errorMsg["inflowRegions"] = inflowError[0]
+        self.errorMsg["inflowX"] = inflowError[1]
+        self.errorMsg["inflowY"] = inflowError[2]
+        self.errorMsg["outflowRegions"] = self.inputData.storeOutflows(data["outflowRegions"])
+        self.errorMsg["wallRegions"] = False #need to figure out what to store
+        return self.errorMsg
+    
     def solve(self):
         FormUtils.solve(self.form)
 
-    def plot(self):
-        #Plotter.plot()
+    def plot(self, plotType):
+        Plotter.plot(form, plotType)
         pass
         
     
-    def refine(self, data, int type, bool isAuto): # type: 0 is h, 1 is p
+    def refine(self, data, rtype, isAuto): # type: 0 is h, 1 is p
         if(isAuto):
-            FormUtils.autoRefine(data, type)
-        elif(!isAuto):
-            FormUtils.manualRefine(data, type)
+            FormUtils.autoRefine(data, rtype)
+        elif( not isAuto):
+            FormUtils.manualRefine(data, rtype)
 
     """
     Save to the specified file
