@@ -25,16 +25,17 @@ def energyPerCell(form):
             print("Energy error for cell %i: %0.3f" % (cellID, perCellError[cellID]))
     return perCellError
 
-# unused
-def addWall(form, newWall):
-    form.addWallCondition(newWall)
 
-# unused
+#def addWall(form, newWall):
+#    form.addWallCondition(newWall)
+
+
 def addInflow(form, newInflow, newVelocity):
     form.addInflowCondition(newInflow, newVelocity)
 
-# unused
-def addOutflow(form, newOutflow):
+
+def addOutflow(form, newStringOutflow):
+    newOutflow = ConditionParser(newStringOutflow)
     form.addOutflowCondition(newOutflow)
 
 
@@ -93,18 +94,18 @@ def formInit(data):
 	while i < len(inflowRegions):
 	    inflowFunction = Function.vectorize(inflowX[i], inflowY[i])
 	    if transient:
-	        form.addInflowCondition(inflowRegions[i], timeRamp*inflowFunction)
+	        form.addInflow(inflowRegions[i], timeRamp*inflowFunction)
 	    else:
-	        form.addInflowCondition(inflowRegions[i], inflowFunction)
+	        form.addInflow(inflowRegions[i], inflowFunction)
 	    i += 1
 	    
 	i = 0
 	for i in outflowRegions:
-	    form.addOutflowCondition(i)
+	    form.addOutflow(i)
 	    i += 1  
-	i = 1
-	for i in wallRegions:
-	    form.addWallCondition(i)
+	#i = 1
+	#for i in wallRegions:
+	    #form.addWall(i)
 
         return (form,fType)
 
