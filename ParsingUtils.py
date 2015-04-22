@@ -24,6 +24,64 @@ def stringToElements(inputstr):
     except:
         raise ValueError
 
+# the following 3 methods are not correct
+def formatInflows(self, rawRegions, rawYs, rawXs):
+        numInflows = len(rawRegions)
+        Regions = []
+        Ys = []
+        Xs = []
+        i = 1
+        success = [[0]*numInflows for i in range(3)]
+        while i <= numInflows:
+            try:
+                Regions.append(stringToFilter(rawRegions[i]))
+                success[0][i]=True
+            except ValueError:
+                pass
+            try:
+                Ys.append(stringToFilter(rawYs[i]))
+                success[1][i]=True
+            except ValueError:
+                pass
+            try:
+                Xs.append(stringToFilter(rawXs[i]))
+                success[2][i]=True
+            except ValueError:
+                pass
+        self.addVariable("inflowRegions", Regions)
+        self.addVariable("inflowX", Xs)
+        self.addVariable("inflowY", Ys)
+        return success
+
+
+	        
+    def formatOutflows(self, rawRegions):
+	    Regions = []
+	    Ys = []
+	    Xs = []
+	    i = 1
+	    for region in rawRegions:
+	        try:
+	            Regions.append(stringToFilter(region))
+	        except ValueError:
+	            return False
+	    self.addVariable("outflowRegions", Regions)
+	    return True
+
+	        
+    def formatWalls(self, datum): # not used?
+	    Regions = []
+	    i = 1
+	    for region in rawRegions:
+	        try:
+	            Regions.append(stringToFilter(region))
+	        except ValueError:
+	            return False
+	    self.addVariable("wallRegions", Regions)
+	    return True
+
+#--------------------------------------------------------------
+
 """
 Check to see if the given data is valid.
 data: A dictionary containing the data to be tested
@@ -66,11 +124,12 @@ def checkValidInput(data):
         errors["meshDimensions"] = True
             
     # inflowConditions: strings (condition, xVelocity, yVelocity)
-    # NOT CORRECT
     try:
         for item in data["inflow"]:
-            stringToFilter(str(item)) # condition
-            parseFunction(str(otheritem)) # x and y velocity
+            (condition, xVel, yVel) = item
+            stringToFilter(str(condition))
+            parseFunction(str(xVel))
+            parseFunction(str(yVel)) 
         errors["inflow"] = False
     except:
         errors["inflow"] = True
