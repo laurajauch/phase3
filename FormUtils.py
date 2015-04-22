@@ -256,7 +256,7 @@ def nonlinearPManualRefine(form, cellList):
 
 # Solve -----------------------------------------------------------------
 def solve(data):
-	ret = init(data)	
+	ret = formInit(data)	
         form = ret[0] 
         fType = ret[1]
 
