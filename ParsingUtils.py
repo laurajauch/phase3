@@ -1,5 +1,7 @@
 import re
 import os.path
+import ConditionParser
+import FunctionParser
 
 """
 Some methods for formatting data input
@@ -73,7 +75,7 @@ def checkValidInput(data):
                 
     # outflowConditions:
     try:
-        for item in data["inflow"]:
+        for item in data["outflow"]:
             stringToFilter(str(item))
         errors["outflow"] = False
     except:

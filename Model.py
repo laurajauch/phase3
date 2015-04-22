@@ -19,7 +19,7 @@ class Model(object):
     """
     Called when refine is pressed
     """
-    def refine(self, rtype, isAuto): # type: 0 is h, 1 is p
+    def refine(self, rtype, isAuto): # rtype: 0 is h, 1 is p
         if(isAuto):
             FormUtils.autoRefine(data, rtype)
         elif( not isAuto):
