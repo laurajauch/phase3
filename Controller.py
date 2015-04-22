@@ -10,6 +10,7 @@ from kivy.core.image.img_pygame import ImageLoaderPygame
 from kivy.properties import ObjectProperty
 from kivy.uix.image import Image
 from kivy.lang import Builder
+from kivy.uix.textinput import TextInput
 """
 Controller
 
@@ -79,15 +80,17 @@ class Controller(object):
     Retrieve the text from the GUI.
     """
     def getText(self):
-        data = {}
-        data["type"] = string
-        data["state"] = string
-        data["polyOrder"] = string
-        data["numElements"] = string
-        data["meshDimensions"] = string
-        #data["inflow"] = strings [(condition ,xVelocity, yVelocity)]
-        #data["outflow"] =  [strings]
-        return data
+        #data = {}
+        #data["type"] = ViewApp.btn.text
+        #print(data["type"])
+        #data["state"] = string
+        #data["polyOrder"] = string
+        #data["numElements"] = string
+        #data["meshDimensions"] = string
+        #data["inflow"] = [strings]
+        #data["outflow"] = [strings]
+        #return data
+        pass
 
     """
     Retrieve the filename from the text box in the GUI
@@ -97,7 +100,6 @@ class Controller(object):
     
     """
     Set the input errors on the GUI
-    errors: A map from field to boolean, True if error, False if no error
     """
     def setErrors(self, errors):
         pass
@@ -121,7 +123,9 @@ class ViewApp(App):
     """
     def build(self):
         self.controller = Controller()
-        return Builder.load_file('PyCamellia.kv')
+        # Setting root as the instance variable needed to reference the GUI
+        self.root = Builder.load_file('View.kv')
+        return self.root
 
     def refine(self, input):
         self.controller.refine(input)
@@ -130,14 +134,30 @@ class ViewApp(App):
     def reset(self):
         self.controller.pressReset()
     def solve(self):
-        data = self.controller.getText()
-        self.controller.pressSolve(data)
+        data = {}
+        data["type"] = self.root.ids.probType.text
+        data["state"] = self.root.ids.stateType.text
+        data["polyOrder"] = self.root.ids.polyOrder.text
+        data["numElements"] = self.root.ids.meshElems.text
+        data["meshDimensions"] = self.root.ids.meshDim.text
+        #data["inflow"] = [strings]
+        #data["outflow"] = [strings]
+        #self.controller.pressSolve(data)
+    def getFilename(self):
+        filename = self.root.ids.filename.text
+        if filename == '':
+            self.root.ids.filename.highlight()
+        return filename
     def load(self):
-        filename = self.controller.getFilename()
-        self.controller.pressLoad(filename)
+        filename = self.getFilename()
+        #self.controller.pressLoad(filename)
     def save(self):
-        filename = self.controller.getFilename()
-        self.controller.pressSave(filename)
+        filename = self.getFilename()
+        #self.controller.pressSave(filename)
+
+class PyTextInput(TextInput):
+    def highlight(self):
+        self.background_color=(1,0,0,1)
 
 if __name__ == '__main__':
     ViewApp().run()
