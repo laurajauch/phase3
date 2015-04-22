@@ -1,7 +1,7 @@
 import re
 import os.path
-import ConditionParser
 import FunctionParser
+import ConditionParser
 
 """
 Some methods for formatting data input
@@ -65,10 +65,12 @@ def checkValidInput(data):
     except:
         errors["meshDimensions"] = True
             
-    # inflowConditions: 
+    # inflowConditions: strings (condition, xVelocity, yVelocity)
+    # NOT CORRECT
     try:
         for item in data["inflow"]:
-            stringToFilter(str(item))
+            stringToFilter(str(item)) # condition
+            parseFunction(str(otheritem)) # x and y velocity
         errors["inflow"] = False
     except:
         errors["inflow"] = True
