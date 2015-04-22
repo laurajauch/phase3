@@ -132,7 +132,17 @@ class ViewApp(App):
     def plot(self, input):
         self.controller.pressPlot(input)
     def reset(self):
-        self.controller.pressReset()
+        self.root.ids.probType.text="Problem Type >"
+        self.root.ids.stateType.text='State >'
+        self.root.ids.polyOrder.text=''
+        self.root.ids.meshElems.text=''
+        self.root.ids.meshDim.text=''
+        self.root.ids.reynolds.text=''
+        self.root.ids.out1.text=''
+        self.root.ids.out2.text=''
+        self.root.ids.out3.text=''
+        self.root.ids.out4.text=''
+        #self.controller.pressReset()
     def solve(self):
         data = {}
         data["type"] = self.root.ids.probType.text
