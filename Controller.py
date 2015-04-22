@@ -122,6 +122,7 @@ class ViewApp(App):
     """
     def build(self):
         self.controller = Controller()
+        # Setting root as the instance variable needed to reference the GUI
         self.root = Builder.load_file('View.kv')
         return self.root
 
@@ -140,14 +141,18 @@ class ViewApp(App):
         data["meshDimensions"] = self.root.ids.meshDim.text
         #data["inflow"] = [strings]
         #data["outflow"] = [strings]
-        print(data)
         #self.controller.pressSolve(data)
+    def getFilename(self):
+        filename = self.root.ids.filename.text
+        if filename == '':
+            self.root.ids.filename.background_color = (1,0,0,1)
+        return filename
     def load(self):
-        filename = self.controller.getFilename()
-        self.controller.pressLoad(filename)
+        filename = self.getFilename()
+        #self.controller.pressLoad(filename)
     def save(self):
-        filename = self.controller.getFilename()
-        self.controller.pressSave(filename)
+        filename = self.getFilename()
+        #self.controller.pressSave(filename)
 
 if __name__ == '__main__':
     ViewApp().run()

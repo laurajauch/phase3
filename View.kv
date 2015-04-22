@@ -1,6 +1,9 @@
 #:kivy 1.0
 
-
+<PyTextInput@TextInput>:
+	background_color: (1,1,1,1) #defaults to white
+	#if red, reset to white:
+	on_focus: self.background_color=(1,1,1,1)
 
 Widget:
 
@@ -55,15 +58,12 @@ Widget:
 		pos: (440, 55)
 
 	#Filename entry text field
-	TextInput:
+	PyTextInput:
 		id: filename
 		multiline: False
 		height: '30dp'
 		width: '120dp'
 		pos: (527, 90)
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	#Reynolds number entry text field
 	TextInput:
@@ -165,6 +165,7 @@ Widget:
 		text: "Load"
 		pos: (420, 50)
 		color: (1, 1, 1, 1)
+		on_release: app.load()
 
 	#File save button, should save current solution
 	Button:
@@ -176,6 +177,7 @@ Widget:
 		text: "Save"
 		pos: (580, 50)
 		color: (1, 1, 1, 1)
+		on_release: app.save()
 
 	#Problem Type dropdown menu
 		name: 'DropDown'
