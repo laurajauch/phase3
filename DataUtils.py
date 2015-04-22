@@ -14,13 +14,10 @@ data["reynolds"] = 1000.0
 data["numElements"] = [2,2]
 data["polyOrder"] = 3
 data["meshDimensions"] = [1.0,1.0]
-data["numInflows"] =  1
-data["inflwoRegions"] = "x<8"
+data["inflowRegions"] = "x<8"
 data["inflowX"] = "4"
 data["inflowY"] = "9"
-data["numOutflows"] = 1
 data["outflowRegions"] = "<0"
-data["numWalls"] = 1
 data["wallRegions"] = "y>9"
 
 spaceDim = 2

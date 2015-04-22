@@ -80,16 +80,6 @@ class Controller(object):
     Retrieve the text from the GUI.
     """
     def getText(self):
-        #data = {}
-        #data["type"] = ViewApp.btn.text
-        #print(data["type"])
-        #data["state"] = string
-        #data["polyOrder"] = string
-        #data["numElements"] = string
-        #data["meshDimensions"] = string
-        #data["inflow"] = [strings]
-        #data["outflow"] = [strings]
-        #return data
         pass
 
     """
@@ -100,6 +90,7 @@ class Controller(object):
     
     """
     Set the input errors on the GUI
+    errors: A map from field to boolean, True if error, False if no error
     """
     def setErrors(self, errors):
         pass
@@ -132,7 +123,17 @@ class ViewApp(App):
     def plot(self, input):
         self.controller.pressPlot(input)
     def reset(self):
-        self.controller.pressReset()
+        self.root.ids.probType.text="Problem Type >"
+        self.root.ids.stateType.text='State >'
+        self.root.ids.polyOrder.text=''
+        self.root.ids.meshElems.text=''
+        self.root.ids.meshDim.text=''
+        self.root.ids.reynolds.text=''
+        self.root.ids.out1.text=''
+        self.root.ids.out2.text=''
+        self.root.ids.out3.text=''
+        self.root.ids.out4.text=''
+        #self.controller.pressReset()
     def solve(self):
         data = {}
         data["type"] = self.root.ids.probType.text

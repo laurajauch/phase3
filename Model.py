@@ -35,24 +35,28 @@ class Model(object):
 
     """
     Called when solve is pressed
+    data: the raw data as it was taken from the GUI
+    return: the solved form
     """
-    def solve(self, data):
-        (valid, errors) = testData(data)
-        if not valid:
+    def solve(self, rawData):
+        (valid, errors) = testData(rawData)
+        try:
+            assert valid
+            storeData(rawData)
+            self.inputData["form"] = FormUtils.solve(self.inputData)
+            return self.inputData["form"]
+        except:
             # need way to say controller.setErrors(errors)
             pass
-        else:
-            # do more stuff first then...
-            storeData(data)
-            FormUtils.solve(self.form)
+        
             
     """
     Test the given data to see if it is valid
     valid: True if data is valid, else False if data is invalid
     errors: A map from field to boolean, True if error, False if no error
     """
-    def testData(self, data):
-        errors = ParsingUtils.checkValidInput(data)
+    def testData(self, rawData):
+        errors = ParsingUtils.checkValidInput(rawData)
         valid = True
         for key, value in errors.iteritems():
             if value is False:
@@ -63,8 +67,8 @@ class Model(object):
     """
     Store the given data in the InputData instance
     """
-    def storeData(self, data):
-        # do things to format data correctly then...python static
+    def storeData(self, rawData):
+        data = ParsingUtils.formatRawData(rawData)              
         self.inputData.setVariables(data)
 
     """
@@ -79,11 +83,7 @@ class Model(object):
         output = memento.get()
         if len(output) >= 9:
             del output["form"]
-            del output["inflowRegions"]
-            del output["inflowX"]
-            del output["inflowY"]
-            del output["outflowRegions"]
-            del output["wallRegions"]
+            # don't need to delete anything else since strings
             
             saveFile = open(filename, 'wb')
             pickle.dump(memento, saveFile)
@@ -93,7 +93,10 @@ class Model(object):
     Param: filename The name fo the file to load from
     """
     def load(self, filename):
+        valid = checkValidFile(filename)
         try:           
+            assert valid
+
             loadFile = open(filename)
             memento = pickle.load(loadFile)
             loadFile.close()
@@ -118,6 +121,7 @@ class Model(object):
                 globalDofCount = mesh.numGlobalDofs()
                 
         except:
+            # do something to tell the GUI that it was an invalid filename
             print("No solution was found with the name \"%s\"" % command)
     
   
