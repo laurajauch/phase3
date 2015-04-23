@@ -1,4 +1,15 @@
 #:kivy 1.0
+
+<PyTextInput@TextInput>:
+	background_color: (1,1,1,1) #defaults to white
+	#if red, reset to white:
+	on_focus: self.background_color=(1,1,1,1)
+
+<PyButton@Button>:
+	background_color: (1,1,1,1) #defaults to white
+	#if red, reset to white:
+	on_press: self.background_color=(1,1,1,1)
+
 Widget:
 
 	#background color, plotting window
@@ -52,26 +63,20 @@ Widget:
 		pos: (440, 55)
 
 	#Filename entry text field
-	TextInput:
+	PyTextInput:
 		id: filename
 		multiline: False
 		height: '30dp'
 		width: '120dp'
 		pos: (527, 90)
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	#Reynolds number entry text field
-	TextInput:
+	PyTextInput:
 		id: reynolds
 		multiline: False
 		height: '30dp'
 		width: '50dp'
 		pos: (304, 485)
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	#Polynomial Order Label
 	Label:
@@ -80,14 +85,11 @@ Widget:
 		pos: (107, 451)
 
 	#Polynomial Order entry Text field
-	TextInput:
+	PyTextInput:
 		id: polyOrder
 		multiline: False
 		height: '30dp'
 		width: '50dp'
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 		pos: (193, 485)
 
 	#Mesh Dimensions
@@ -98,7 +100,7 @@ Widget:
 	#Mesh Dimensions Label
 		pos: (16,407)
 
-	TextInput:
+	PyTextInput:
 		id: meshDim
 		multiline: False
 		height: '30dp'
@@ -106,25 +108,20 @@ Widget:
 		pos: (108 , 440)
 		font_size: 13
 		hint_text: '3.0 x 5.0'
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	#Mesh Elements
 	Label:
 		text: '      Mesh\nElements:'
 		font_size: 12
 		pos: (178,407)
-	TextInput:
+	PyTextInput:
+		id:meshElems
 		multiline: False
 		height: '30dp'
 		width: '60dp'
 		pos: (265 , 440)
 		font_size: 13
 		hint_text: '4 x 6'
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 
 	#Reset button - should clear all fields
@@ -138,6 +135,7 @@ Widget:
 		text: "Reset"
 		pos: (220, 112)
 		color: (1, 1, 1, 1)
+		on_release: app.reset()
 
 	#Solve button - should initiate input check and solution
 	Button:
@@ -149,6 +147,7 @@ Widget:
 		text: "Solve"
 		pos: (141, 50)
 		color: (1, 1, 1, 1)
+		on_release: app.solve()
 
 	#File load button, should load solution
 	Button:
@@ -160,6 +159,7 @@ Widget:
 		text: "Load"
 		pos: (420, 50)
 		color: (1, 1, 1, 1)
+		on_release: app.load()
 
 	#File save button, should save current solution
 	Button:
@@ -171,17 +171,19 @@ Widget:
 		text: "Save"
 		pos: (580, 50)
 		color: (1, 1, 1, 1)
+		on_release: app.save()
 
 	#Problem Type dropdown menu
 		name: 'DropDown'
 		__safe_id: [dropdown.__self__]
 
-	Button:
-		id: btn
+	PyButton:
+		id: probType
 		pos: (56, 527)
 		width: '250dp'
 		height: '30dp'
 		text: 'Problem Type »'
+		reset_text: 'Problem Type »'
 		on_release: dropdown.open(self)
 		size_hint_y: None
 
@@ -189,14 +191,14 @@ Widget:
 
 		id: dropdown
 		on_parent: self.dismiss()
-		on_select: btn.text = '{}'.format(args[1])
+		on_select: probType.text = '{}'.format(args[1])
 
 		Button:
 			text: 'Stokes'
 			size_hint_y: None
 			height: '30dp'
 			on_release: dropdown.select('Stokes »')
-			on_release: reynolds.disabled = True
+			on_release: reynolds.disabled = True; reynolds.clear()
 			on_release: transient.disabled = False
 
 		Button:
@@ -206,15 +208,16 @@ Widget:
 			on_release: dropdown.select('Navier-Stokes »')
 			on_release: reynolds.disabled = False
 			on_release: transient.disabled = True
-			on_release: dropdown1.select('Steady State »')
+			on_release: dropdown1.select('Steady State »'); stateType.clear()
 
 	#State selection dropdown menu
-	Button:
-		id: btn1
+	PyButton:
+		id: stateType
 		pos: (18, 485)
 		width: '100dp'
 		height: '30dp'
 		text: 'State »'
+		reset_text: 'State »'
 		on_release: dropdown1.open(self)
 		size_hint_y: None
 
@@ -225,7 +228,7 @@ Widget:
 
 		id: dropdown1
 		on_parent: self.dismiss()
-		on_select: btn1.text = '{}'.format(args[1])
+		on_select: stateType.text = '{}'.format(args[1])
 
 		Button:
 			id: steady
@@ -242,12 +245,13 @@ Widget:
 			on_release: dropdown1.select('Transient »')
 
 	#Refinement selection dropdown menu
-	Button:
-		id: btn2
+	PyButton:
+		id: refine
 		pos: (220, 195)
 		width: '130dp'
 		height: '30dp'
 		text: 'Refine »'
+		reset_text: 'Refine »'
 		on_release: dropdown2.open(self)
 		size_hint_y: None
 
@@ -258,7 +262,7 @@ Widget:
 
 		id: dropdown2
 		on_parent: self.dismiss()
-		on_select: btn2.text = '{}'.format(args[1])
+		on_select: refine.text = '{}'.format(args[1])
 
 		Button:
 			text: 'h-auto'
@@ -275,12 +279,13 @@ Widget:
 
 
 	#Plotting selection dropdown menu
-	Button:
-		id: btn3
+	PyButton:
+		id: plot
 		pos: (220, 146)
 		width: '130dp'
 		height: '30dp'
 		text: 'Plot »'
+		reset_text: 'Plot »'
 		on_release: dropdown3.open(self)
 		size_hint_y: None
 
@@ -291,9 +296,10 @@ Widget:
 
 		id: dropdown3
 		on_parent: self.dismiss()
-		on_select: btn3.text = '{}'.format(args[1])
+		on_select: plot.text = '{}'.format(args[1])
 
 		Button:
+			id: mesh			
 			text: 'Mesh'
 			size_hint_y: None
 			height: '30dp'
@@ -302,6 +308,7 @@ Widget:
 			
 		
 		Button:
+			id: error
 			text: 'Error'
 			size_hint_y: None
 			height: '30dp'
@@ -309,6 +316,7 @@ Widget:
 			on_release:app.plot(self.text)
 
 		Button:
+			id: u1
 			text: 'u1'
 			size_hint_y: None
 			height: '30dp'
@@ -317,6 +325,7 @@ Widget:
 
 
 		Button:
+			id: u2
 			text: 'u2'
 			size_hint_y: None
 			height: '30dp'
@@ -324,11 +333,20 @@ Widget:
 			on_release:app.plot(self.text)
 
 		Button:
+			id: stream
 			text: 'Stream Function'
 			font_size: 13
 			size_hint_y: None
 			height: '30dp'
 			on_release: dropdown3.select('Stream Function »')
+			on_release:app.plot(self.text)
+
+		Button:
+			id: p
+			text: 'p'
+			size_hint_y: None
+			height: '30dp'
+			on_release: dropdown3.select('p »')
 			on_release:app.plot(self.text)
 
 	#Inflow conditions
@@ -338,46 +356,40 @@ Widget:
 		pos: (20, 335)
 	
 
-	TextInput:
+	PyTextInput:
+		id: inf1
 		multiline: False
 		height: '27dp'
 		width: '80dp'
 		pos: (85, 375)
 		font_size: 12
 		hint_text: "x > 5, y = 9"
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	Label:
 		text: 'x ='
 		pos: (147, 338)
 
-	TextInput:
+	PyTextInput:
+		id: inf1_x
 		multiline: False
 		height: '27dp'
 		width: '50dp'
 		pos: (210, 375)
 		font_size: 11
 		hint_text: "x*4"
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	Label:
 		text: 'y ='
 		pos: (234, 338)
 
-	TextInput:
+	PyTextInput:
+		id: inf1_y
 		multiline: False
 		height: '27dp'
 		width: '50dp'
 		pos: (300, 375)
 		font_size: 11
 		hint_text: "y*4"
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 	
 	#Inflow 2
 	Label:
@@ -385,43 +397,37 @@ Widget:
 		pos: (20, 303)
 	
 
-	TextInput:
+	PyTextInput:
+		id: inf2
 		multiline: False
 		height: '27dp'
 		width: '80dp'
 		pos: (85, 340)
 		font_size: 12
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	Label:
 		text: 'x = '
 		pos: (149, 303)
 
-	TextInput:
+	PyTextInput:
+		id: inf2_x
 		multiline: False
 		height: '27dp'
 		width: '50dp'
 		pos: (210, 340)
 		font_size: 11
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	Label:
 		text: 'y = '
 		pos: (236, 303)
 
-	TextInput:
+	PyTextInput:
+		id: inf2_y
 		multiline: False
 		height: '27dp'
 		width: '50dp'
 		pos: (300, 340)
 		font_size: 11
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	#Inflow 3
 	Label:
@@ -429,87 +435,75 @@ Widget:
 		pos: (20, 267)
 	
 
-	TextInput:
+	PyTextInput:
+		id: inf3
 		multiline: False
 		height: '27dp'
 		width: '80dp'
 		pos: (85, 305)
 		font_size: 12
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 
 	Label:
 		text: 'x = '
 		pos: (149, 267)
 
-	TextInput:
+	PyTextInput:
+		id: inf3_x
 		multiline: False
 		height: '27dp'
 		width: '50dp'
 		pos: (210, 305)
 		font_size: 11	
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	Label:
 		text: 'y = '
 		pos: (236, 267)
 
-	TextInput:
+	PyTextInput:
+		id: inf3_y
 		multiline: False
 		height: '27dp'
 		width: '50dp'
 		pos: (300, 305)
 		font_size: 11
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	#Inflow 4
 	Label:
 		text: '4.'
 		pos: (20, 231)	
 
-	TextInput:
+	PyTextInput:
+		id: inf4
 		multiline: False
 		height: '27dp'
 		width: '80dp'
 		pos: (85, 270)
 		font_size: 12
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	Label:
 		text: 'x = '
 		pos: (149, 231)
 
-	TextInput:
+	PyTextInput:
+		id: inf4_x
 		multiline: False
 		height: '27dp'
 		width: '50dp'
 		pos: (210, 270)
 		font_size: 11
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	Label:
 		text: 'y = '
 		pos: (236, 231)
 
-	TextInput:
+	PyTextInput:
+		id: inf4_y
 		multiline: False
 		height: '27dp'
 		width: '50dp'
 		pos: (300, 270)
 		font_size: 11
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	#Outflow Conditions
 	#Outflow 1
@@ -517,16 +511,14 @@ Widget:
 		text: '1.'
 		pos: (20, 162)
 
-	TextInput:
+	PyTextInput:
+		id: out1
 		multiline: False
 		height: '27dp'
 		width: '80dp'
 		font_size: 12
 		pos: (85, 200)
 		hint_text: "x = 9, y < 3"
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 	
 	#Outflow 2
@@ -534,15 +526,13 @@ Widget:
 		text: '2. '
 		pos: (20, 127)
 
-	TextInput:
+	PyTextInput:
+		id: out2
 		multiline: False
 		height: '27dp'
 		width: '80dp'
 		font_size: 12
 		pos: (85, 165)
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
 
 	#Outflow 3
@@ -550,28 +540,24 @@ Widget:
 		text: '3. '
 		pos: (20, 93)
 
-	TextInput:
+	PyTextInput:
+		id: out3
 		multiline: False
 		height: '27dp'
 		width: '80dp'
 		font_size: 12
-		pos: (85, 130)
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
+		pos: (85, 130) 
 
 	#Outflow 4
 	Label:
 		text: '4.'
 		pos: (20, 58)
 
-	TextInput:
+	PyTextInput:
+		id: out4
 		multiline: False
 		height: '27dp'
 		width: '80dp'
 		font_size: 12
 		pos: (85, 95)
-		background_color: (1,1,1,1) #defaults to white
-		#if red, reset to white:
-		on_focus: polyOrder.background_color=(1,1,1,1) 
 
