@@ -25,7 +25,7 @@ class Model(object):
     Called when plot is pressed
     """
     def plot(self, plotType):
-        Plotter.plot(form, plotType)
+        return Plotter.plot(form, plotType)
         
     """
     Called when reset is pressed
