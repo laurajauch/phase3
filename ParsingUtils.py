@@ -31,19 +31,19 @@ returns tuple containing a filter and two functions
 """
 def stringToInflows((rawRegion, rawXvel, rawYvel)):
     try:
-        #region = stringToFilter(rawRegion) #need parser method
+        region = parseCondition(rawRegion) #need parser method
         pass
     except:
         raise ValueError
         
     try:
-        #xvel = stringToFunction(rawXvel) #need parser method
+        xvel = parseFunction(rawXvel) #need parser method
         pass
     except:
         raise ValueError
     
     try:
-        #yvel = stringToFunction(rawYval) #need parser method
+        yvel = parseFunction(rawYval) #need parser method
         pass
     except:
         raise ValueError
@@ -54,7 +54,7 @@ def stringToOutflows(rawRegions):
     Regions = []
     for region in rawRegions:
         try:
-            #Regions.append(stringToFilter(region)) #need parser method
+            Regions.append(parseCondition(region)) #need parser method
             pass
         except:
             raise ValueError
@@ -66,7 +66,7 @@ def stringToWalls(datum): # not used?
     i = 1
     for region in rawRegions:
         try:
-            Regions.append(stringToFilter(region))
+            Regions.append(parseCondition(region))
         except:
             raise ValueError
 """

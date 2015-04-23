@@ -3,8 +3,9 @@ from PyCamellia import *
 class FunctionParser(object):
 
     def parseFunction(self, input):
-        checked = self.cleanUp(input)
-        return checked
+        return Function.constant(0.0);  #temp to test other things
+        #checked = self.cleanUp(input)
+        #return checked
         #return self.parse(checked)
 
     def cleanUp(self, input): #not sure if other stuff needs to be done here 

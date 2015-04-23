@@ -1,7 +1,7 @@
 from PyCamellia import *
 delta_k = 1
 
-def stringToFilter(inputstr):
+def parseCondition(inputstr):
     i = 0
     xFirst = True
     noComma = True
