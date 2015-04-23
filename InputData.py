@@ -37,7 +37,7 @@ class InputData:
     def setMemento(self, memento):
         self.vars = memento.get()
 
-# Generic Variable ---------------------------------
+# Variable Accessors & Mutators ---------------------
     def setVariables(self, data):
         self.vars = data
 
@@ -49,13 +49,3 @@ class InputData:
             return self.vars[string]
         except:
             pass
-
-# Form ---------------------------------------------
-    def setForm(self, form):
-        self.vars["form"] = form
-    
-    def getForm(self):
-        try:
-            return self.vars["form"]
-        except:
-            print("InputData does not contain form")

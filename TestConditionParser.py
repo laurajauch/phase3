@@ -8,7 +8,7 @@ class TestConditionParser(unittest.TestCase):
 
     """Test Only X Equals"""
     def test_OnlyXEquals(self):
-        filter = stringToFilter("x=0")       
+        filter = parseCondition("x=0")       
         for i in Points:
             for j in Points:
                 x = (i == 0.0)
@@ -16,7 +16,7 @@ class TestConditionParser(unittest.TestCase):
 
     """Test Only X Greater""" 
     def test_OnlyXGreater(self):
-        filter = stringToFilter("x>0")       
+        filter = parseCondition("x>0")       
         for i in Points:
             for j in Points:
                 x = (i >= 0.0)
@@ -24,7 +24,7 @@ class TestConditionParser(unittest.TestCase):
     
     """Test Only X Less""" 
     def test_OnlyXLess(self):
-        filter = stringToFilter("x<0")       
+        filter = parseCondition("x<0")       
         for i in Points:
             for j in Points:
                 x = (i <= 0.0)
@@ -32,7 +32,7 @@ class TestConditionParser(unittest.TestCase):
 
     """Test Only Y Equals"""
     def test_OnlyYEquals(self):
-        filter = stringToFilter("y=0")       
+        filter = parseCondition("y=0")       
         for i in Points:
             for j in Points:
                 y = (j == 0.0)
@@ -40,7 +40,7 @@ class TestConditionParser(unittest.TestCase):
     
     """Test Only Y Greater"""
     def test_OnlyYGreater(self):
-        filter = stringToFilter("y>0")       
+        filter = parseCondition("y>0")       
         for i in Points:
             for j in Points:
                 y = (j >= 0.0)
@@ -48,7 +48,7 @@ class TestConditionParser(unittest.TestCase):
 
     """Test Only Y Less"""
     def test_OnlyYLess(self):
-        filter = stringToFilter("y<0")       
+        filter = parseCondition("y<0")       
         for i in Points:
             for j in Points:
                 y = (j <= 0.0)
@@ -56,7 +56,7 @@ class TestConditionParser(unittest.TestCase):
 
     """Test XY"""
     def test_XY(self):
-        filter = stringToFilter("x=0,y<0")       
+        filter = parseCondition("x=0,y<0")       
         for i in Points:
             for j in Points:
                 x = (i == 0.0)
@@ -65,7 +65,7 @@ class TestConditionParser(unittest.TestCase):
 
     """Test YX"""
     def test_YX(self):
-        filter = stringToFilter("y=0,x>0")       
+        filter = parseCondition("y=0,x>0")       
         for i in Points:
             for j in Points:
                 x = (i >= 0.0)
@@ -74,7 +74,7 @@ class TestConditionParser(unittest.TestCase):
 
     """Test Doubles"""
     def test_Doubles(self):
-        filter = stringToFilter("x>0.0,y>0.0")       
+        filter = parseCondition("x>0.0,y>0.0")       
         for i in Points:
             for j in Points:
                 x = (i >= 0.0)
@@ -83,7 +83,7 @@ class TestConditionParser(unittest.TestCase):
 
     """Test Half-Doubles"""
     def test_HalfDoubles(self):
-        filter = stringToFilter("x>0.,y>0.")       
+        filter = parseCondition("x>0.,y>0.")       
         for i in Points:
             for j in Points:
                 x = (i >= 0.0)
@@ -93,7 +93,7 @@ class TestConditionParser(unittest.TestCase):
 
     """Test on many arguments"""
     def test_ManyArgs(self):
-        filter = stringToFilter("y=0,x>0,y=3")  
+        filter = parseCondition("y=0,x>0,y=3")  
         for i in Points:
             for j in Points:
                 x = (i >= 0.0)
@@ -105,7 +105,7 @@ class TestConditionParser(unittest.TestCase):
     def test_OutOfOrder(self):
         error = False
         try:
-            filter = stringToFilter("0=x")       
+            filter = parseCondition("0=x")       
         except ValueError:
             error = True
         self.assertEqual(True,error)
@@ -114,14 +114,14 @@ class TestConditionParser(unittest.TestCase):
     def test_NoComma(self):
         error = False
         try:
-            filter = stringToFilter("x=0 y<2")       
+            filter = parseCondition("x=0 y<2")       
         except ValueError:
             error = True
         self.assertEqual(True,error) 
     
     """Multiple arguments"""
     def test_MultipleArgs(self):
-        filter = stringToFilter("x>0,x<2,y<2")       
+        filter = parseCondition("x>0,x<2,y<2")       
         for i in Points:
             for j in Points:
                 x1 = (i >= 0.0)
