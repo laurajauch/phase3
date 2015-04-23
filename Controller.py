@@ -98,7 +98,12 @@ class Controller(object):
     def setErrors(self, errors):
         pass
 
-
+    """
+    Set Status message
+    status: the status message
+    """
+    def setStatus(self, status):
+        pass
 
 """
 ViewApp
@@ -204,10 +209,11 @@ class ViewApp(App):
         filename = self.getFilename()
         #self.controller.pressSave(filename)
 
+
 class PyTextInput(TextInput):
     reset_text = StringProperty("")
     def highlight(self):
-        self.background_color=(1,0,0,1)
+        self.background_color=(.7,0,.15,.9)
     def clear(self):
         self.background_color=(1,1,1,1)
         self.text=self.reset_text
