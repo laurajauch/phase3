@@ -6,6 +6,7 @@ from TestPlotter import *
 import unittest
 
 testSuite = unittest.makeSuite(TestDataUtils)
+testSuite.addTest(unittest.makeSuite(TestParseFunction))
 testSuite.addTest(unittest.makeSuite(TestPlotter))
 #testSuite.addTest(unittest.makeSuite(TestFormUtils))
 #testSuite.addTest(unittest.makeSuite(TestInputData))

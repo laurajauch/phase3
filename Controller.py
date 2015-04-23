@@ -98,7 +98,12 @@ class Controller(object):
     def setErrors(self, errors):
         pass
 
-
+    """
+    Set Status message
+    status: the status message
+    """
+    def setStatus(self, status):
+        pass
 
 """
 ViewApp
@@ -131,7 +136,9 @@ class ViewApp(App):
         r.probType.clear()
         r.stateType.clear()
         r.refine.clear()
+        r.refine.disabled=True
         r.plot.clear()
+        r.plot.disabled=True
         r.polyOrder.clear()
         r.meshElems.clear()
         r.meshDim.clear()
@@ -152,6 +159,8 @@ class ViewApp(App):
         r.inf4.clear()
         r.inf4_x.clear()
         r.inf4_y.clear()
+        r.save.clear()
+        r.save.disabled=True
         #self.controller.pressReset()
     def solve(self):
         missingEntry = False # Set to true if an important field is left blank
@@ -163,7 +172,7 @@ class ViewApp(App):
             self.root.ids.probType.highlight()
         data["reynolds"] = self.root.ids.reynolds.text
         # If no Reynolds number specified AND problem type is NOT Stokes
-        if (data["reynolds"] == '') and not(data["type"][:2] == 'S'):
+        if ((data["reynolds"] == '') and not(data["type"][:1] == 'S')):
             missingEntry = True
             self.root.ids.reynolds.highlight()
         data["state"] = self.root.ids.stateType.text
@@ -190,6 +199,9 @@ class ViewApp(App):
         #data["outflow"] = [strings]
         # don't solve unless we have all necessary entries
         if not(missingEntry):
+            self.root.ids.save.disabled=False
+            self.root.ids.plot.disabled=False
+            self.root.ids.refine.disabled=False
             #self.controller.pressSolve(data)
             pass
     def getFilename(self):
@@ -204,10 +216,11 @@ class ViewApp(App):
         filename = self.getFilename()
         #self.controller.pressSave(filename)
 
+
 class PyTextInput(TextInput):
     reset_text = StringProperty("")
     def highlight(self):
-        self.background_color=(1,0,0,1)
+        self.background_color=(.7,0,.15,.9)
     def clear(self):
         self.background_color=(1,1,1,1)
         self.text=self.reset_text
