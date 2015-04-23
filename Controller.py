@@ -29,7 +29,7 @@ class Controller(object):
     """
     def pressRefine(self, rType):
         Model.refine(self, rType)
-        print(refineType)
+
 
     """
     Do this when plot is pressed.
