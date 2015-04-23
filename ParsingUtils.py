@@ -114,8 +114,6 @@ def formatRawData(rawData):
         #outflow.append(stringToOutflows(item))
     data["outflow"] = outflow
     
-    # wallRegions: string
-    # ?
     return data
 
 #--------------------------------------------------------------
