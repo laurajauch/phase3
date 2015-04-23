@@ -132,7 +132,7 @@ class ViewApp(App):
         r.stateType.clear()
         r.refine.clear()
         r.plot.clear()
-        r.polyOrder.text=''
+        r.polyOrder.clear()
         r.meshElems.text=''
         r.meshDim.text=''
         r.reynolds.text=''
@@ -205,10 +205,12 @@ class ViewApp(App):
         #self.controller.pressSave(filename)
 
 class PyTextInput(TextInput):
+    reset_text = StringProperty("")
     def highlight(self):
         self.background_color=(1,0,0,1)
     def clear(self):
         self.background_color=(1,1,1,1)
+        self.text=self.reset_text
 
 class PyButton(Button):
     reset_text = StringProperty("")
