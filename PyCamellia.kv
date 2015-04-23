@@ -309,6 +309,13 @@ Widget:
 			on_release:app.plot(self.text)
 
 		Button:
+			text: 'p'
+			size_hint_y: None
+			height: '30dp'
+			on_release: dropdown3.select('p »')
+			on_release:app.plot(self.text)
+
+		Button:
 			text: 'u1'
 			size_hint_y: None
 			height: '30dp'
@@ -330,13 +337,8 @@ Widget:
 			height: '30dp'
 			on_release: dropdown3.select('Stream Function »')
 			on_release:app.plot(self.text)
-		Button:
-			text: 'p'
-			font_size: 13
-			size_hint_y: None
-			height: '30dp'
-			on_release: dropdown3.select('p »')
-			on_release:app.plot(self.text)
+
+
 	#Inflow conditions
 	#Inflow 1
 	Label:
