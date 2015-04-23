@@ -5,6 +5,11 @@
 	#if red, reset to white:
 	on_focus: self.background_color=(1,1,1,1)
 
+<PyButton@Button>:
+	background_color: (1,1,1,1) #defaults to white
+	#if red, reset to white:
+	on_press: self.background_color=(1,1,1,1)	
+
 Widget:
 
 	#background color, plotting window
@@ -172,7 +177,7 @@ Widget:
 		name: 'DropDown'
 		__safe_id: [dropdown.__self__]
 
-	Button:
+	PyButton:
 		id: probType
 		pos: (56, 527)
 		width: '250dp'

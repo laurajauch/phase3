@@ -11,6 +11,7 @@ from kivy.properties import ObjectProperty
 from kivy.uix.image import Image
 from kivy.lang import Builder
 from kivy.uix.textinput import TextInput
+from kivy.uix.button import Button
 import re
 """
 Controller
@@ -150,8 +151,13 @@ class ViewApp(App):
         self.root.ids.inf4_y.text=''
         #self.controller.pressReset()
     def solve(self):
+        missingEntry = False # Set to true if an important field is left blank
         data = {}
         data["type"] = self.root.ids.probType.text
+        # Still says 'Problem Type' so nothing was selected
+        if data["type"][:1] == 'P': 
+            missingEntry = True
+            self.root.ids.probType.highlight()
         data["state"] = self.root.ids.stateType.text
         data["polyOrder"] = self.root.ids.polyOrder.text
         data["numElements"] = self.root.ids.meshElems.text
@@ -172,6 +178,10 @@ class ViewApp(App):
         #self.controller.pressSave(filename)
 
 class PyTextInput(TextInput):
+    def highlight(self):
+        self.background_color=(1,0,0,1)
+
+class PyButton(Button):
     def highlight(self):
         self.background_color=(1,0,0,1)
 
