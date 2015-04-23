@@ -29,9 +29,13 @@ class Model(object):
         spaceDim = 2
         useConformingTraces = True
         mu = 1.0
-        meshTopo = MeshFactory.rectilinearMeshTopology(dims, numElements, x0)
         polyOrder = 3
         delta_k = 1
+        dims = [1.0, 1.0]
+        numElements = [2,2]
+        x0 = [0.,0.]
+
+        meshTopo = MeshFactory.rectilinearMeshTopology(dims, numElements, x0)
         topBoundary = SpatialFilter.matchingY(1.0)
         notTopBoundary = SpatialFilter.negatedFilter(topBoundary)
 
