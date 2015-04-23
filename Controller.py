@@ -1,7 +1,7 @@
 import kivy
 kivy.require('1.0.7')
 from kivy.app import App
-#from Model import *
+from Model import *
 import StringIO
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 from matplotlib.figure import Figure

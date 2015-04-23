@@ -1,7 +1,11 @@
 from PyCamellia import *
-from Plotter import *
+import Plotter  as Plotter
 import unittest
 from itertools import chain, combinations
+import matplotlib.pyplot as plt
+import StringIO
+from matplotlib.backends.backend_agg import FigureCanvasAgg
+from matplotlib.figure import Figure
 
 spaceDim = 2
 useConformingTraces = True
@@ -34,10 +38,16 @@ class TestPlotter(unittest.TestCase):
         form.addWallCondition(notTopBoundary)
         form.addInflowCondition(topBoundary,topVelocity)
         form.solve()
-        mesh = form.solution().mesh();
+        
+        Plotter.plot(form, "Mesh")
+   
 
-        plotMesh(mesh)
-    
+        
+
+
+
+
+
     """Test plot Mesh Refine"""
     def test_plotRefineMesh(self):
         print "Plot_RefineMesh"
@@ -52,7 +62,7 @@ class TestPlotter(unittest.TestCase):
 
         mesh.hRefine([0])
 
-        plotMesh(mesh)
+        Plotter.plot(form, "Mesh")
 
         form = None
 
@@ -67,7 +77,7 @@ class TestPlotter(unittest.TestCase):
         form.addInflowCondition(topBoundary,topVelocity)
         form.solve()
 
-        plot(form, "u1")
+        Plotter.plot(form, "u1")
 
         form = None
     
@@ -83,7 +93,7 @@ class TestPlotter(unittest.TestCase):
         form.solve()
 
         form.pRefine()
-        plot(form, "u1")
+        Plotter.plot(form, "u1")
 
         form = None
 
@@ -100,7 +110,7 @@ class TestPlotter(unittest.TestCase):
         mesh = form.solution().mesh();
 
         form.hRefine()
-        plot(form, "u1")
+        Plotter.plot(form, "u1")
 
         form = None
 
@@ -117,7 +127,7 @@ class TestPlotter(unittest.TestCase):
         mesh = form.solution().mesh();
 
         mesh.pRefine([3,1])
-        plot(form, "u1")
+        Plotter.plot(form, "u1")
 
         form = None
 
@@ -150,7 +160,7 @@ class TestPlotter(unittest.TestCase):
         form.addInflowCondition(topBoundary,topVelocity)
         form.solve()
 
-        plot(form, "u2")
+        Plotter.plot(form, "u2")
 
         form = None
     
@@ -186,7 +196,7 @@ class TestPlotter(unittest.TestCase):
 
         form.hRefine()
 
-        plot(form, "u2")
+        Plotter.plot(form, "u2")
 
         form = None
 
@@ -204,7 +214,7 @@ class TestPlotter(unittest.TestCase):
 
         mesh.pRefine([3,1])
 
-        plot(form, "u2")
+        Plotter.plot(form, "u2")
 
         form = None
 
@@ -223,7 +233,7 @@ class TestPlotter(unittest.TestCase):
 
         mesh.hRefine([0,1])
 
-        plot(form, "u2")
+        Plotter.plot(form, "u2")
 
         form = None
 
