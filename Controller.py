@@ -28,7 +28,7 @@ class Controller(object):
     """
     Do this when refine is pressed.
     """
-    def pressRefine(self, rType):
+    def pressRefine(self, rType):   
         self.model.refine(rType)
 
 
@@ -36,10 +36,9 @@ class Controller(object):
     Do this when plot is pressed.
     """
     def pressPlot(self, plotType):
-        print(plotType)
-        #self.fig = self.model.plot(plotType)
-        #self.image = fig2png(self.fig)
-        #Set the kivy image to self.image
+        self.fig = self.model.plot(plotType)
+        return fig2png(self.fig)
+        
         
     """
     Convert a matplotlib.Figure to PNG image.:returns: PNG image bytes
@@ -110,7 +109,7 @@ Kivy requires this class for interacting with view (PyCamellia.kv),
 although it is somewhat redundant to Controller.
 """
 class ViewApp(App):
-    
+    #self.root.status = "running"
     """
     Added this build function so we can maipulate viewApp when it is created. 
     We just need to specify which .kv file we are building from.
@@ -122,9 +121,14 @@ class ViewApp(App):
         return self.root
 
     def refine(self, input):
+        self.root.status = "Refining..."
         self.controller.pressRefine(input)
+        self.root.status  = "Refined."
     def plot(self, input):
-        self.controller.pressPlot(input)
+        self.root.status = "Plotting..."
+        self.root.plot_image = self.controller.pressPlot(input)
+        self.root.status = "Plotted."
+
     def reset(self):
         # So we don't write out self.root.ids each time:
         r = self.root.ids
@@ -157,8 +161,12 @@ class ViewApp(App):
         r.save.clear()
         r.save.disabled=True
         #self.controller.pressReset()
+
+
+
+
     def solve(self):
-        print("in solve")
+        self.root.status = "Solving..."
         missingEntry = False # Set to true if an important field is left blank
         data = {}
         data["type"] = self.root.ids.probType.text
@@ -211,7 +219,9 @@ class ViewApp(App):
             self.root.ids.refine.disabled=False
             #self.controller.pressSolve(data)
             pass
-        self.controller.pressSolve(data)
+        self.root.status = "Solved."
+		self.controller.pressSolve(data)
+
     def getFilename(self):
         filename = self.root.ids.filename.text
         if filename == '':

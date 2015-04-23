@@ -5,7 +5,7 @@ import StringIO
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 from matplotlib.figure import Figure
 import sys
-
+import numpy as np
 
 
 
@@ -47,18 +47,10 @@ def plot(form, plotType):
 
 
 def plotMesh(mesh):
-    fig = Figure(facecolor='white')
-    ax = fig.add_subplot(111)
     num_x = 10
     num_y = 10
-    refCellVertexPoints = []
-
-    for j in range(num_y):
-        y = -1 + 2. * float(j) / float(num_y - 1) # go from -1 to 1
-        for i in range(num_x):
-            x = -1 + 2. * float(i) / float(num_x - 1) # go from -1 to 1
-            refCellVertexPoints.append([x,y])
-
+    plt.figure(1)
+    plt.subplot(111)
     zList = [] # should have tuples (zVals, (x_min,x_max), (y_min,y_max)) -- one for each cell
     activeCellIDs = mesh.getActiveCellIDs()
     xMin = sys.float_info.max
@@ -73,8 +65,9 @@ def plotMesh(mesh):
         xMaxLocal = vertices[1][0]
         yMinLocal = vertices[0][1]
         yMaxLocal = vertices[2][1]
-        (values,points) = f.getCellValues(mesh,cellID,refCellVertexPoints)
-        values[:] = 0
+        values = []
+        for x in range(0,100):
+            values.append(0)
         zValues = np.array(values) 
         zValues = zValues.reshape((num_x,num_y)) # 2D array
         zMin = min(zValues.min(),zMin)
@@ -88,19 +81,21 @@ def plotMesh(mesh):
 
     for zTuple in zList:
         zValues,(xMinLocal,xMaxLocal),(yMinLocal,yMaxLocal) = zTuple
-        ax.imshow(zValues, cmap='bone', vmin=zMin, vmax=zMax,
+        plt.imshow(zValues, cmap='coolwarm', vmin=zMin, vmax=zMax,
                    extent=[xMinLocal, xMaxLocal, yMinLocal, yMaxLocal],
                    interpolation='bicubic', origin='lower')
+    plt.title('cavity flow error')
+    plt.colorbar()
+    plt.axis([xMin, xMax, yMin, yMax])
+    return plt.gcf()
 
-        ax.title(title)
-        ax.colorbar()
-        ax.axis([xMin, xMax, yMin, yMax])
-        ax.savefig("myPlot.png")
+
 
 def plotError(error, mesh):
-    fig = Figure(facecolor='white')
-    ax = fig.add_subplot(111)
-    error = form.solution().energyErrorPerCell()
+    num_x = 10
+    num_y = 10
+    plt.figure(1)
+    plt.subplot(111)
     zList = [] # should have tuples (zVals, (x_min,x_max), (y_min,y_max)) -- one for each cell
     activeCellIDs = mesh.getActiveCellIDs()
     xMin = sys.float_info.max
@@ -118,33 +113,33 @@ def plotError(error, mesh):
         values = []
         for x in range(0,100):
             values.append(error[cellID])
-            zValues = np.array(values) 
-            zValues = zValues.reshape((num_x,num_y)) # 2D array
-            zMin = min(zValues.min(),zMin)
-            zMax = max(zValues.max(),zMax)
-            zList.append((zValues,(xMinLocal,xMaxLocal),(yMinLocal,yMaxLocal)))
-            xMin = min(xMinLocal,xMin)
-            xMax = max(xMaxLocal,xMax)
-            yMin = min(yMinLocal,yMin)
-            yMax = max(yMaxLocal,yMax)
+        zValues = np.array(values) 
+        zValues = zValues.reshape((num_x,num_y)) # 2D array
+        zMin = min(zValues.min(),zMin)
+        zMax = max(zValues.max(),zMax)
+        zList.append((zValues,(xMinLocal,xMaxLocal),(yMinLocal,yMaxLocal)))
+        xMin = min(xMinLocal,xMin)
+        xMax = max(xMaxLocal,xMax)
+        yMin = min(yMinLocal,yMin)
+        yMax = max(yMaxLocal,yMax)
 
 
     for zTuple in zList:
         zValues,(xMinLocal,xMaxLocal),(yMinLocal,yMaxLocal) = zTuple
-        ax.imshow(zValues, cmap='coolwarm', vmin=zMin, vmax=zMax,
+        plt.imshow(zValues, cmap='coolwarm', vmin=zMin, vmax=zMax,
                    extent=[xMinLocal, xMaxLocal, yMinLocal, yMaxLocal],
                    interpolation='bicubic', origin='lower')
-        ax.title('cavity flow error')
-        ax.colorbar()
-        ax.axis([xMin, xMax, yMin, yMax])
-        return fig
+    plt.title('cavity flow error')
+    plt.colorbar()
+    plt.axis([xMin, xMax, yMin, yMax])
+    return plt.gcf()
 
 
 
 
 def plotFunction(f,mesh):
-    fig = plt.figure()
-    ax = fig.add_subplot(111)
+    plt.figure(1)
+    plt.subplot(111)
     num_x = 10
     num_y = 10
     refCellVertexPoints = []
@@ -183,14 +178,14 @@ def plotFunction(f,mesh):
 
     for zTuple in zList:
         zValues,(xMinLocal,xMaxLocal),(yMinLocal,yMaxLocal) = zTuple
-        ax.imshow(zValues, cmap='coolwarm', vmin=zMin, vmax=zMax,
+        plt.imshow(zValues, cmap='coolwarm', vmin=zMin, vmax=zMax,
                    extent=[xMinLocal, xMaxLocal, yMinLocal, yMaxLocal],
                    interpolation='bicubic', origin='lower')
 
-    #ax.title(title)
-    ax.colorbar()
-    ax.axis([xMin, xMax, yMin, yMax])
-    return fig
+    plt.title(title)
+    plt.colorbar()
+    plt.axis([xMin, xMax, yMin, yMax])
+    return plt.gcf()
 
      
 
