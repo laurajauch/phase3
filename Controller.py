@@ -220,7 +220,7 @@ class ViewApp(App):
             #self.controller.pressSolve(data)
             pass
         self.root.status = "Solved."
-		self.controller.pressSolve(data)
+        self.controller.pressSolve(data)
 
     def getFilename(self):
         filename = self.root.ids.filename.text
