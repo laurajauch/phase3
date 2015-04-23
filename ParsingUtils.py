@@ -12,7 +12,8 @@ def stringToDims(inputstr):
         x = float(tokenList[0])
         y = float(tokenList[1])
         return [x,y]
-    except:
+    except Exception,e:
+        print(str(e))
         raise ValueError
 
 def stringToElements(inputstr):
@@ -21,7 +22,8 @@ def stringToElements(inputstr):
         x = int(tokenList[0])
         y = int(tokenList[1])
         return [x,y]
-    except:
+    except Exception,e:
+        print(str(e))
         raise ValueError
 
 # the following 3 methods are not correct yet
@@ -65,16 +67,17 @@ def formatRawData(rawData):
     data ={}
 
     # stokes: boolean
-    if rawData["stokes"] == "stokes":
+    if rawData["stokes"]:
         data["stokes"] = True
     else:
         data["stokes"] = False
         
     # reynolds: float/int
-    data["reynolds"] = int(rawData["reynolds"])
+    if not data["stokes"]:
+        data["reynolds"] = int(rawData["reynolds"])
     
     # transient: boolean
-    if rawData["transient"] == "transient":
+    if rawData["transient"]:
         data["transient"] = True
     else:
         data["transient"] = False
@@ -93,7 +96,8 @@ def formatRawData(rawData):
     #xVel = []
     #yVel = []
     inflow = []
-    for item in rawData["inflow"]:
+    # NEED TO FIX
+    #for item in rawData["inflow"]:
     #    (region, x, y) = item
     #    regions.append(region)
     #    xVel.append(x)
@@ -101,18 +105,17 @@ def formatRawData(rawData):
     #data["inflowRegions"] = regions
     #data["inflowX"] = xVel
     #data["inflowY"] = yVel
-        inflow.append(stringToInflows(item))
+        #inflow.append(stringToInflows(item))
     data["inflow"] = inflow
     
     # outflowRegions: string
     outflow = []
-    for item in rawData["outflow"]:
-        outflow.append(stringToOutflows(item))
+    #for item in rawData["outflow"]:
+        #outflow.append(stringToOutflows(item))
     data["outflow"] = outflow
     
     # wallRegions: string
     # ?
-
     return data
 
 #--------------------------------------------------------------
@@ -130,7 +133,8 @@ def checkValidInput(rawData):
     # reynolds: must be a int and nStokes
     try:
         assert not (rawData["stokes"] and "reynolds" in rawData) # missmatch
-        assert int(rawData["reynolds"])
+        if not rawData["stokes"]:
+            assert int(rawData["reynolds"])
         errors["reynolds"] = False
     except:
         errors["reynolds"] = True
@@ -159,28 +163,30 @@ def checkValidInput(rawData):
             
     # inflow strings (condition, xVelocity, yVelocity)
     try:
-        for item in rawData["inflow"]:
-        #    (condition, xVel, yVel) = item
-        #    stringToFilter(str(condition))
-        #    parseFunction(str(xVel))
-        #    parseFunction(str(yVel)) 
-            stringToInflow(item)
+        if len(rawData["inflow"]) > 0:
+            for item in rawData["inflow"]:
+                #    (condition, xVel, yVel) = item
+                #    stringToFilter(str(condition))
+                #    parseFunction(str(xVel))
+                #    parseFunction(str(yVel)) 
+                stringToInflow(item)
         errors["inflow"] = False
     except:
         errors["inflow"] = True
                 
     # outflow: strings (condition, xVelocity, yVelocity)
     try:
-        for item in rawData["outflow"]:
-        #    (condition, xVel, yVel) = item
-        #    stringToFilter(str(condition))
-        #    parseFunction(str(xVel))
-        #    parseFunction(str(yVel))
-            stringToOutflow(item)
+        if len(rawData["outflow"]) > 0:
+            for item in rawData["outflow"]:
+                #    (condition, xVel, yVel) = item
+                #    stringToFilter(str(condition))
+                #    parseFunction(str(xVel))
+                #    parseFunction(str(yVel))
+                stringToOutflow(item)
         errors["outflow"] = False
     except:
         errors["outflow"] = True
-        
+    
     return errors
 
 """

@@ -28,8 +28,7 @@ class Controller(object):
     """
     Do this when refine is pressed.
     """
-    def pressRefine(self, rType):
-        
+    def pressRefine(self, rType):   
         self.model.refine(rType)
 
 
@@ -98,6 +97,8 @@ class Controller(object):
     def setErrors(self, errors):
         pass
 
+
+
 """
 ViewApp
 
@@ -134,7 +135,9 @@ class ViewApp(App):
         r.probType.clear()
         r.stateType.clear()
         r.refine.clear()
+        r.refine.disabled=True
         r.plot.clear()
+        r.plot.disabled=True
         r.polyOrder.clear()
         r.meshElems.clear()
         r.meshDim.clear()
@@ -155,6 +158,8 @@ class ViewApp(App):
         r.inf4.clear()
         r.inf4_x.clear()
         r.inf4_y.clear()
+        r.save.clear()
+        r.save.disabled=True
         #self.controller.pressReset()
 
 
@@ -169,16 +174,25 @@ class ViewApp(App):
         if data["type"][:1] == 'P': 
             missingEntry = True
             self.root.ids.probType.highlight()
-        data["reynolds"] = self.root.ids.reynolds.text
-        # If no Reynolds number specified AND problem type is NOT Stokes
-        if (data["reynolds"] == '') and not(data["type"][:2] == 'S'):
-            missingEntry = True
-            self.root.ids.reynolds.highlight()
+        elif data["type"][:1] == 'S':
+            data["stokes"] = True
+        elif data["type"][:1] == 'N':
+            data["stokes"] = False
+        if data["type"][:3] == 'Nav':
+            data["reynolds"] = self.root.ids.reynolds.text
+            # If no Reynolds number specified AND problem type is NOT Stokes
+            if ((data["reynolds"] == '') and not(data["type"][:1] == 'S')):
+                missingEntry = True
+                self.root.ids.reynolds.highlight()
         data["state"] = self.root.ids.stateType.text
         # Still says 'State' so nothing was selected
         if data["state"][:3] == 'Sta':
             missingEntry = True
             self.root.ids.stateType.highlight()
+        elif data["state"][:3] == 'Tra':
+            data["transient"] = True
+        elif data["state"][:3] == 'Ste':
+            data["transient"] = False
         data["polyOrder"] = self.root.ids.polyOrder.text
         # Is empty so no value was given
         if data["polyOrder"] == '':
@@ -194,15 +208,19 @@ class ViewApp(App):
         if data["meshDimensions"] == '':
             missingEntry = True
             self.root.ids.meshDim.highlight()
-        #data["inflow"] = [strings]
-        #data["outflow"] = [strings]
+
+        # NEED TO FINISH PUTTING INFORMATION IN HERE
+        data["inflow"] = []
+        data["outflow"] = []
         # don't solve unless we have all necessary entries
         if not(missingEntry):
+            self.root.ids.save.disabled=False
+            self.root.ids.plot.disabled=False
+            self.root.ids.refine.disabled=False
             #self.controller.pressSolve(data)
             pass
         self.root.status = "Solved."
-
-
+		self.controller.pressSolve(data)
 
     def getFilename(self):
         filename = self.root.ids.filename.text
