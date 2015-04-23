@@ -11,6 +11,7 @@ from kivy.properties import ObjectProperty
 from kivy.uix.image import Image
 from kivy.lang import Builder
 from kivy.uix.textinput import TextInput
+from kivy.uix.button import Button
 import re
 """
 Controller
@@ -150,15 +151,27 @@ class ViewApp(App):
         self.root.ids.inf4_y.text=''
         #self.controller.pressReset()
     def solve(self):
+        missingEntry = False # Set to true if an important field is left blank
         data = {}
         data["type"] = self.root.ids.probType.text
+        # Still says 'Problem Type' so nothing was selected
+        if data["type"][:1] == 'P': 
+            missingEntry = True
+            self.root.ids.probType.highlight()
         data["state"] = self.root.ids.stateType.text
+        # Still says 'State' so nothing was selected
+        if data["state"][:3] == 'Sta':
+            missingEntry = True
+            self.root.ids.stateType.highlight()
         data["polyOrder"] = self.root.ids.polyOrder.text
         data["numElements"] = self.root.ids.meshElems.text
         data["meshDimensions"] = self.root.ids.meshDim.text
         #data["inflow"] = [strings]
         #data["outflow"] = [strings]
-        #self.controller.pressSolve(data)
+        # don't solve unless we have all necessary entries
+        if not(missingEntry):
+            #self.controller.pressSolve(data)
+            pass
     def getFilename(self):
         filename = self.root.ids.filename.text
         if filename == '':
@@ -172,6 +185,10 @@ class ViewApp(App):
         #self.controller.pressSave(filename)
 
 class PyTextInput(TextInput):
+    def highlight(self):
+        self.background_color=(1,0,0,1)
+
+class PyButton(Button):
     def highlight(self):
         self.background_color=(1,0,0,1)
 
