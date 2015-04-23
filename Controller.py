@@ -12,6 +12,7 @@ from kivy.uix.image import Image
 from kivy.lang import Builder
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
+from kivy.properties import *
 import re
 """
 Controller
@@ -125,11 +126,12 @@ class ViewApp(App):
     def plot(self, input):
         self.controller.pressPlot(input)
     def reset(self):
+        # So we don't write out self.root.ids each time:
         r = self.root.ids
-        r.probType.text="Problem Type >"
-        r.stateType.text='State >'
-        r.refine.text='Refine >'
-        r.plot.text='Plot >'
+        r.probType.clear()
+        r.stateType.clear()
+        r.refine.clear()
+        r.plot.clear()
         r.polyOrder.text=''
         r.meshElems.text=''
         r.meshDim.text=''
@@ -209,10 +211,12 @@ class PyTextInput(TextInput):
         self.background_color=(1,1,1,1)
 
 class PyButton(Button):
+    reset_text = StringProperty("")
     def highlight(self):
         self.background_color=(1,0,0,1)
     def clear(self):
         self.background_color=(1,1,1,1)
+        self.text=self.reset_text
 
 if __name__ == '__main__':
     ViewApp().run()

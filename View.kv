@@ -8,7 +8,7 @@
 <PyButton@Button>:
 	background_color: (1,1,1,1) #defaults to white
 	#if red, reset to white:
-	on_press: self.background_color=(1,1,1,1)	
+	on_press: self.background_color=(1,1,1,1)
 
 Widget:
 
@@ -183,6 +183,7 @@ Widget:
 		width: '250dp'
 		height: '30dp'
 		text: 'Problem Type »'
+		reset_text: 'Problem Type »'
 		on_release: dropdown.open(self)
 		size_hint_y: None
 
@@ -216,6 +217,7 @@ Widget:
 		width: '100dp'
 		height: '30dp'
 		text: 'State »'
+		reset_text: 'State »'
 		on_release: dropdown1.open(self)
 		size_hint_y: None
 
@@ -243,12 +245,13 @@ Widget:
 			on_release: dropdown1.select('Transient »')
 
 	#Refinement selection dropdown menu
-	Button:
+	PyButton:
 		id: refine
 		pos: (220, 195)
 		width: '130dp'
 		height: '30dp'
 		text: 'Refine »'
+		reset_text: 'Refine »'
 		on_release: dropdown2.open(self)
 		size_hint_y: None
 
@@ -276,12 +279,13 @@ Widget:
 
 
 	#Plotting selection dropdown menu
-	Button:
+	PyButton:
 		id: plot
 		pos: (220, 146)
 		width: '130dp'
 		height: '30dp'
 		text: 'Plot »'
+		reset_text: 'Plot »'
 		on_release: dropdown3.open(self)
 		size_hint_y: None
 
