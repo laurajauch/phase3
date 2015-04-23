@@ -133,25 +133,25 @@ class ViewApp(App):
         r.refine.clear()
         r.plot.clear()
         r.polyOrder.clear()
-        r.meshElems.text=''
-        r.meshDim.text=''
-        r.reynolds.text=''
-        r.out1.text=''
-        r.out2.text=''
-        r.out3.text=''
-        r.out4.text=''
-        r.inf1.text=''
-        r.inf1_x.text=''
-        r.inf1_y.text=''
-        r.inf2.text=''
-        r.inf2_x.text=''
-        r.inf2_y.text=''
-        r.inf3.text=''
-        r.inf3_x.text=''
-        r.inf3_y.text=''
-        r.inf4.text=''
-        r.inf4_x.text=''
-        r.inf4_y.text=''
+        r.meshElems.clear()
+        r.meshDim.clear()
+        r.reynolds.clear()
+        r.out1.clear()
+        r.out2.clear()
+        r.out3.clear()
+        r.out4.clear()
+        r.inf1.clear()
+        r.inf1_x.clear()
+        r.inf1_y.clear()
+        r.inf2.clear()
+        r.inf2_x.clear()
+        r.inf2_y.clear()
+        r.inf3.clear()
+        r.inf3_x.clear()
+        r.inf3_y.clear()
+        r.inf4.clear()
+        r.inf4_x.clear()
+        r.inf4_y.clear()
         #self.controller.pressReset()
     def solve(self):
         missingEntry = False # Set to true if an important field is left blank
