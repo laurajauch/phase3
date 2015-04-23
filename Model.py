@@ -1,6 +1,7 @@
 import FormUtils
 import Plotter
 import ParsingUtils
+from PyCamellia import * #only used for random plot test
 from InputData import *
 
 
@@ -25,7 +26,18 @@ class Model(object):
     Called when plot is pressed
     """
     def plot(self, plotType):
-        return Plotter.plot(self.inputData.getVariable("form"), plotType)
+        dims = [1.0, 1.0]
+        numElements = [2,2]
+        x0 = [0.,0.]
+        delta_k = 1
+        re = 1000.0
+        polyOrder = 3
+        meshTopo = MeshFactory.rectilinearMeshTopology(dims, numElements, x0)
+        form = NavierStokesVGPFormulation(meshTopo, re, polyOrder, delta_k)
+        form.addZeroMeanPressureCondition()
+        form.solve()
+
+        return Plotter.plot(form, plotType)
         
     """
     Called when reset is pressed
