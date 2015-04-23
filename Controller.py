@@ -98,8 +98,6 @@ class Controller(object):
     def setErrors(self, errors):
         pass
 
-
-
 """
 ViewApp
 
@@ -110,7 +108,7 @@ Kivy requires this class for interacting with view (PyCamellia.kv),
 although it is somewhat redundant to Controller.
 """
 class ViewApp(App):
-    
+    #self.root.status = "running"
     """
     Added this build function so we can maipulate viewApp when it is created. 
     We just need to specify which .kv file we are building from.
@@ -122,12 +120,13 @@ class ViewApp(App):
         return self.root
 
     def refine(self, input):
+        self.root.status = "Refining..."
         self.controller.pressRefine(input)
-
-
+        self.root.status  = "Refined."
     def plot(self, input):
+        self.root.status = "Plotting..."
         self.root.plot_image = self.controller.pressPlot(input)
-
+        self.root.status = "Plotted."
 
     def reset(self):
         # So we don't write out self.root.ids each time:
@@ -162,6 +161,7 @@ class ViewApp(App):
 
 
     def solve(self):
+        self.root.status = "Solving..."
         missingEntry = False # Set to true if an important field is left blank
         data = {}
         data["type"] = self.root.ids.probType.text
@@ -200,9 +200,7 @@ class ViewApp(App):
         if not(missingEntry):
             #self.controller.pressSolve(data)
             pass
-
-
-
+        self.root.status = "Solved."
 
 
 
