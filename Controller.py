@@ -125,7 +125,8 @@ class ViewApp(App):
     def plot(self, input):
         self.controller.pressPlot(input)
     def reset(self):
-        self.root.ids.probType.text="Problem Type >"
+        r = self.root.ids
+        r.probType.text="Problem Type >"
         self.root.ids.stateType.text='State >'
         self.root.ids.refine.text='Refine >'
         self.root.ids.plot.text='Plot >'
@@ -158,14 +159,31 @@ class ViewApp(App):
         if data["type"][:1] == 'P': 
             missingEntry = True
             self.root.ids.probType.highlight()
+        data["reynolds"] = self.root.ids.reynolds.text
+        # If no Reynolds number specified AND problem type is NOT Stokes
+        if (data["reynolds"] == '') and not(data["type"][:2] == 'S'):
+            missingEntry = True
+            self.root.ids.reynolds.highlight()
         data["state"] = self.root.ids.stateType.text
         # Still says 'State' so nothing was selected
         if data["state"][:3] == 'Sta':
             missingEntry = True
             self.root.ids.stateType.highlight()
         data["polyOrder"] = self.root.ids.polyOrder.text
+        # Is empty so no value was given
+        if data["polyOrder"] == '':
+            missingEntry = True
+            self.root.ids.polyOrder.highlight()
         data["numElements"] = self.root.ids.meshElems.text
+        # Is empty so no value was given
+        if data["numElements"] == '':
+            missingEntry = True
+            self.root.ids.meshElems.highlight()
         data["meshDimensions"] = self.root.ids.meshDim.text
+        # Is empty so no value was given
+        if data["meshDimensions"] == '':
+            missingEntry = True
+            self.root.ids.meshDim.highlight()
         #data["inflow"] = [strings]
         #data["outflow"] = [strings]
         # don't solve unless we have all necessary entries
@@ -187,10 +205,14 @@ class ViewApp(App):
 class PyTextInput(TextInput):
     def highlight(self):
         self.background_color=(1,0,0,1)
+    def clear(self):
+        self.background_color=(1,1,1,1)
 
 class PyButton(Button):
     def highlight(self):
         self.background_color=(1,0,0,1)
+    def clear(self):
+        self.background_color=(1,1,1,1)
 
 if __name__ == '__main__':
     ViewApp().run()
