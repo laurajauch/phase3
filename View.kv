@@ -239,7 +239,7 @@ Widget:
 
 	#Refinement selection dropdown menu
 	Button:
-		id: btn2
+		id: refine
 		pos: (220, 195)
 		width: '130dp'
 		height: '30dp'
@@ -254,7 +254,7 @@ Widget:
 
 		id: dropdown2
 		on_parent: self.dismiss()
-		on_select: btn2.text = '{}'.format(args[1])
+		on_select: refine.text = '{}'.format(args[1])
 
 		Button:
 			text: 'h-auto'
@@ -272,7 +272,7 @@ Widget:
 
 	#Plotting selection dropdown menu
 	Button:
-		id: btn3
+		id: plot
 		pos: (220, 146)
 		width: '130dp'
 		height: '30dp'
@@ -287,9 +287,10 @@ Widget:
 
 		id: dropdown3
 		on_parent: self.dismiss()
-		on_select: btn3.text = '{}'.format(args[1])
+		on_select: plot.text = '{}'.format(args[1])
 
 		Button:
+			id: mesh			
 			text: 'Mesh'
 			size_hint_y: None
 			height: '30dp'
@@ -298,6 +299,7 @@ Widget:
 			
 		
 		Button:
+			id: error
 			text: 'Error'
 			size_hint_y: None
 			height: '30dp'
@@ -305,6 +307,7 @@ Widget:
 			on_release:app.plot(self.text)
 
 		Button:
+			id: u1
 			text: 'u1'
 			size_hint_y: None
 			height: '30dp'
@@ -313,6 +316,7 @@ Widget:
 
 
 		Button:
+			id: u2
 			text: 'u2'
 			size_hint_y: None
 			height: '30dp'
@@ -320,6 +324,7 @@ Widget:
 			on_release:app.plot(self.text)
 
 		Button:
+			id: stream
 			text: 'Stream Function'
 			font_size: 13
 			size_hint_y: None
@@ -335,6 +340,7 @@ Widget:
 	
 
 	PyTextInput:
+		id: inf1
 		multiline: False
 		height: '27dp'
 		width: '80dp'
@@ -347,6 +353,7 @@ Widget:
 		pos: (147, 338)
 
 	PyTextInput:
+		id: inf1_x
 		multiline: False
 		height: '27dp'
 		width: '50dp'
@@ -359,6 +366,7 @@ Widget:
 		pos: (234, 338)
 
 	PyTextInput:
+		id: inf1_y
 		multiline: False
 		height: '27dp'
 		width: '50dp'
@@ -373,6 +381,7 @@ Widget:
 	
 
 	PyTextInput:
+		id: inf2
 		multiline: False
 		height: '27dp'
 		width: '80dp'
@@ -384,6 +393,7 @@ Widget:
 		pos: (149, 303)
 
 	PyTextInput:
+		id: inf2_x
 		multiline: False
 		height: '27dp'
 		width: '50dp'
@@ -395,6 +405,7 @@ Widget:
 		pos: (236, 303)
 
 	PyTextInput:
+		id: inf2_y
 		multiline: False
 		height: '27dp'
 		width: '50dp'
@@ -408,6 +419,7 @@ Widget:
 	
 
 	PyTextInput:
+		id: inf3
 		multiline: False
 		height: '27dp'
 		width: '80dp'
@@ -420,6 +432,7 @@ Widget:
 		pos: (149, 267)
 
 	PyTextInput:
+		id: inf3_x
 		multiline: False
 		height: '27dp'
 		width: '50dp'
@@ -431,6 +444,7 @@ Widget:
 		pos: (236, 267)
 
 	PyTextInput:
+		id: inf3_y
 		multiline: False
 		height: '27dp'
 		width: '50dp'
@@ -443,6 +457,7 @@ Widget:
 		pos: (20, 231)	
 
 	PyTextInput:
+		id: inf4
 		multiline: False
 		height: '27dp'
 		width: '80dp'
@@ -454,6 +469,7 @@ Widget:
 		pos: (149, 231)
 
 	PyTextInput:
+		id: inf4_x
 		multiline: False
 		height: '27dp'
 		width: '50dp'
@@ -465,6 +481,7 @@ Widget:
 		pos: (236, 231)
 
 	PyTextInput:
+		id: inf4_y
 		multiline: False
 		height: '27dp'
 		width: '50dp'

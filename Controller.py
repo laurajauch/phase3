@@ -11,6 +11,7 @@ from kivy.properties import ObjectProperty
 from kivy.uix.image import Image
 from kivy.lang import Builder
 from kivy.uix.textinput import TextInput
+import re
 """
 Controller
 
@@ -125,6 +126,8 @@ class ViewApp(App):
     def reset(self):
         self.root.ids.probType.text="Problem Type >"
         self.root.ids.stateType.text='State >'
+        self.root.ids.refine.text='Refine >'
+        self.root.ids.plot.text='Plot >'
         self.root.ids.polyOrder.text=''
         self.root.ids.meshElems.text=''
         self.root.ids.meshDim.text=''
@@ -133,6 +136,18 @@ class ViewApp(App):
         self.root.ids.out2.text=''
         self.root.ids.out3.text=''
         self.root.ids.out4.text=''
+        self.root.ids.inf1.text=''
+        self.root.ids.inf1_x.text=''
+        self.root.ids.inf1_y.text=''
+        self.root.ids.inf2.text=''
+        self.root.ids.inf2_x.text=''
+        self.root.ids.inf2_y.text=''
+        self.root.ids.inf3.text=''
+        self.root.ids.inf3_x.text=''
+        self.root.ids.inf3_y.text=''
+        self.root.ids.inf4.text=''
+        self.root.ids.inf4_x.text=''
+        self.root.ids.inf4_y.text=''
         #self.controller.pressReset()
     def solve(self):
         data = {}
