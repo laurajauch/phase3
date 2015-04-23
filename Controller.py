@@ -159,12 +159,19 @@ class ViewApp(App):
             missingEntry = True
             self.root.ids.probType.highlight()
         data["state"] = self.root.ids.stateType.text
+        # Still says 'State' so nothing was selected
+        if data["state"][:3] == 'Sta':
+            missingEntry = True
+            self.root.ids.stateType.highlight()
         data["polyOrder"] = self.root.ids.polyOrder.text
         data["numElements"] = self.root.ids.meshElems.text
         data["meshDimensions"] = self.root.ids.meshDim.text
         #data["inflow"] = [strings]
         #data["outflow"] = [strings]
-        #self.controller.pressSolve(data)
+        # don't solve unless we have all necessary entries
+        if not(missingEntry):
+            #self.controller.pressSolve(data)
+            pass
     def getFilename(self):
         filename = self.root.ids.filename.text
         if filename == '':
