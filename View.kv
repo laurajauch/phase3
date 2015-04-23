@@ -162,13 +162,15 @@ Widget:
 		on_release: app.load()
 
 	#File save button, should save current solution
-	Button:
+	PyButton:
 		id: save
 		background_color: 
 		height: 5
 		font_size: 15
 		font_name: 'DroidSans'
+		disabled: True
 		text: "Save"
+		reset_text: "Save"
 		pos: (580, 50)
 		color: (1, 1, 1, 1)
 		on_release: app.save()
@@ -208,7 +210,7 @@ Widget:
 			on_release: dropdown.select('Navier-Stokes »')
 			on_release: reynolds.disabled = False
 			on_release: transient.disabled = True
-			on_release: dropdown1.select('Steady State »'); stateType.clear()
+			on_release: stateType.clear(); dropdown1.select('Steady State »')
 
 	#State selection dropdown menu
 	PyButton:
@@ -250,6 +252,7 @@ Widget:
 		pos: (220, 195)
 		width: '130dp'
 		height: '30dp'
+		disabled: True
 		text: 'Refine »'
 		reset_text: 'Refine »'
 		on_release: dropdown2.open(self)
@@ -284,6 +287,7 @@ Widget:
 		pos: (220, 146)
 		width: '130dp'
 		height: '30dp'
+		disabled: True
 		text: 'Plot »'
 		reset_text: 'Plot »'
 		on_release: dropdown3.open(self)
