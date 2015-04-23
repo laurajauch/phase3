@@ -140,7 +140,6 @@ def checkValidInput(rawData):
     # reynolds: must be a int and nStokes
     try:
         assert not (rawData["stokes"] and "reynolds" in rawData) # missmatch
-        assert not rawData["stokes"] # nStokes
         assert int(rawData["reynolds"])
         errors["reynolds"] = False
     except:
@@ -189,6 +188,8 @@ def checkValidInput(rawData):
         errors["outflow"] = False
     except:
         errors["outflow"] = True
+        
+    return errors
 
 """
 """

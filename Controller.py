@@ -120,7 +120,7 @@ class ViewApp(App):
         return self.root
 
     def refine(self, input):
-        self.controller.refine(input)
+        self.controller.pressRefine(input)
     def plot(self, input):
         self.controller.pressPlot(input)
     def reset(self):

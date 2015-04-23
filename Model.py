@@ -61,6 +61,7 @@ class Model(object):
         for key, value in errors.iteritems():
             if value is False:
                 valid = False
+                break #only need find one error
 
         return (valid, errors)
 
