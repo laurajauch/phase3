@@ -25,19 +25,23 @@ class Model(object):
     """
     Called when plot is pressed
     """
-    def plot(self, plotType):
-        dims = [1.0, 1.0]
-        numElements = [2,2]
-        x0 = [0.,0.]
-        delta_k = 1
-        re = 1000.0
-        polyOrder = 3
+    def plot(self, plotType):       
+        spaceDim = 2
+        useConformingTraces = True
+        mu = 1.0
         meshTopo = MeshFactory.rectilinearMeshTopology(dims, numElements, x0)
-        form = NavierStokesVGPFormulation(meshTopo, re, polyOrder, delta_k)
-        form.addZeroMeanPressureCondition()
-        form.solve()
+        polyOrder = 3
+        delta_k = 1
+        topBoundary = SpatialFilter.matchingY(1.0)
+        notTopBoundary = SpatialFilter.negatedFilter(topBoundary)
 
-        return Plotter.plot(form, plotType)
+        foo = StokesVGPFormulation(spaceDim,useConformingTraces,mu)
+        foo.initializeSolution(meshTopo,polyOrder,delta_k)
+        foo.addZeroMeanPressureCondition()
+        foo.addInflowCondition(topBoundary,topVelocity)
+        foo.solve()
+
+        return Plotter.plot(foo, plotType)
         
     """
     Called when reset is pressed
