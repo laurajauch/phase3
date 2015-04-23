@@ -2,13 +2,13 @@ from PyCamellia import *
 from FunctionParser import *
 import unittest
 
-
+fp = FunctionParser()
 
 class TestParseFunction(unittest.TestCase):
 
     """Test Add"""
     def test_add(self):
-        func = parseFunction("1+x")
+        func = fp.parseFunction("1+x")
         for x in range(0,5):
             for y in range(0,5):
                 answ = 1 + x
@@ -16,7 +16,7 @@ class TestParseFunction(unittest.TestCase):
 
     """Test Subtract"""
     def test_subtract(self):
-        func = parseFunction("3-x")
+        func = fp.parseFunction("3-x")
         for x in range(0,5):
             for y in range(0,5):
                 answ = 3 - x
@@ -32,7 +32,7 @@ class TestParseFunction(unittest.TestCase):
 
     """Test Multiply"""
     def test_multiply(self):
-        func = parseFunction("2*x")
+        func = fp.parseFunction("2*x")
         for x in range(0,5):
             for y in range(0,5):
                 answ = 2 * x
@@ -48,7 +48,7 @@ class TestParseFunction(unittest.TestCase):
 
     """Test Negative"""
     def test_negative(self):
-        func = parseFunction("x+-2")
+        func = fp.parseFunction("x+-2")
         for x in range(0,5):
             for y in range(0,5):
                 answ = x + -2
@@ -56,7 +56,7 @@ class TestParseFunction(unittest.TestCase):
 
     """Test ParenMultiply"""
     def test_parenMultiply(self):
-        func = parseFunction("3(x)")
+        func = fp.parseFunction("3(x)")
         for x in range(0,5):
             for y in range(0,5): 
                 answ = 3 * x
@@ -64,7 +64,7 @@ class TestParseFunction(unittest.TestCase):
 
     """Test XandY"""
     def test_xAndY(self):
-        func = parseFunction("x+y")
+        func = fp.parseFunction("x+y")
         for x in range(0,5):
             for y in range(0,5): 
                 answ = x + y
@@ -72,7 +72,7 @@ class TestParseFunction(unittest.TestCase):
 
     """Test NoParens"""
     def test_noParens(self):
-        func = parseFunction("5x^2y+2")
+        func = fp.parseFunction("5x^2y+2")
         for x in range(0,5):
             for y in range(0,5): 
                 answ = 5 * (x**2) * y + 2
@@ -80,7 +80,7 @@ class TestParseFunction(unittest.TestCase):
 
     """Test Doubles"""
     def test_doubles(self):
-        func = parseFunction("2.0+5.0x*y^2")
+        func = fp.parseFunction("2.0+5.0x*y^2")
         for x in range(0,5):
             for y in range(0,5): 
                 answ = 2.0 + 5.0 * x * y**2
@@ -88,7 +88,7 @@ class TestParseFunction(unittest.TestCase):
 
     """Test Parentheses 1"""
     def test_parantheses1(self):
-        func = parseFunction("-3*(y-1)*(y-2)")
+        func = fp.parseFunction("-3*(y-1)*(y-2)")
         for x in range(0,5):
             for y in range(0,5): 
                 answ = -3*(y-1)*(y-2)
@@ -100,7 +100,7 @@ class TestParseFunction(unittest.TestCase):
 
     """Test HalfAssedDoubles"""
     def test_halfAssedDoubles(self):
-        func = parseFunction("2.+.6-x^2+y")
+        func = fp.parseFunction("2.+.6-x^2+y")
         for x in range(0,5):
             for y in range(0,5): 
                 answ = 2. + .6 - x**2 + y
@@ -109,7 +109,7 @@ class TestParseFunction(unittest.TestCase):
     """Test ePowerOfTen"""
     def test_ePowerOfTen(self):
         try:
-            func = parseFunction("xe2")
+            func = fp.parseFunction("xe2")
         except ValueError:
             error = True
         answ = x * 10 * 10

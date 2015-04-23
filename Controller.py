@@ -136,7 +136,9 @@ class ViewApp(App):
         r.probType.clear()
         r.stateType.clear()
         r.refine.clear()
+        r.refine.disabled=True
         r.plot.clear()
+        r.plot.disabled=True
         r.polyOrder.clear()
         r.meshElems.clear()
         r.meshDim.clear()
@@ -157,6 +159,8 @@ class ViewApp(App):
         r.inf4.clear()
         r.inf4_x.clear()
         r.inf4_y.clear()
+        r.save.clear()
+        r.save.disabled=True
         #self.controller.pressReset()
     def solve(self):
         missingEntry = False # Set to true if an important field is left blank
@@ -168,7 +172,7 @@ class ViewApp(App):
             self.root.ids.probType.highlight()
         data["reynolds"] = self.root.ids.reynolds.text
         # If no Reynolds number specified AND problem type is NOT Stokes
-        if (data["reynolds"] == '') and not(data["type"][:2] == 'S'):
+        if ((data["reynolds"] == '') and not(data["type"][:1] == 'S')):
             missingEntry = True
             self.root.ids.reynolds.highlight()
         data["state"] = self.root.ids.stateType.text
@@ -195,6 +199,9 @@ class ViewApp(App):
         #data["outflow"] = [strings]
         # don't solve unless we have all necessary entries
         if not(missingEntry):
+            self.root.ids.save.disabled=False
+            self.root.ids.plot.disabled=False
+            self.root.ids.refine.disabled=False
             #self.controller.pressSolve(data)
             pass
     def getFilename(self):

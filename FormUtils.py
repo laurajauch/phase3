@@ -30,13 +30,13 @@ def energyPerCell(form):
 #    form.addWallCondition(newWall)
 
 
-def addInflow(form, newInflow, newVelocity):
-    form.addInflowCondition(newInflow, newVelocity)
+#def addInflow(form, newInflow, newVelocity):
+    #form.addInflowCondition(newInflow, newVelocity)
 
 
-def addOutflow(form, newStringOutflow):
-    newOutflow = ConditionParser(newStringOutflow)
-    form.addOutflowCondition(newOutflow)
+#def addOutflow(form, newStringOutflow):
+    #newOutflow = ConditionParser(newStringOutflow)
+    #form.addOutflowCondition(newOutflow)
 
 
 # Create ----------------------------------------------------------------------
@@ -66,11 +66,13 @@ def formInit(data):
 	x0 = [0.,0.]
 	polyOrder = data.getVariable("polyOrder")
 	#numInflows = data.getVariable("numInflows")
-	inflowRegions = data.getVariable("inflowRegions")
-	inflowX = data.getVariable("inflowX")
-	inflowY = data.getVariable("inflowY")
+	inflowRegionsRaw = data.getVariable("inflowRegions")
+	inflowXRaw = data.getVariable("inflowX")
+	inflowYRaw = data.getVariable("inflowY")
+        (inflowRegions,inflowX,inflowY) = stringToInflows(inflowRegionsRaw,inflowXRaw,inflowYRaw)
 	#numOutflows = data.getVariable("numOutflows")
-	outflowRegions = data.getVariable("outflowRegions")
+	outflowRegionsRaw = data.getVariable("outflowRegions")
+        outflowRegions = stringToOutflows(ouflowRegionsRaw)
 	#numWalls = data.getVariable("numWalls")
 	wallRegions = data.getVariable("wallRegions")
 	meshTopo = MeshFactory.rectilinearMeshTopology(dims, numElements, x0)
@@ -94,14 +96,14 @@ def formInit(data):
 	while i < len(inflowRegions):
 	    inflowFunction = Function.vectorize(inflowX[i], inflowY[i])
 	    if transient:
-	        form.addInflow(inflowRegions[i], timeRamp*inflowFunction)
+	        form.addInflowCondition(inflowRegions[i], timeRamp*inflowFunction)
 	    else:
-	        form.addInflow(inflowRegions[i], inflowFunction)
+	        form.addInflowCondition(inflowRegions[i], inflowFunction)
 	    i += 1
 	    
 	i = 0
 	for i in outflowRegions:
-	    form.addOutflow(i)
+	    form.addOutflowCondition(i)
 	    i += 1  
 	#i = 1
 	#for i in wallRegions:
