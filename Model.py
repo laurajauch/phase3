@@ -39,13 +39,20 @@ class Model(object):
     return: the solved form
     """
     def solve(self, rawData):
-        (valid, errors) = testData(rawData)
+        print("in Model")
+        (valid, errors) = self.testData(rawData)
+        print valid
         try:
             assert valid
-            storeData(rawData)
+            self.storeData(rawData)
+            print "solving"
             self.inputData["form"] = FormUtils.solve(self.inputData)
+            print("finish solve")
             return self.inputData["form"]
-        except:
+        except Exception, e:
+            print "Exception is: "+str(e)
+            for key,value in errors.iteritems():
+                print key + " " + str(value)
             # need way to say controller.setErrors(errors)
             pass
         
@@ -59,7 +66,7 @@ class Model(object):
         errors = ParsingUtils.checkValidInput(rawData)
         valid = True
         for key, value in errors.iteritems():
-            if value is False:
+            if value is True:
                 valid = False
                 break #only need find one error
 
@@ -69,6 +76,7 @@ class Model(object):
     Store the given data in the InputData instance
     """
     def storeData(self, rawData):
+        print "in storeData"
         data = ParsingUtils.formatRawData(rawData)              
         self.inputData.setVariables(data)
 
