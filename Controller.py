@@ -217,9 +217,17 @@ class ViewApp(App):
             missingEntry = True
             self.root.ids.meshDim.highlight()
 
-        # NEED TO FINISH PUTTING INFORMATION IN HERE
         data["inflow"] = []
+
+        """inCondition1 = self.root.ids.inf1.text
+        x1 = self.root.ids.inf1_x.text
+        y1 = self.root.ids.inf1_y.text
+        data["inflow"].append((inCondition1,x1,y1))"""
+
+        
+
         data["outflow"] = []
+
         # don't solve unless we have all necessary entries
         if not(missingEntry):
             self.root.ids.save.disabled=False
