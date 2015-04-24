@@ -52,7 +52,7 @@ class Model(object):
         foo.addInflowCondition(topBoundary,topVelocity)
         foo.solve()
 
-        return Plotter.plot(foo, plotType)
+        Plotter.plot(foo, plotType)
         
     """
     Called when reset is pressed

@@ -1,12 +1,11 @@
 from PyCamellia import *
 from Plotter  import *
 import matplotlib.pyplot as plt
-import StringIO
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 from matplotlib.figure import Figure
 import sys
 import numpy as np
-
+from StringIO import StringIO
 
 
 def plot(form, plotType):
@@ -87,8 +86,7 @@ def plotMesh(mesh):
     plt.title('cavity flow error')
     plt.colorbar()
     plt.axis([xMin, xMax, yMin, yMax])
-    return plt.gcf()
-
+    plt.savefig('plot.png')
 
 
 def plotError(error, mesh):
@@ -132,7 +130,7 @@ def plotError(error, mesh):
     plt.title('cavity flow error')
     plt.colorbar()
     plt.axis([xMin, xMax, yMin, yMax])
-    return plt.gcf()
+    plt.savefig('plot.png')
 
 
 
@@ -185,7 +183,7 @@ def plotFunction(f,mesh):
     plt.title(title)
     plt.colorbar()
     plt.axis([xMin, xMax, yMin, yMax])
-    return plt.gcf()
+    plt.savefig('plot.png')
 
      
 

@@ -13,6 +13,7 @@ from kivy.lang import Builder
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from kivy.properties import *
+from kivy.core.image import Image as CoreImage
 import re
 """
 Controller
@@ -33,21 +34,27 @@ class Controller(object):
 
 
     """
+    Convert a matplotlib.Figure to PNG image.:returns: PNG image bytes
+    """
+    #def fig2png(self, fig):
+     #   data = StringIO.StringIO()
+      #  canvas = FigureCanvasAgg(fig)
+      #  canvas.print_png(data)
+      #  return data.getvalue()
+
+
+
+
+    """
     Do this when plot is pressed.
     """
     def pressPlot(self, plotType):
-        self.fig = self.model.plot(plotType)
-        return fig2png(self.fig)
         
+        self.model.plot(plotType)
+       
+  
         
-    """
-    Convert a matplotlib.Figure to PNG image.:returns: PNG image bytes
-    """
-    def fig2png(fig):
-        data = StringIO.StringIO()
-        canvas = FigureCanvasAgg(fig)
-        canvas.print_png(data)
-        return data.getvalue()
+ 
       
     """
     Do this when reset is pressed.
@@ -126,7 +133,8 @@ class ViewApp(App):
         self.root.status  = "Refined."
     def plot(self, input):
         self.root.status = "Plotting..."
-        self.root.plot_image = self.controller.pressPlot(input)
+        self.controller.pressPlot(input)
+        self.root.plot_image = 'plot.png'
         self.root.status = "Plotted."
 
     def reset(self):
