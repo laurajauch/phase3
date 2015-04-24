@@ -225,10 +225,9 @@ class ViewApp(App):
             self.root.ids.save.disabled=False
             self.root.ids.plot.disabled=False
             self.root.ids.refine.disabled=False
-            #self.controller.pressSolve(data)
+            self.controller.pressSolve(data)
             pass
         self.root.status = "Solved."
-        self.controller.pressSolve(data)
 
     def getFilename(self):
         filename = self.root.ids.filename.text
