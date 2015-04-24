@@ -147,10 +147,10 @@ def steadyNonlinearInit(spaceDim, re, dims, numElements, polyOrder):
 
 # Refine----------------------------------------------------------------------
 def autoRefine(data,refType): # refType: 0 is h, 1 is p      why pass data not form?
-	ret = init(data)	
+	ret = formInit(data)
         form = ret[0] 
         fType = ret[1]	
-
+        print "executing refine"
         if refType == H:
             if fType == STEADYLINEAR or fType == TRANSIENTLINEAR:
                 linearHAutoRefine(form)
