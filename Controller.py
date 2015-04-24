@@ -134,7 +134,7 @@ class ViewApp(App):
     def plot(self, input):
         self.root.status = "Plotting..."
         self.controller.pressPlot(input)
-        self.root.plot_image = 'plot.png'
+        self.root.plot_image = '/tmp/plot.png'
         self.root.status = "Plotted."
 
     def reset(self):
