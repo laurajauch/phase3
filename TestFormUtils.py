@@ -1,6 +1,7 @@
 from PyCamellia import *
 from FormUtils import *
 from InputData import *
+from DataUtils import *
 import unittest
 
 """
@@ -31,25 +32,6 @@ H_right = Function.heaviside(1.0-rampWidth);
 ramp = (1-H_right) * H_left + (1./rampWidth) * (1-H_left) * x + (1./rampWidth) * H_right * (1-x)
 zero = Function.constant(0)
 topVelocity = Function.vectorize(ramp,zero)
-
-"""
-A quick method to make some test data.
-Populate the given instance of InputData
-with everything but stokes, reynolds, and transient.
-"""
-def populateInputData(data):
-    data.addVariable("meshDimensions", dims)
-    data.addVariable("numElements", numElements)
-    data.addVariable("polyOrder",  1)
-    data.addVariable("numInflows",  1)
-    data.addVariable("inflowRegions",  [stringToFilter("x<8")])
-    data.addVariable("inflowX",  [stringToFunction("4")])
-    data.addVariable("inflowY",  [stringToFunction("9")])
-    data.addVariable("numOutflows",  1)
-    data.addVariable("outflowRegions",  [stringToFilter("x<0")])
-    data.addVariable("numWalls",  1)
-    data.addVariable("wallRegions",  [stringToFilter("y>9")])
-
 
 """
 Test each function in SolutionFns.
