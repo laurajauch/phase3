@@ -21,11 +21,12 @@ class InputData:
     meshDimensions = [float, float]
     numElements = [int, int]
     polyOrder = int
-    inflowRegions = [strings]
-    inflowX = [strings]
-    inflowY = [strings]
-    outflowRegions = [strings]
-    wallRegions = [strings]
+    inflow = strings [(inflowRegions, inflowX, inflowY)]
+    inflowRegions = SpacialFilter
+    inflowX = SpacialFilter
+    inflowY = SpacialFilter
+    outflowRegions = SpacialFilter
+    outflow = strings [outflowRegions]
     """
     def __init__(self):
         self.vars = {}

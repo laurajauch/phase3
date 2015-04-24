@@ -27,6 +27,9 @@ data["x0"] = [0.,0.]
 data["delta_k"] = 1
 data["dt"] = 0.1
 data["x0"] = [0.,0.]
+data["inflow"] = [(data["inflowRegions"], data["inflowX"], data["inflowY"])] #raw
+data["outflow"] = [data["outflowRegions"]] #raw
+
 
 """
 An accessor for expectedVars

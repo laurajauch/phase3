@@ -26,7 +26,7 @@ def stringToElements(inputstr):
         print(str(e))
         raise ValueError
 
-# the following 3 methods are not correct yet
+# the following 2 methods are not correct yet
 """
 rawInflows: tuple containing strings region, x velocity, and y velocity
 returns tuple containing a filter and two functions
@@ -114,8 +114,6 @@ def formatRawData(rawData):
         #outflow.append(stringToOutflows(item))
     data["outflow"] = outflow
     
-    # wallRegions: string
-    # ?
     return data
 
 #--------------------------------------------------------------
@@ -161,7 +159,7 @@ def checkValidInput(rawData):
     except:
         errors["meshDimensions"] = True
             
-    # inflow strings (condition, xVelocity, yVelocity)
+    # inflow strings [(condition, xVelocity, yVelocity)]
     try:
         if len(rawData["inflow"]) > 0:
             for item in rawData["inflow"]:
@@ -174,7 +172,7 @@ def checkValidInput(rawData):
     except:
         errors["inflow"] = True
                 
-    # outflow: strings (condition, xVelocity, yVelocity)
+    # outflow: strings [condition]
     try:
         if len(rawData["outflow"]) > 0:
             for item in rawData["outflow"]:
