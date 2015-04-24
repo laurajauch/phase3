@@ -32,31 +32,37 @@ rawInflows: tuple containing strings region, x velocity, and y velocity
 returns tuple containing a filter and two functions
 """
 def stringToInflows((rawRegion, rawXvel, rawYvel)):
+
     try:
-        region = parseCondition(rawRegion) 
-    except:
+        region = (parseCondition(rawRegion))
+    except Exception,e:
+        print "Inflow 1: "+str(e)
         raise ValueError
         
     try:
-        xvel = parseFunction(rawXvel) 
-    except:
+        for items in rawXvel:
+            xvel = (parseFunction(rawXvel))
+    except Exception,e:
+        print "Inflow 2: "+str(e)
         raise ValueError
     
     try:
-        yvel = parseFunction(rawYval) 
-    except:
+        for items in rawYvel:
+            yvel = (parseFunction(rawYval))
+    except Exception,e:
+        print "Inflow 3: "+str(e)
         raise ValueError
     
     return (region, xvel, yvel)
 
 def stringToOutflows(rawRegions):
-    Regions = []
-    for region in rawRegions:
-        try:
-            Regions.append(parseCondition(region)) 
-        except:
-            raise ValueError
-        return Regions
+    try:
+        for region in rawRegions:
+            ret = parseCondition(region)
+    except Exception,e:
+        print "Outflow: "+str(e)
+        raise ValueError
+    return ret
 
 """
 Precondition: data is valid
@@ -92,27 +98,28 @@ def formatRawData(rawData):
     data["polyOrder"] = int(rawData["polyOrder"])
         
     # inflowRegions, inflowX, inflowY: string
-    #regions = []
-    #xVel = []
-    #yVel = []
+    regions = []
+    xVel = []
+    yVel = []
     inflow = []
     # NEED TO FIX
-    #for item in rawData["inflow"]:
-    #    (region, x, y) = item
-    #    regions.append(region)
-    #    xVel.append(x)
-    #    yVel.append(y)
-    #data["inflowRegions"] = regions
-    #data["inflowX"] = xVel
-    #data["inflowY"] = yVel
-        #inflow.append(stringToInflows(item))
-    data["inflow"] = inflow
+    for item in rawData["inflow"]:
+        (region, x, y) = stringToInflows(item)
+        regions.append(region)
+        xVel.append(x)
+        yVel.append(y)
+    data["inflowRegions"] = regions
+    data["inflowX"] = xVel
+    data["inflowY"] = yVel
+    data["inflows"] = rawData["inflow"]
+
     
     # outflowRegions: string
     outflow = []
-    #for item in rawData["outflow"]:
-        #outflow.append(stringToOutflows(item))
-    data["outflow"] = outflow
+    for item in rawData["outflow"]:
+        outflow.append(stringToOutflows(item))
+    data["outflowRegions"] = outflow
+    data["outflows"] = rawData["outflow"]
     
     return data
 

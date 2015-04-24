@@ -61,12 +61,18 @@ def formInit(data):
     numElements = data.getVariable("numElements")
     x0 = [0.,0.]
     polyOrder = data.getVariable("polyOrder")
-    inflowRegionsRaw = data.getVariable("inflowRegions")
+
+    inflowRegions = data.getVariable("inflowRegions")
+    inflowX = data.getVariable("inflowX")
+    inflowY = data.getVariable("inflowY")
+    outflowRegions = data.getVariable("outflowRegions")
+
+    """inflowRegionsRaw = data.getVariable("inflowRegions")
     inflowXRaw = data.getVariable("inflowX")
     inflowYRaw = data.getVariable("inflowY")
-    (inflowRegions,inflowX,inflowY) = stringToInflows(inflowRegionsRaw,inflowXRaw,inflowYRaw)
+    (inflowRegions,inflowX,inflowY) = stringToInflows((inflowRegionsRaw,inflowXRaw,inflowYRaw))
     outflowRegionsRaw = data.getVariable("outflowRegions")
-    outflowRegions = stringToOutflows(ouflowRegionsRaw)
+    outflowRegions = stringToOutflows(outflowRegionsRaw)"""
     meshTopo = MeshFactory.rectilinearMeshTopology(dims, numElements, x0)
     #wallRegions = determineAndAddWallConditions(form, 
 

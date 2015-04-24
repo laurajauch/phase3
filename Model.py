@@ -73,9 +73,9 @@ class Model(object):
             assert valid
             self.storeData(rawData)
             print "solving"
-            self.inputData["form"] = FormUtils.solve(self.inputData)
+            self.inputData.addVariable("form",FormUtils.solve(self.inputData))
             print("finish solve")
-            return self.inputData["form"]
+            return self.inputData.getVariable(["form"])
         except Exception, e:
             print "Exception is: "+str(e)
             for key,value in errors.iteritems():
