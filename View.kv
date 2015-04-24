@@ -218,7 +218,7 @@ Widget:
 			on_release: dropdown.select('Navier-Stokes »')
 			on_release: reynolds.disabled = False
 			on_release: transient.disabled = True
-			on_release: dropdown1.select('Steady State »'); stateType.clear()
+			on_release: stateType.clear(); dropdown1.select('Steady State »')
 
 	#State selection dropdown menu
 	PyButton:
