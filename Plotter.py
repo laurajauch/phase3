@@ -12,35 +12,35 @@ def plot(form, plotType):
 
     if plotType == "Mesh":
         mesh = form.solution().mesh()
-        return plotMesh(mesh)
+        plotMesh(mesh)
 
 
 
     elif plotType == "Error":
         mesh = form.solution().mesh();
         error = form.solution().energyErrorPerCell()
-        return plotError(error, mesh)
+        plotError(error, mesh)
 
 
     elif plotType == "Stream Function":
         streamSolution = form.streamSolution()
         streamSolution.solve
         streamFunction = Function.solution(form.streamPhi(), streamSolution)
-        return plotFunction(streamFunction, streamSolution.mesh())
+        plotFunction(streamFunction, streamSolution.mesh())
 
 
     elif plotType == "u1":
 
         u1_soln = Function.solution(form.u(1),form.solution())
-        return plotFunction(u1_soln, form.solution().mesh())
+        plotFunction(u1_soln, form.solution().mesh())
 
     elif plotType == "u2":
         u2_soln = Function.solution(form.u(2),form.solution())
-        return plotFunction(u2_soln, form.solution().mesh())
+        plotFunction(u2_soln, form.solution().mesh())
 
     elif plotType == "p":
         p_soln = Function.solution(form.p(), form.solution())
-        return plotFunction(p_soln, form.solution().mesh())
+        plotFunction(p_soln, form.solution().mesh())
 
 
 
@@ -48,7 +48,7 @@ def plot(form, plotType):
 def plotMesh(mesh):
     num_x = 10
     num_y = 10
-    plt.figure(1)
+    plt.figure(1, figsize=(426/96,320/96))
     plt.subplot(111)
     zList = [] # should have tuples (zVals, (x_min,x_max), (y_min,y_max)) -- one for each cell
     activeCellIDs = mesh.getActiveCellIDs()
@@ -86,13 +86,13 @@ def plotMesh(mesh):
     plt.title('cavity flow error')
     plt.colorbar()
     plt.axis([xMin, xMax, yMin, yMax])
-    plt.savefig('plot.png')
+    plt.savefig('/tmp/plot.png',dpi=96)
 
 
 def plotError(error, mesh):
     num_x = 10
     num_y = 10
-    plt.figure(1)
+    plt.figure(1, figsize=(426/96,320/96))
     plt.subplot(111)
     zList = [] # should have tuples (zVals, (x_min,x_max), (y_min,y_max)) -- one for each cell
     activeCellIDs = mesh.getActiveCellIDs()
@@ -130,13 +130,13 @@ def plotError(error, mesh):
     plt.title('cavity flow error')
     plt.colorbar()
     plt.axis([xMin, xMax, yMin, yMax])
-    plt.savefig('plot.png')
+    plt.savefig('/tmp/plot.png',dpi=96)
 
 
 
 
 def plotFunction(f,mesh):
-    plt.figure(1)
+    plt.figure(1, figsize=(426/96,320/96))
     plt.subplot(111)
     num_x = 10
     num_y = 10
@@ -180,10 +180,10 @@ def plotFunction(f,mesh):
                    extent=[xMinLocal, xMaxLocal, yMinLocal, yMaxLocal],
                    interpolation='bicubic', origin='lower')
 
-    plt.title(title)
+    plt.title('cavity flow error')
     plt.colorbar()
     plt.axis([xMin, xMax, yMin, yMax])
-    plt.savefig('plot.png')
+    plt.savefig('/tmp/plot.png',dpi=96)
 
      
 

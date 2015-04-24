@@ -25,7 +25,7 @@ Widget:
 			id: plot
 			source: root.plot_image
 			pos: (370, 270)
-			size: (426, 420)
+			size: (426, 320)
 
 
 	Label:
@@ -60,7 +60,7 @@ Widget:
 	Label:
 		id: status
 		text: root.status
-		pos: (510, 200)
+		pos: (560, 200)
 
 	Label:
 		text: 'Energy Error: '
@@ -170,13 +170,15 @@ Widget:
 		on_release: app.load()
 
 	#File save button, should save current solution
-	Button:
+	PyButton:
 		id: save
 		background_color: 
 		height: 5
 		font_size: 15
 		font_name: 'DroidSans'
 		text: "Save"
+		reset_text: "Save"
+		disabled: True
 		pos: (580, 50)
 		color: (1, 1, 1, 1)
 		on_release: app.save()
@@ -216,7 +218,7 @@ Widget:
 			on_release: dropdown.select('Navier-Stokes »')
 			on_release: reynolds.disabled = False
 			on_release: transient.disabled = True
-			on_release: dropdown1.select('Steady State »'); stateType.clear()
+			on_release: stateType.clear(); dropdown1.select('Steady State »')
 
 	#State selection dropdown menu
 	PyButton:
@@ -260,6 +262,7 @@ Widget:
 		height: '30dp'
 		text: 'Refine »'
 		reset_text: 'Refine »'
+		disabled: True
 		on_release: dropdown2.open(self)
 		size_hint_y: None
 
@@ -294,6 +297,7 @@ Widget:
 		height: '30dp'
 		text: 'Plot »'
 		reset_text: 'Plot »'
+		disabled: True
 		on_release: dropdown3.open(self)
 		size_hint_y: None
 
