@@ -26,19 +26,13 @@ def energyPerCell(form):
             print("Energy error for cell %i: %0.3f" % (cellID, perCellError[cellID]))
     return perCellError
 
-
-#def addWall(form, newWall):
-#    form.addWallCondition(newWall)
-
-
-#def addInflow(form, newInflow, newVelocity):
-    #form.addInflowCondition(newInflow, newVelocity)
-
-
-#def addOutflow(form, newStringOutflow):
-    #newOutflow = ConditionParser(newStringOutflow)
-    #form.addOutflowCondition(newOutflow)
-
+"""
+Add wall conditions. Wall conditions are everywhere that
+is not an inflow or outflow condition.
+"""
+def determineAndAddWallConditions(form, newWall):
+    # do stuff to determine what the wall conditions are and make them
+    form.addWallCondition(newWall)
 
 # Create ----------------------------------------------------------------------
 """
@@ -67,17 +61,14 @@ def formInit(data):
     numElements = data.getVariable("numElements")
     x0 = [0.,0.]
     polyOrder = data.getVariable("polyOrder")
-    #numInflows = data.getVariable("numInflows")
     inflowRegionsRaw = data.getVariable("inflowRegions")
     inflowXRaw = data.getVariable("inflowX")
     inflowYRaw = data.getVariable("inflowY")
     (inflowRegions,inflowX,inflowY) = stringToInflows(inflowRegionsRaw,inflowXRaw,inflowYRaw)
-    #numOutflows = data.getVariable("numOutflows")
     outflowRegionsRaw = data.getVariable("outflowRegions")
     outflowRegions = stringToOutflows(ouflowRegionsRaw)
-    #numWalls = data.getVariable("numWalls")
-    #wallRegions = data.getVariable("wallRegions")
     meshTopo = MeshFactory.rectilinearMeshTopology(dims, numElements, x0)
+    #wallRegions = determineAndAddWallConditions(form, 
 
     #initialize type to 0
     fType = 0

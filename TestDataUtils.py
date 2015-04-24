@@ -16,7 +16,8 @@ class TestDataUtils(unittest.TestCase):
     def test_getDataListAndExpectedVars(self):
         for key in expectedVars:
             self.assertIsNotNone(expectedData[key])
-            
+           
+ 
     """Test populateInputData"""
     def test_populateInputData(self):
         testInputData = InputData()
@@ -28,15 +29,79 @@ class TestDataUtils(unittest.TestCase):
 
     """Test generateForm"""
     def test_generateForm(self):
-        pass
+        testNStokes = generateForm("nStokes") 
+        testTransient = generateForm("transient")
+        testSteady = generateForm("steady")
+
 
     """Test generateFormStokesTransient"""
     def test_generateFormStokesTransient(self):
-        pass
+        return
+        testForm = generateFormStokesTransient()
+        
+        transient = True
+        x0 = expectedData["x0"]
+        delta_k = expectedData["delta_k"]
+        mu = expectedData["mu"]
+        spaceDim = data["spaceDim"]
+        useConformingTraces = expectedData["useConformingTraces"]
+        dims = expectedData["dims"]
+        numElements = expectedData["numElements"]
+        polyOrder = expectedData["polyOrder"]
+        data["dt"] = 0.1
+        meshTopo = MeshFactory.rectilinearMeshTopology(dims,numElements,x0)
+        expectedForm = StokesVGPFormulation(spaceDim, useConformingTraces, mu, transient, dt)    
+        expectedForm.initializeSolution(meshTopo, polyOrder, delta_k)
+        expectedForm.addZeroMeanPressureCondition()
+        
+        expectedMesh = expectedForm.solution().mesh()
+        expectedEnergyError = expectedForm.solution().energyErrorTotal()
+        expectedElementCount = expectedMesh.numActiveElements()
+        expectedGlobalDofCount = expectedMesh.numGlobalDofs()
+        
+        testMesh = testForm.solution().mesh()
+        testEnergyError = testForm.solution().energyErrorTotal()
+        testElementCount = testMesh.numActiveElements()
+        testGlobalDofCount = testMesh.numGlobalDofs()
+        
+        self.assertEqual(4, testElementCount, expectedElementCount)
+        self.assertEqual(634, testGlobalDofCount, expectedGlobalDofCount)
+        self.assertEqual(0.000, testEnergyError, expectedEnergyError)     
+        
 
     """Test generateFormStokesSteady"""
     def test_generateFormStokesSteady(self):
-        pass
+        return
+        testForm = generateFormStokesSteady()
+        
+        x0 = expectedData["x0"]
+        delta_k = expectedData["delta_k"]
+        mu = expectedData["mu"]
+        spaceDim = data["spaceDim"]
+        useConformingTraces = expectedData["useConformingTraces"]
+        dims = expectedData["dims"]
+        numElements = expectedData["numElements"]
+        polyOrder = expectedData["polyOrder"]
+        meshTopo = MeshFactory.rectilinearMeshTopology(dims,numElements,x0)
+        expectedForm = StokesVGPFormulation(spaceDim,useConformingTraces,mu)
+        expectedForm.initializeSolution(meshTopo,polyOrder,delta_k)
+        expectedForm.addZeroMeanPressureCondition()
+        expectedForm.solve()
+
+        expectedMesh = expectedForm.solution().mesh()
+        expectedEnergyError = expectedForm.solution().energyErrorTotal()
+        expectedElementCount = expectedMesh.numActiveElements()
+        expectedGlobalDofCount = expectedMesh.numGlobalDofs()
+
+        testMesh = testForm.solution().mesh()
+        testEnergyError = testForm.solution().energyErrorTotal()
+        testElementCount = testMesh.numActiveElements()
+        testGlobalDofCount = testMesh.numGlobalDofs()
+
+        self.assertEqual(4, testElementCount, expectedElementCount)
+        self.assertEqual(634, testGlobalDofCount, expectedGlobalDofCount)
+        self.assertEqual(0.000, testEnergyError, expectedEnergyError)
+
 
     """Test generateFormNavierStokesSteady"""
     def test_generateFormNavierStokesSteady(self):
@@ -54,13 +119,13 @@ class TestDataUtils(unittest.TestCase):
         expectedForm.addZeroMeanPressureCondition()
         expectedForm.solve()
 
-        expectedMesh = form.solution().mesh()
-        expectedEnergyError = form.solution().energyErrorTotal()
+        expectedMesh = expectedForm.solution().mesh()
+        expectedEnergyError = expectedForm.solution().energyErrorTotal()
         expectedElementCount = expectedMesh.numActiveElements()
         expectedGlobalDofCount = expectedMesh.numGlobalDofs()
 
-        testMesh = foo.solution().mesh()
-        testEnergyError = test.solution().energyErrorTotal()
+        testMesh = testForm.solution().mesh()
+        testEnergyError = testForm.solution().energyErrorTotal()
         testElementCount = testMesh.numActiveElements()
         testGlobalDofCount = testMesh.numGlobalDofs()
 
@@ -68,5 +133,6 @@ class TestDataUtils(unittest.TestCase):
         self.assertEqual(634, testGlobalDofCount, expectedGlobalDofCount)
         self.assertEqual(0.000, testEnergyError, expectedEnergyError)
     
+
     if __name__ == '__main__':
         unittest.main()
