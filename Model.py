@@ -20,7 +20,8 @@ class Model(object):
     Called when refine is pressed
     """
     def refine(self, rtype): # type: 0 is h, 1 is p
-        FormUtils.autoRefine(data, rtype)
+        self.inputData.addVariable("form",FormUtils.autoRefine(self.inputData, rtype))
+        print "done refine"
             
     """
     Called when plot is pressed

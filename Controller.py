@@ -168,6 +168,7 @@ class ViewApp(App):
         r.inf4_y.clear()
         r.save.clear()
         r.save.disabled=True
+        r.filename.clear()
         #self.controller.pressReset()
 
 
@@ -177,6 +178,7 @@ class ViewApp(App):
         self.root.status = "Solving..."
         missingEntry = False # Set to true if an important field is left blank
         data = {}
+        r = self.root.ids
         data["type"] = self.root.ids.probType.text
         # Still says 'Problem Type' so nothing was selected
         if data["type"][:1] == 'P': 
@@ -217,17 +219,30 @@ class ViewApp(App):
             missingEntry = True
             self.root.ids.meshDim.highlight()
 
-        # NEED TO FINISH PUTTING INFORMATION IN HERE
         data["inflow"] = []
+
+        data["inflow"].append((r.inf1.text,r.inf1_x.text,r.inf1_y.text))
+        data["inflow"].append((r.inf2.text,r.inf2_x.text,r.inf2_y.text))
+        data["inflow"].append((r.inf3.text,r.inf3_x.text,r.inf3_y.text))
+        data["inflow"].append((r.inf4.text,r.inf4_x.text,r.inf4_y.text))
+
         data["outflow"] = []
+
+        data["outflow"].append(r.out1.text)
+        data["outflow"].append(r.out2.text)
+        data["outflow"].append(r.out3.text)
+        data["outflow"].append(r.out4.text)
+        
         # don't solve unless we have all necessary entries
         if not(missingEntry):
             self.root.ids.save.disabled=False
             self.root.ids.plot.disabled=False
             self.root.ids.refine.disabled=False
             self.controller.pressSolve(data)
-            pass
-        self.root.status = "Solved."
+            self.root.status = "Solved."
+            return
+        else:
+            self.root.status = "Missing entries."
 
     def getFilename(self):
         filename = self.root.ids.filename.text
