@@ -168,6 +168,7 @@ class ViewApp(App):
         r.inf4_y.clear()
         r.save.clear()
         r.save.disabled=True
+        r.filename.clear()
         #self.controller.pressReset()
 
 
@@ -224,8 +225,6 @@ class ViewApp(App):
         data["inflow"].append((r.inf2.text,r.inf2_x.text,r.inf2_y.text))
         data["inflow"].append((r.inf3.text,r.inf3_x.text,r.inf3_y.text))
         data["inflow"].append((r.inf4.text,r.inf4_x.text,r.inf4_y.text))
-
-        
 
         data["outflow"] = []
 

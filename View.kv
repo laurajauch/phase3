@@ -170,13 +170,15 @@ Widget:
 		on_release: app.load()
 
 	#File save button, should save current solution
-	Button:
+	PyButton:
 		id: save
 		background_color: 
 		height: 5
 		font_size: 15
 		font_name: 'DroidSans'
 		text: "Save"
+		reset_text: "Save"
+		disabled: True
 		pos: (580, 50)
 		color: (1, 1, 1, 1)
 		on_release: app.save()
@@ -260,6 +262,7 @@ Widget:
 		height: '30dp'
 		text: 'Refine »'
 		reset_text: 'Refine »'
+		disabled: True
 		on_release: dropdown2.open(self)
 		size_hint_y: None
 
@@ -294,6 +297,7 @@ Widget:
 		height: '30dp'
 		text: 'Plot »'
 		reset_text: 'Plot »'
+		disabled: True
 		on_release: dropdown3.open(self)
 		size_hint_y: None
 
