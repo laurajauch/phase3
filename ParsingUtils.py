@@ -1,7 +1,7 @@
 import re
 import os.path
 from FunctionParser import *
-from ConditionParser import *
+import ConditionParser
 
 """
 Some methods for formatting data input
@@ -26,15 +26,13 @@ def stringToElements(inputstr):
         print(str(e))
         raise ValueError
 
-# the following 2 methods are not correct yet
 """
 rawInflows: tuple containing strings region, x velocity, and y velocity
 returns tuple containing a filter and two functions
 """
-def stringToInflows((rawRegion, rawXvel, rawYvel)):
-
+def stringToInflows(rawRegion, rawXvel, rawYvel): #(rawRegion, rawXvel, rawYvel)
     try:
-        region = (parseCondition(rawRegion))
+        region = (ConditionParser.parseCondition(rawRegion))
     except Exception,e:
         print "Inflow 1: "+str(e)
         raise ValueError
@@ -48,17 +46,21 @@ def stringToInflows((rawRegion, rawXvel, rawYvel)):
     
     try:
         for items in rawYvel:
-            yvel = (parseFunction(rawYval))
+            yvel = (parseFunction(rawYvel))
     except Exception,e:
         print "Inflow 3: "+str(e)
         raise ValueError
     
     return (region, xvel, yvel)
 
+"""
+rawRegions: string representation of the region
+returns the SpacialFilter for the outflow
+"""
 def stringToOutflows(rawRegions):
     try:
         for region in rawRegions:
-            ret = parseCondition(region)
+            ret = ConditionParser.parseCondition(region)
     except Exception,e:
         print "Outflow: "+str(e)
         raise ValueError
@@ -104,7 +106,7 @@ def formatRawData(rawData):
     inflow = []
     # NEED TO FIX
     for item in rawData["inflow"]:
-        (region, x, y) = stringToInflows(item)
+        (region, x, y) = stringToInflows(*item)
         regions.append(region)
         xVel.append(x)
         yVel.append(y)
@@ -170,10 +172,6 @@ def checkValidInput(rawData):
     try:
         if len(rawData["inflow"]) > 0:
             for item in rawData["inflow"]:
-                #    (condition, xVel, yVel) = item
-                #    stringToFilter(str(condition))
-                #    parseFunction(str(xVel))
-                #    parseFunction(str(yVel)) 
                 stringToInflow(item)
         errors["inflow"] = False
     except:
@@ -183,10 +181,6 @@ def checkValidInput(rawData):
     try:
         if len(rawData["outflow"]) > 0:
             for item in rawData["outflow"]:
-                #    (condition, xVel, yVel) = item
-                #    stringToFilter(str(condition))
-                #    parseFunction(str(xVel))
-                #    parseFunction(str(yVel))
                 stringToOutflow(item)
         errors["outflow"] = False
     except:

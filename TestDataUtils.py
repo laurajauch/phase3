@@ -36,7 +36,6 @@ class TestDataUtils(unittest.TestCase):
 
     """Test generateFormStokesTransient"""
     def test_generateFormStokesTransient(self):
-        return
         testForm = generateFormStokesTransient()
         
         transient = True
@@ -71,7 +70,6 @@ class TestDataUtils(unittest.TestCase):
 
     """Test generateFormStokesSteady"""
     def test_generateFormStokesSteady(self):
-        return
         testForm = generateFormStokesSteady()
         
         x0 = expectedData["x0"]
@@ -105,7 +103,6 @@ class TestDataUtils(unittest.TestCase):
 
     """Test generateFormNavierStokesSteady"""
     def test_generateFormNavierStokesSteady(self):
-        return
         testForm = generateFormNavierStokesSteady()
         
         dims = expectedData["dims"]
