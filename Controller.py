@@ -68,7 +68,7 @@ class Controller(object):
     """
     def pressSolve(self, data):
         results = self.model.solve(data)
-        print str((type(results)))
+        print(type(results))
         return results # either a form or errors
             
     """
@@ -300,11 +300,15 @@ class ViewApp(App):
                 self.setErrors(results)
             else:
                 print(type(results))
-                
+                mesh = results.solution().mesh()
                 if(data["stokes"]):
                     self.root.energyError = str(results.solution().energyErrorTotal())
+                    self.root.degreesFreedom = str(mesh.numGlobalDofs())
+                    self.root.numElements = str(mesh.numActiveElements())
                 else:
                     self.root.energyError = str(results.solutionIncrement().energyErrorTotal())
+                    self.root.degreesFreedom = str(mesh.numGlobalDofs())
+                    self.root.numElements = str(mesh.numActiveElements())
             self.root.status = "Solved."
             return
         else:
@@ -320,7 +324,7 @@ class ViewApp(App):
         data = self.controller.pressLoad(filename)
     def save(self):
         filename = self.getFilename()
-        #self.controller.pressSave(filename)
+        self.controller.pressSave(filename)
 
     """
     Set the input errors on the GUI
