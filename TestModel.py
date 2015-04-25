@@ -132,7 +132,7 @@ class TestModel(unittest.TestCase):
         form = NavierStokesVGPFormulation(meshTopo, re, polyOrder, delta_k)
         form.addZeroMeanPressureCondition()
         form.addInflowCondition(topBoundary,topVelocity)
-        form.solve()
+        FormUtils.steadyNonlinearSolve(form)
 
         model = Model()
         model.inputData.addVariable("form", form)

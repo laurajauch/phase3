@@ -141,19 +141,15 @@ class Model(object):
     Param: filename The name fo the file to load from
     """
     def load(self, filename):
-        valid = checkValidFile(filename)
         try:           
-            assert valid
-
             loadFile = open(filename)
             memento = pickle.load(loadFile)
             loadFile.close()
-            context.inputData = InputData(True)
-            context.inputData.setMemento(memento)
+            self.inputData.setMemento(memento)
             
-            polyOrder = context.inputData.getVariable("polyOrder")
+            polyOrder = self.inputData.getVariable("polyOrder")
             spaceDim = 2
-            if not context.inputData.getVariable("stokes"):
+            if not self.inputData.getVariable("stokes"):
                 reynolds = context.inputData.getVariable("reynolds")
                 form = NavierStokesVGPForumlation(filename, spaceDim, reynolds, polyOrder)
             else:
@@ -167,6 +163,7 @@ class Model(object):
                 mesh = form.solution().mesh()
                 elementCount = mesh.numActiveElements()
                 globalDofCount = mesh.numGlobalDofs()
+            return self.inputData.vars
                 
         except:
             # do something to tell the GUI that it was an invalid filename
