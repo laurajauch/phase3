@@ -58,6 +58,7 @@ rawRegions: string representation of the region
 returns the SpacialFilter for the outflow
 """
 def stringToOutflows(rawRegions):
+    print(rawRegions)
     try:
         ret = ConditionParser.parseCondition(rawRegions)
     except Exception,e:
@@ -177,9 +178,9 @@ def checkValidInput(rawData):
     for i in range(0,len(rawData["outflows"])):
         try:
             stringToOutflows(rawData["outflows"][i])
-            errors["outflows"][i] = False
+            errors["outflows"].append(False)
         except:
-            errors["outflows"][i] = True
+            errors["outflows"].append(True)
     
     return errors
 
