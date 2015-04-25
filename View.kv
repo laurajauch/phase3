@@ -10,10 +10,13 @@
 	#if red, reset to white:
 	on_press: self.background_color=(1,1,1,1)
 
+<PyDropButton@PyButton>:
+	italic: True
+
 Widget: 
 	plot_image: 'data/jeff sax.jpg'
 	status: ""
-	enerygyError: ""
+	energyError: ""
 	#background color, plotting window
 	canvas:
 		Color:
@@ -194,7 +197,7 @@ Widget:
 		name: 'DropDown'
 		__safe_id: [dropdown.__self__]
 
-	PyButton:
+	PyDropButton:
 		id: probType
 		pos: (56, 527)
 		width: '250dp'
@@ -214,7 +217,7 @@ Widget:
 			text: 'Stokes'
 			size_hint_y: None
 			height: '30dp'
-			on_release: dropdown.select('Stokes »')
+			on_release: dropdown.select('Stokes »'); probType.italic=False
 			on_release: reynolds.disabled = True; reynolds.clear()
 			on_release: transient.disabled = False
 
@@ -222,13 +225,13 @@ Widget:
 			text: 'Navier-Stokes'
 			size_hint_y: None
 			height: '30dp'
-			on_release: dropdown.select('Navier-Stokes »')
+			on_release: dropdown.select('Navier-Stokes »'); probType.italic=False
 			on_release: reynolds.disabled = False
 			on_release: transient.disabled = True
-			on_release: stateType.clear(); dropdown1.select('Steady State »')
+			on_release: stateType.clear(); dropdown1.select('Steady State »'); stateType.italic=False
 
 	#State selection dropdown menu
-	PyButton:
+	PyDropButton:
 		id: stateType
 		pos: (18, 485)
 		width: '100dp'
@@ -252,17 +255,17 @@ Widget:
 			text: 'Steady State'
 			size_hint_y: None
 			height: '30dp'
-			on_release: dropdown1.select('Steady State »')
+			on_release: dropdown1.select('Steady State »'); stateType.italic=False
 		
 		Button:
 			id: transient
 			text: 'Transient'
 			size_hint_y: None
 			height: '30dp'
-			on_release: dropdown1.select('Transient »')
+			on_release: dropdown1.select('Transient »'); stateType.italic=False
 
 	#Refinement selection dropdown menu
-	PyButton:
+	PyDropButton:
 		id: refine
 		pos: (220, 195)
 		width: '130dp'
@@ -286,18 +289,18 @@ Widget:
 			text: 'h-auto'
 			size_hint_y: None
 			height: '30dp'
-			on_release: dropdown2.select('h-auto »')
+			on_release: dropdown2.select('h-auto »'); refine.italic=False
 			on_release: app.refine(self.text)		
 		Button:
 			text: 'p-auto'
 			size_hint_y: None
 			height: '30dp'
-			on_release: dropdown2.select('p-auto »')
+			on_release: dropdown2.select('p-auto »'); refine.italic=False
 			on_release: app.refine(self.text)
 
 
 	#Plotting selection dropdown menu
-	PyButton:
+	PyDropButton:
 		id: plot
 		pos: (220, 146)
 		width: '130dp'
@@ -322,7 +325,7 @@ Widget:
 			text: 'Mesh'
 			size_hint_y: None
 			height: '30dp'
-			on_release: dropdown3.select('Mesh »')
+			on_release: dropdown3.select('Mesh »'); plot.italic=False
 			on_release:app.plot(self.text)
 			
 		
@@ -331,7 +334,7 @@ Widget:
 			text: 'Error'
 			size_hint_y: None
 			height: '30dp'
-			on_release: dropdown3.select('Error »')
+			on_release: dropdown3.select('Error »'); plot.italic=False
 			on_release:app.plot(self.text)
 
 		Button:
@@ -339,7 +342,7 @@ Widget:
 			text: 'u1'
 			size_hint_y: None
 			height: '30dp'
-			on_release: dropdown3.select('u1 »')
+			on_release: dropdown3.select('u1 »'); plot.italic=False
 			on_release:app.plot(self.text)
 
 
@@ -348,7 +351,7 @@ Widget:
 			text: 'u2'
 			size_hint_y: None
 			height: '30dp'
-			on_release: dropdown3.select('u2 »')
+			on_release: dropdown3.select('u2 »'); plot.italic=False
 			on_release:app.plot(self.text)
 
 		Button:
@@ -357,7 +360,7 @@ Widget:
 			font_size: 13
 			size_hint_y: None
 			height: '30dp'
-			on_release: dropdown3.select('Stream Function »')
+			on_release: dropdown3.select('Stream Function »'); plot.italic=False
 			on_release:app.plot(self.text)
 
 		Button:
@@ -365,7 +368,7 @@ Widget:
 			text: 'p'
 			size_hint_y: None
 			height: '30dp'
-			on_release: dropdown3.select('p »')
+			on_release: dropdown3.select('p »'); plot.italic=False
 			on_release:app.plot(self.text)
 
 	#Inflow conditions
