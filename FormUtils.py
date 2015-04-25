@@ -30,7 +30,7 @@ def energyPerCell(form):
 Add wall conditions. Wall conditions are everywhere that
 is not an inflow or outflow condition.
 """
-def determineAndAddWallConditions(form, newWall):
+def determineAndAddWallConditions(form, inflows):
     # do stuff to determine what the wall conditions are and make them
     form.addWallCondition(newWall)
 
@@ -91,22 +91,39 @@ def formInit(data):
         fType = STEADYNONLINEAR
         form = steadyNonlinearInit(spaceDim, Re, dims, numElements, polyOrder)
 
+    allInflows = None
     i = 0
     while i < len(inflowRegions):
         inflowFunction = Function.vectorize(inflowX[i], inflowY[i])
+        if allInflows == None:
+            allInflows = inflowRegions[i]
+        else:
+            allInflows = SpatialFilter.intersectionFilter(allInflows,inflowRegions[i])
+               
         if transient:
-            form.addInflowCondition(inflowRegions[i], timeRamp*inflowFunction)
+            form.addInflowCondition(inflowRegions[i], timeRamp*inflowFunction) 
         else:
             form.addInflowCondition(inflowRegions[i], inflowFunction)
         i += 1
 
+    allOutflows = None
     i = 0
-    for i in outflowRegions:
+    while i < len(outflowRegions):
+        if allOutflows == None:
+            allOutflows = outflowRegions[i]
+        else:
+            allOutflows = SpatialFilter.intersectionFilter(allOutflows,outflowRegions[i])
         form.addOutflowCondition(i)
         i += 1  
-    #i = 1
-    #for i in wallRegions:
-        #form.addWall(i)
+    
+    #add wall conditions
+    if(allInflows != None and allOutflows != None):
+        form.addWallCondition(SpatialFilter.negatedFilter(allInflows | allOutflows))
+    elif(allInflows != None and allOutflows == None):
+        form.addWallCondition(SpatialFilter.negatedFilter(allInflows))
+
+    elif(allInflows == None and allOutflows != None):
+        form.addWallCondition(SpatialFilter.negatedFilter(allOutflows))
 
     return (form,fType)
 
