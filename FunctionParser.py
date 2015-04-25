@@ -114,14 +114,14 @@ def parse(input):
             ops.pop(i)
             i -=1
         else:
-            if(isinstance(input[i],str)):
+            if(isinstance(terms[i],str)):
                 if (terms[i] == "x"):
                     terms[i] = Function.xn(1)
                 elif(terms[i] == "y"):
                     terms[i] = Function.yn(1)
         i+=1
 
-    if(isinstance(input[i],str)): #this is for the last entry in terms
+    if(isinstance(terms[i],str)): #this is for the last entry in terms
                 if (terms[i] == "x"):
                     terms[i] = Function.xn(1)
                 elif(terms[i] == "y"):
