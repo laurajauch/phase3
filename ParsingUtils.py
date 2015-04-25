@@ -168,9 +168,9 @@ def checkValidInput(rawData):
     for i in range(0,len(rawData["inflows"])):
         try:
             stringToInflows(rawData["inflows"][i])
-            errors["inflows"][i] = False
+            errors["inflows"].append(False)
         except:
-            errors["inflows"][i] = True
+            errors["inflows"].append(True)
                 
     errors["outflows"] = []
     # outflow: strings [condition]
