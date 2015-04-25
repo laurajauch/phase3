@@ -59,11 +59,7 @@ class Controller(object):
     Do this when solve is pressed.
     """
     def pressSolve(self, data):
-        results = self.model.solve(data) # either a form or errors
-        if isinstance(results,dict): # if it's a dict of errors
-            setErrors(results)
-        else:
-            return results # the solved form
+        return self.model.solve(data) # either a form or errors
             
     """
     Do this when load is pressed.
@@ -80,12 +76,7 @@ class Controller(object):
 
 # Screen Accessors & Mutators ------------------------------------
     
-    """
-    Set the input errors on the GUI
-    errors: A map from field to boolean, True if error, False if no error
-    """
-    def setErrors(self, errors):
-        pass
+        
 
 
 
@@ -287,7 +278,9 @@ class ViewApp(App):
             self.root.ids.save.disabled=False
             self.root.ids.plot.disabled=False
             self.root.ids.refine.disabled=False
-            self.controller.pressSolve(data)
+            results = self.controller.pressSolve(data)
+            if isinstance(results,dict): # if it's a dict of errors
+                setErrors(results)
             self.root.status = "Solved."
             return
         else:
@@ -305,6 +298,48 @@ class ViewApp(App):
         filename = self.getFilename()
         #self.controller.pressSave(filename)
 
+    """
+    Set the input errors on the GUI
+    errors: A map from field to boolean, True if error, False if no error
+    """
+    def setErrors(self, errors):
+        r = self.root.ids
+        if errors["reynolds"]:
+            r.reynolds.highlight()
+        if errors["polyOrder"]:
+            r.polyOrder.highlight()
+        if errors["numElements"]:
+            r.meshElems.highlight()
+        if errors["meshDimensions"]:
+            r.meshDim.highlight()
+        for i in range(0, len(errors["inflows"])):
+            if i == 0:
+                r.inf1.highlight()
+                r.inf1_x.highlight()
+                r.inf1_y.highlight()
+            elif i == 1:
+                r.inf2.highlight()
+                r.inf2_x.highlight()
+                r.inf2_y.highlight()
+            elif i == 2:
+                r.inf3.highlight()
+                r.inf3_x.highlight()
+                r.inf3_y.highlight()
+            elif i == 3:
+                r.inf4.highlight()
+                r.inf4_x.highlight()
+                r.inf4_y.highlight()
+        for i in range(0, len(errors["outflows"])):
+            if i == 0:
+                r.out1.highlight()
+            elif i == 1:
+                r.out2.highlight()
+            elif i == 2:
+                r.out3.highlight()
+            elif i == 3:
+                r.out4.highlight()
+        
+        
 """
 """
 class PyTextInput(TextInput):

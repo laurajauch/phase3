@@ -45,18 +45,22 @@ class Model(object):
     """
     def solve(self, rawData):
         (valid, errors) = self.testData(rawData)
-        print "In Model.py solve, data validity is: "+str(valid)
+        #print "In Model.py solve, data validity is: "+str(valid)
         try:
             assert valid
             self.storeData(rawData)
-            print "solving"
+            #print "solving"
             self.inputData.addVariable("form", FormUtils.solve(self.inputData))
             print("finish solve")
             return self.inputData.getVariable(["form"])
         except Exception, e:
             print "Model.py Solve exception is: "+str(e)
             for key,value in errors.iteritems():
-                print key + " " + str(value)
+                if key == "outflows" or key == "inflows":
+                    for i in value:
+                        print key + " "+str(i)
+                else:
+                    print key + " " + str(value)
             self.errors = errors
             return self.errors
             

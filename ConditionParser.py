@@ -6,6 +6,7 @@ def parseCondition(inputstr):
     i = 0
     xFirst = True
     noComma = True
+    inputstr = inputstr.replace(" ","")
     #if inputstr.count(',') > 1:
         #raise ValueError("Too many arguments in input.")
     for c in inputstr:
