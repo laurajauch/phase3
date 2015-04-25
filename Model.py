@@ -28,9 +28,9 @@ class Model(object):
     Called when plot is pressed
     plotType: a string, etiher Mesh, Error, Stream Function, u1, u2, or p
     """
-    def plot(self, plotType):       
+    def plot(self, plotType, numPlots):       
         # to test, run TestModel
-        Plotter.plot(self.inputData.getVariable("form"), plotType)
+        Plotter.plot(self.inputData.getVariable("form"), plotType,numPlots)
         
     """
     Called when reset is pressed

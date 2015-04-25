@@ -32,6 +32,7 @@ class Controller(object):
     def pressRefine(self, rType):   
         self.model.refine(rType)
 
+
     """
     Convert a matplotlib.Figure to PNG image.:returns: PNG image bytes
     """
@@ -41,13 +42,20 @@ class Controller(object):
       #  canvas.print_png(data)
       #  return data.getvalue()
 
+
+
+
     """
     Do this when plot is pressed.
     """
-    def pressPlot(self, plotType):
+    def pressPlot(self, plotType, numPlots):
         
-        self.model.plot(plotType)
-            
+        self.model.plot(plotType, numPlots)
+       
+  
+        
+ 
+      
     """
     Do this when reset is pressed.
     """
@@ -74,7 +82,10 @@ class Controller(object):
         self.model.save(filename)
 
 
+
 # Screen Accessors & Mutators ------------------------------------
+   
+
     
         
 
@@ -97,6 +108,7 @@ class ViewApp(App):
     """
     def build(self):
         self.controller = Controller()
+        self.numPlots = 0
         # Setting root as the instance variable needed to reference the GUI
         self.root = Builder.load_file('View.kv')
         return self.root
@@ -108,14 +120,11 @@ class ViewApp(App):
         self.root.status = "Refining..."
         self.controller.pressRefine(input)
         self.root.status  = "Refined."
-    
-    """
-    Plot the current form
-    """
     def plot(self, input):
         self.root.status = "Plotting..."
-        self.controller.pressPlot(input)
-        self.root.plot_image = 'plot.png'
+        self.numPlots += 1
+        self.controller.pressPlot(input, self.numPlots)
+        self.root.plot_image = '/tmp/plot'+str(self.numPlots)+'.png'
         self.root.status = "Plotted."
     
     """

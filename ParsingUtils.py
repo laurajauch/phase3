@@ -165,22 +165,19 @@ def checkValidInput(rawData):
     except Exception,e:
         print "meshDimensions: "+str(e)
         errors["meshDimensions"] = True
-            
-
-    errors["inflows"] = []
+      
     # inflow strings [(condition, xVelocity, yVelocity)]
- 
+    errors["inflows"] = []
     for item in rawData["inflows"]:
         try:
             stringToInflows(*item)
             errors["inflows"].append(False)
         except Exception,e:
-            print "inflows " +": "+str(e)
+            print "inflows " + ": "+str(e)
             errors["inflows"].append(True)
-
-                
-    errors["outflows"] = []
+            
     # outflow: strings [condition]
+    errors["outflows"] = []
     for item in rawData["outflows"]:
         try:
             stringToOutflows(item)
