@@ -14,6 +14,7 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from kivy.properties import *
 from kivy.core.image import Image as CoreImage
+from kivy.animation import Animation
 import re
 """
 Controller
