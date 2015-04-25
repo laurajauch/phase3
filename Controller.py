@@ -120,11 +120,11 @@ class ViewApp(App):
         self.root.status = "Refining..."
         self.controller.pressRefine(input)
         self.root.status  = "Refined."
-    def plot(self, input, numPlots):
+    def plot(self, input):
         self.root.status = "Plotting..."
         self.numPlots += 1
-        self.controller.pressPlot(input, numPlots)
-        self.root.plot_image = '/tmp/plot'+self.numPlots+'.png'
+        self.controller.pressPlot(input, self.numPlots)
+        self.root.plot_image = '/tmp/plot'+str(self.numPlots)+'.png'
         self.root.status = "Plotted."
     
     """

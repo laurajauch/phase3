@@ -48,7 +48,7 @@ def plot(form, plotType, numPlots):
 def plotMesh(mesh, numPlots):
     num_x = 10
     num_y = 10
-    plt.figure(1, figsize=(426/96,320/96))
+    plt.figure(numPlots, figsize=(426/96,320/96))
     plt.subplot(111)
     zList = [] # should have tuples (zVals, (x_min,x_max), (y_min,y_max)) -- one for each cell
     activeCellIDs = mesh.getActiveCellIDs()
@@ -83,16 +83,17 @@ def plotMesh(mesh, numPlots):
         plt.imshow(zValues, cmap='coolwarm', vmin=zMin, vmax=zMax,
                    extent=[xMinLocal, xMaxLocal, yMinLocal, yMaxLocal],
                    interpolation='bicubic', origin='lower')
-    plt.title('cavity flow error')
+    plt.title('Mesh')
     plt.colorbar()
     plt.axis([xMin, xMax, yMin, yMax])
-    plt.savefig('/tmp/plot'+numPlots+'.png',dpi=96)
+    plt.savefig('/tmp/plot'+str(numPlots)+'.png',dpi=96)
+    plt.clf()
 
 
 def plotError(error, mesh, numPlots):
     num_x = 10
     num_y = 10
-    plt.figure(1, figsize=(426/96,320/96))
+    plt.figure(numPlots, figsize=(426/96,320/96))
     plt.subplot(111)
     zList = [] # should have tuples (zVals, (x_min,x_max), (y_min,y_max)) -- one for each cell
     activeCellIDs = mesh.getActiveCellIDs()
@@ -127,16 +128,16 @@ def plotError(error, mesh, numPlots):
         plt.imshow(zValues, cmap='coolwarm', vmin=zMin, vmax=zMax,
                    extent=[xMinLocal, xMaxLocal, yMinLocal, yMaxLocal],
                    interpolation='bicubic', origin='lower')
-    plt.title('cavity flow error')
+    plt.title('Error')
     plt.colorbar()
     plt.axis([xMin, xMax, yMin, yMax])
-    plt.savefig('/tmp/plot'+numPlots+'.png',dpi=96)
-
-
+    plt.savefig('/tmp/plot'+str(numPlots)+'.png',dpi=96)
+    plt.clf()
+    
 
 
 def plotFunction(f,mesh, numPlots):
-    plt.figure(1, figsize=(426/96,320/96))
+    plt.figure(numPlots, figsize=(426/96,320/96))
     plt.subplot(111)
     num_x = 10
     num_y = 10
@@ -180,11 +181,11 @@ def plotFunction(f,mesh, numPlots):
                    extent=[xMinLocal, xMaxLocal, yMinLocal, yMaxLocal],
                    interpolation='bicubic', origin='lower')
 
-    plt.title('cavity flow error')
+    plt.title('Function')
     plt.colorbar()
     plt.axis([xMin, xMax, yMin, yMax])
-    plt.savefig('/tmp/plot'+numPlots+'.png',dpi=96)
-
+    plt.savefig('/tmp/plot'+str(numPlots)+'.png',dpi=96)
+    plt.clf()
      
 
     
