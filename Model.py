@@ -1,6 +1,6 @@
 import FormUtils
 import Plotter
-import ParsingUtils
+from ParsingUtils import *
 from PyCamellia import * #only used for random plot test
 from InputData import *
 
@@ -45,11 +45,11 @@ class Model(object):
     """
     def solve(self, rawData):
         (valid, errors) = self.testData(rawData)
-        #print "In Model.py solve, data validity is: "+str(valid)
+        print "In Model.py solve, data validity is: "+str(valid)
         try:
             assert valid
             self.storeData(rawData)
-            #print "solving"
+            print "solving"
             self.inputData.addVariable("form", FormUtils.solve(self.inputData))
             print("finish solve")
             return self.inputData.getVariable(["form"])
@@ -70,7 +70,7 @@ class Model(object):
     errors: A map from field to boolean, True if error, False if no error
     """
     def testData(self, rawData):
-        errors = ParsingUtils.checkValidInput(rawData)
+        errors = checkValidInput(rawData)
         valid = True
         for key, value in errors.iteritems():
             if value is True:
@@ -84,7 +84,7 @@ class Model(object):
     """
     def storeData(self, rawData):
         print "in storeData"
-        data = ParsingUtils.formatRawData(rawData)              
+        data = formatRawData(rawData)              
         self.inputData.setVariables(data)
 
     """
@@ -92,14 +92,17 @@ class Model(object):
     Param: filename The name of the file to save to
     """
     def save(self, filename):
-        form = context.inputData.getForm()
+        form = self.inputData.getVariable("form")
         form.save(filename)
         
-        memento = context.inputData.createMemento()
+        memento = self.inputData.createMemento()
         output = memento.get()
-        if len(output) >= 9:
+        if len(output) >= 10:
             del output["form"]
-            # don't need to delete anything else since strings
+            del output["inflowRegions"]
+            del output["inflowX"]
+            del output["inflowY"]
+            del output["outflowRegions"]
             
             saveFile = open(filename, 'wb')
             pickle.dump(memento, saveFile)
@@ -139,7 +142,7 @@ class Model(object):
                 
         except:
             # do something to tell the GUI that it was an invalid filename
-            print("No solution was found with the name \"%s\"" % command) 
+            print("No solution was found with the name \"%s\"" % filename) 
  
     if __name__ == '__main__':
         pass
