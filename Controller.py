@@ -298,7 +298,7 @@ class ViewApp(App):
             else:
                 print(type(results))
                 
-                if(not data["stokes"]):
+                if(data["stokes"]):
                     self.root.energyError = str(results.solution().energyErrorTotal())
                 else:
                     self.root.energyError = str(results.solutionIncrement().energyErrorTotal())
