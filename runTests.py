@@ -1,6 +1,6 @@
 from TestConditionParser import *
 #from TestDataUtils import *
-#from TestFormUtils import * 
+from TestFormUtils import * 
 #from TestInputData import *
 #from TestModel import *
 #from TestParseFunction import *
@@ -13,7 +13,7 @@ import unittest
 
 testSuite = unittest.makeSuite(TestConditionParser)
 #testSuite.addTest(unittest.makeSuite(TestDataUtils))
-#testSuite.addTest(unittest.makeSuite(TestFormUtils))
+testSuite.addTest(unittest.makeSuite(TestFormUtils))
 #testSuite.addTest(unittest.makeSuite(TestInputData))
 #testSuite.addTest(unittest.makeSuite(TestModel))
 #testSuite.addTest(unittest.makeSuite(TestParseFunction))
