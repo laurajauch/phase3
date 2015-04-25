@@ -1,5 +1,6 @@
 import FormUtils
 import Plotter
+import pickle
 from ParsingUtils import *
 from PyCamellia import * #only used for random plot test
 from InputData import *
@@ -119,7 +120,9 @@ class Model(object):
     """
     def load(self, filename):
         try:           
+            print "about to open file"
             loadFile = open(filename)
+            print "opened file"
             memento = pickle.load(loadFile)
             loadFile.close()
             self.inputData.setMemento(memento)
@@ -136,12 +139,6 @@ class Model(object):
                 form = StokesVGPFormulation(spaceDim, useConformingTraces, mu)
                 form.initializeSolution(filename, polyOrder)
                 
-                context.inputData.setForm(form)
-                
-                mesh = form.solution().mesh()
-                elementCount = mesh.numActiveElements()
-                globalDofCount = mesh.numGlobalDofs()
-
             self.inputData.addVariable("form", form)
             return self.inputData.vars
                 
