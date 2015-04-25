@@ -166,6 +166,7 @@ class ViewApp(App):
         r.save.clear()
         r.save.disabled=True
         r.filename.clear()
+        self.root.energyError = ""
         self.controller.pressReset()
 
     """
