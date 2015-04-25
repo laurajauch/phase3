@@ -15,44 +15,21 @@ class Model(object):
 
     def __init__(self):
         self.inputData = InputData()
+        self.errors = {}
        
     """
     Called when refine is pressed
     """
     def refine(self, rtype): # type: 0 is h, 1 is p
-        self.inputData.addVariable("form",FormUtils.autoRefine(self.inputData, rtype))
+        self.inputData.addVariable("form", FormUtils.autoRefine(self.inputData, rtype))
         print "done refine"
             
     """
     Called when plot is pressed
+    plotType: a string, etiher Mesh, Error, Stream Function, u1, u2, or p
     """
     def plot(self, plotType):       
-        """spaceDim = 2
-        useConformingTraces = True
-        mu = 1.0
-        polyOrder = 3
-        delta_k = 1
-        dims = [1.0, 1.0]
-        numElements = [2,2]
-        x0 = [0.,0.]
-        meshTopo = MeshFactory.rectilinearMeshTopology(dims, numElements, x0)
-        
-        topBoundary = SpatialFilter.matchingY(1.0)
-        notTopBoundary = SpatialFilter.negatedFilter(topBoundary)
-        x = Function.xn(1)
-        rampWidth = 1./64
-        H_left = Function.heaviside(rampWidth)
-        H_right = Function.heaviside(1.0-rampWidth);
-        ramp = (1-H_right) * H_left + (1./rampWidth) * (1-H_left) * x + (1./rampWidth) * H_right * (1-x)
-        zero = Function.constant(0)
-        topVelocity = Function.vectorize(ramp,zero)
-
-        foo = StokesVGPFormulation(spaceDim,useConformingTraces,mu)
-        foo.initializeSolution(meshTopo,polyOrder,delta_k)
-        foo.addZeroMeanPressureCondition()
-        foo.addInflowCondition(topBoundary,topVelocity)
-        foo.solve()"""
-
+        # to test, run TestModel
         Plotter.plot(self.inputData.getVariable("form"), plotType)
         
     """
@@ -64,25 +41,24 @@ class Model(object):
     """
     Called when solve is pressed
     data: the raw data as it was taken from the GUI
-    return: the solved form
+    return: the solved form if data is valid, else the dict of errors
     """
     def solve(self, rawData):
         (valid, errors) = self.testData(rawData)
-        print "In Model.py solve, data validity is: "+str(valid)
+        #print "In Model.py solve, data validity is: "+str(valid)
         try:
             assert valid
             self.storeData(rawData)
-            print "solving"
-            self.inputData.addVariable("form",FormUtils.solve(self.inputData))
-            print("finish solve")
+            #print "solving"
+            self.inputData.addVariable("form", FormUtils.solve(self.inputData))
+            #print("finish solve")
             return self.inputData.getVariable(["form"])
         except Exception, e:
-            print "Model.py Solve exception is: "+str(e)
-            for key,value in errors.iteritems():
-                print key + " " + str(value)
-            # need way to say controller.setErrors(errors)
-            pass
-        
+            #print "Model.py Solve exception is: "+str(e)
+            #for key,value in errors.iteritems():
+                #print key + " " + str(value)
+            self.errors = errors
+            return self.errors
             
     """
     Test the given data to see if it is valid
@@ -124,6 +100,7 @@ class Model(object):
             saveFile = open(filename, 'wb')
             pickle.dump(memento, saveFile)
             saveFile.close()
+
     """
     Load from the specified file
     Param: filename The name fo the file to load from
@@ -158,12 +135,7 @@ class Model(object):
                 
         except:
             # do something to tell the GUI that it was an invalid filename
-            print("No solution was found with the name \"%s\"" % command)
-
-    
-    
-  
-
+            print("No solution was found with the name \"%s\"" % command) 
  
     if __name__ == '__main__':
         pass

@@ -32,7 +32,6 @@ class Controller(object):
     def pressRefine(self, rType):   
         self.model.refine(rType)
 
-
     """
     Convert a matplotlib.Figure to PNG image.:returns: PNG image bytes
     """
@@ -42,20 +41,13 @@ class Controller(object):
       #  canvas.print_png(data)
       #  return data.getvalue()
 
-
-
-
     """
     Do this when plot is pressed.
     """
     def pressPlot(self, plotType):
         
         self.model.plot(plotType)
-       
-  
-        
- 
-      
+            
     """
     Do this when reset is pressed.
     """
@@ -67,8 +59,12 @@ class Controller(object):
     Do this when solve is pressed.
     """
     def pressSolve(self, data):
-        self.model.solve(data)
-
+        results = self.model.solve(data) # either a form or errors
+        if isinstance(results,dict): # if it's a dict of errors
+            setErrors(results)
+        else:
+            return results # the solved form
+            
     """
     Do this when load is pressed.
     """
@@ -82,20 +78,7 @@ class Controller(object):
         self.model.save(filename)
 
 
-
 # Screen Accessors & Mutators ------------------------------------
-   
-    """
-    Retrieve the text from the GUI.
-    """
-    def getText(self):
-        pass
-
-    """
-    Retrieve the filename from the text box in the GUI
-    """
-    def getFilename(self):
-        pass
     
     """
     Set the input errors on the GUI
@@ -127,16 +110,26 @@ class ViewApp(App):
         self.root = Builder.load_file('View.kv')
         return self.root
 
+    """
+    Refine the mesh of the current form
+    """
     def refine(self, input):
         self.root.status = "Refining..."
         self.controller.pressRefine(input)
         self.root.status  = "Refined."
+    
+    """
+    Plot the current form
+    """
     def plot(self, input):
         self.root.status = "Plotting..."
         self.controller.pressPlot(input)
         self.root.plot_image = 'plot.png'
         self.root.status = "Plotted."
-
+    
+    """
+    Clear all fields on the screen
+    """
     def reset(self):
         # So we don't write out self.root.ids each time:
         r = self.root.ids
@@ -171,9 +164,11 @@ class ViewApp(App):
         r.filename.clear()
         self.controller.pressReset()
 
-
-
-
+    """
+    Grab the input from the screen, then create and solve a form
+    with that input. Be sure along the way that all necessary
+    data is present and valid.
+    """
     def solve(self):
         self.root.status = "Solving..."
         missingEntry = False # Set to true if an important field is left blank
@@ -310,6 +305,8 @@ class ViewApp(App):
         filename = self.getFilename()
         #self.controller.pressSave(filename)
 
+"""
+"""
 class PyTextInput(TextInput):
     reset_text = StringProperty("")
     def highlight(self):
@@ -318,6 +315,8 @@ class PyTextInput(TextInput):
         self.background_color=(1,1,1,1)
         self.text=self.reset_text
 
+"""
+"""
 class PyButton(Button):
     reset_text = StringProperty("")
     def highlight(self):
