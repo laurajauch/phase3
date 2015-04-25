@@ -26,7 +26,7 @@ class Model(object):
     """
     Called when plot is pressed
     """
-    def plot(self, plotType):       
+    def plot(self, plotType, numPlots):       
         """spaceDim = 2
         useConformingTraces = True
         mu = 1.0
@@ -53,7 +53,7 @@ class Model(object):
         foo.addInflowCondition(topBoundary,topVelocity)
         foo.solve()"""
 
-        Plotter.plot(self.inputData.getVariable("form"), plotType)
+        Plotter.plot(self.inputData.getVariable("form"), plotType, numPlots)
         
     """
     Called when reset is pressed

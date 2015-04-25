@@ -8,44 +8,44 @@ import numpy as np
 from StringIO import StringIO
 
 
-def plot(form, plotType):
+def plot(form, plotType, numPlots):
 
     if plotType == "Mesh":
         mesh = form.solution().mesh()
-        plotMesh(mesh)
+        plotMesh(mesh, numPlots)
 
 
 
     elif plotType == "Error":
         mesh = form.solution().mesh();
         error = form.solution().energyErrorPerCell()
-        plotError(error, mesh)
+        plotError(error, mesh, numPlots)
 
 
     elif plotType == "Stream Function":
         streamSolution = form.streamSolution()
         streamSolution.solve
         streamFunction = Function.solution(form.streamPhi(), streamSolution)
-        plotFunction(streamFunction, streamSolution.mesh())
+        plotFunction(streamFunction, streamSolution.mesh(), numPlots)
 
 
     elif plotType == "u1":
 
         u1_soln = Function.solution(form.u(1),form.solution())
-        plotFunction(u1_soln, form.solution().mesh())
+        plotFunction(u1_soln, form.solution().mesh(), numPlots)
 
     elif plotType == "u2":
         u2_soln = Function.solution(form.u(2),form.solution())
-        plotFunction(u2_soln, form.solution().mesh())
+        plotFunction(u2_soln, form.solution().mesh(), numPlots)
 
     elif plotType == "p":
         p_soln = Function.solution(form.p(), form.solution())
-        plotFunction(p_soln, form.solution().mesh())
+        plotFunction(p_soln, form.solution().mesh(), numPlots)
 
 
 
 
-def plotMesh(mesh):
+def plotMesh(mesh, numPlots):
     num_x = 10
     num_y = 10
     plt.figure(1, figsize=(426/96,320/96))
@@ -86,10 +86,10 @@ def plotMesh(mesh):
     plt.title('cavity flow error')
     plt.colorbar()
     plt.axis([xMin, xMax, yMin, yMax])
-    plt.savefig('/tmp/plot.png',dpi=96)
+    plt.savefig('/tmp/plot'+numPlots+'.png',dpi=96)
 
 
-def plotError(error, mesh):
+def plotError(error, mesh, numPlots):
     num_x = 10
     num_y = 10
     plt.figure(1, figsize=(426/96,320/96))
@@ -130,12 +130,12 @@ def plotError(error, mesh):
     plt.title('cavity flow error')
     plt.colorbar()
     plt.axis([xMin, xMax, yMin, yMax])
-    plt.savefig('/tmp/plot.png',dpi=96)
+    plt.savefig('/tmp/plot'+numPlots+'.png',dpi=96)
 
 
 
 
-def plotFunction(f,mesh):
+def plotFunction(f,mesh, numPlots):
     plt.figure(1, figsize=(426/96,320/96))
     plt.subplot(111)
     num_x = 10
@@ -183,7 +183,7 @@ def plotFunction(f,mesh):
     plt.title('cavity flow error')
     plt.colorbar()
     plt.axis([xMin, xMax, yMin, yMax])
-    plt.savefig('/tmp/plot.png',dpi=96)
+    plt.savefig('/tmp/plot'+numPlots+'.png',dpi=96)
 
      
 
