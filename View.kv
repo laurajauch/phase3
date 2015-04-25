@@ -17,6 +17,8 @@ Widget:
 	plot_image: 'data/jeff sax.jpg'
 	status: ""
 	energyError: ""
+	degreesFreedom: ""
+	numElements: ""
 	#background color, plotting window
 	canvas:
 		Color:
@@ -68,17 +70,32 @@ Widget:
 
 	Label:
 		text: 'Energy Error: '
-		pos: (440, 140)
+		pos: (440, 175)
 	
 
 	Label:
 		id: energyError
 		text: root.energyError
-		pos: (540, 140)
+		pos: (540, 175)
+	Label:
+		text: "Num of Elements: "
+		pos: (425, 140)
+	Label:
+		id: numElements
+		text: root.numElements
+		pos: (525, 140)
+	Label:
+		text: "Degrees of Freedom: "
+		pos: (416, 110)
+	Label:
+		id:degreesFreedom
+		text: root.degreesFreedom
+		pos: (516, 110)
 
 	Label:
 		text: "Filename: "
 		pos: (440, 55)
+
 
 	#Filename entry text field
 	PyTextInput:
