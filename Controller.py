@@ -67,8 +67,8 @@ class Controller(object):
     Do this when solve is pressed.
     """
     def pressSolve(self, data):
-        self.model.solve(data)
-
+        results = self.model.solve(data) # either a form or errors
+            
     """
     Do this when load is pressed.
     """
@@ -85,24 +85,9 @@ class Controller(object):
 
 # Screen Accessors & Mutators ------------------------------------
    
-    """
-    Retrieve the text from the GUI.
-    """
-    def getText(self):
-        pass
 
-    """
-    Retrieve the filename from the text box in the GUI
-    """
-    def getFilename(self):
-        pass
     
-    """
-    Set the input errors on the GUI
-    errors: A map from field to boolean, True if error, False if no error
-    """
-    def setErrors(self, errors):
-        pass
+        
 
 
 
@@ -128,6 +113,9 @@ class ViewApp(App):
         self.root = Builder.load_file('View.kv')
         return self.root
 
+    """
+    Refine the mesh of the current form
+    """
     def refine(self, input):
         self.root.status = "Refining..."
         self.controller.pressRefine(input)
@@ -138,7 +126,10 @@ class ViewApp(App):
         self.controller.pressPlot(input, numPlots)
         self.root.plot_image = '/tmp/plot'+self.numPlots+'.png'
         self.root.status = "Plotted."
-
+    
+    """
+    Clear all fields on the screen
+    """
     def reset(self):
         # So we don't write out self.root.ids each time:
         r = self.root.ids
@@ -173,9 +164,11 @@ class ViewApp(App):
         r.filename.clear()
         self.controller.pressReset()
 
-
-
-
+    """
+    Grab the input from the screen, then create and solve a form
+    with that input. Be sure along the way that all necessary
+    data is present and valid.
+    """
     def solve(self):
         self.root.status = "Solving..."
         missingEntry = False # Set to true if an important field is left blank
@@ -294,7 +287,11 @@ class ViewApp(App):
             self.root.ids.save.disabled=False
             self.root.ids.plot.disabled=False
             self.root.ids.refine.disabled=False
-            self.controller.pressSolve(data)
+            results = self.controller.pressSolve(data)
+            if isinstance(results,dict): # if it's a dict of errors
+                setErrors(results)
+            else:
+                return results # the solved form
             self.root.status = "Solved."
             return
         else:
@@ -312,6 +309,50 @@ class ViewApp(App):
         filename = self.getFilename()
         #self.controller.pressSave(filename)
 
+    """
+    Set the input errors on the GUI
+    errors: A map from field to boolean, True if error, False if no error
+    """
+    def setErrors(self, errors):
+        r = self.root.ids
+        if errors["reynolds"]:
+            r.reynolds.highlight()
+        if errors["polyOrder"]:
+            r.polyOrder.highlight()
+        if errors["numElements"]:
+            r.meshElems.highlight()
+        if errors["meshDimensions"]:
+            r.meshDim.highlight()
+        for i in range(0, len(errors["inflows"])):
+            if i == 0:
+                r.inf1.highlight()
+                r.inf1_x.highlight()
+                r.inf1_y.highlight()
+            elif i == 1:
+                r.inf2.highlight()
+                r.inf2_x.highlight()
+                r.inf2_y.highlight()
+            elif i == 2:
+                r.inf3.highlight()
+                r.inf3_x.highlight()
+                r.inf3_y.highlight()
+            elif i == 3:
+                r.inf4.highlight()
+                r.inf4_x.highlight()
+                r.inf4_y.highlight()
+        for i in range(0, len(errors["outflows"])):
+            if i == 0:
+                r.out1.highlight()
+            elif i == 1:
+                r.out2.highlight()
+            elif i == 2:
+                r.out3.highlight()
+            elif i == 3:
+                r.out4.highlight()
+        
+        
+"""
+"""
 class PyTextInput(TextInput):
     reset_text = StringProperty("")
     def highlight(self):
@@ -320,6 +361,8 @@ class PyTextInput(TextInput):
         self.background_color=(1,1,1,1)
         self.text=self.reset_text
 
+"""
+"""
 class PyButton(Button):
     reset_text = StringProperty("")
     def highlight(self):

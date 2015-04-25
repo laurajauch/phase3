@@ -38,9 +38,6 @@ class TestParsingUtils(unittest.TestCase):
         Points = [0.,1.,2.,-1.,-2.]
         (rawRegion, rawX, rawY) = expectedData["rawInflows"][0]
         (testRegion, testX, testY) = stringToInflows(rawRegion, rawX, rawY)
-        #expectedRegions = expectedData["inflowRegions"]
-        #expectedX = expectedData["inflowX"]
-        #expectedY = expectedData["inflowY"]     
         for i in Points:
             for j in Points:
                 test = (i < 8)
@@ -56,7 +53,6 @@ class TestParsingUtils(unittest.TestCase):
         Points = [0.1,1.,2.,-1.,-2.]
         rawOutflow = expectedData["rawOutflows"][0]
         testRegions = stringToOutflows(rawOutflow) # x<0
-        #expectedRegions = expectedData["outflowRegions"][0]    
         for i in Points:
             for j in Points:
                 test = (i < 0)
@@ -93,13 +89,21 @@ class TestParsingUtils(unittest.TestCase):
         validData["meshDimensions"] = "1.0x1.0"
         validData["numElements"] = "3x5"
         validData["polyOrder"] = 3
-        validData["inflows"] = expectedData["rawInflows"]
-        validData["outflows"] = stringToOutflows("x<0")
+        validData["inflows"] = [("x<8", "x*y", "x-y")]
+        validData["outflows"] = ["x<0"]
+
         errors = checkValidInput(validData)        
      
         for field, result in errors.iteritems():
             print field + " " + str(result)
-            #self.assertFalse(result)
+            if field == "outflows":
+                self.assertFalse(result[0])
+                print ""
+            elif field == "inflows":
+                self.assertFalse(result[0])
+                print ""
+            else:
+                self.assertFalse(result)
 
 
     """Test checkValidInputWithInvalidData"""

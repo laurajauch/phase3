@@ -26,14 +26,6 @@ def energyPerCell(form):
             print("Energy error for cell %i: %0.3f" % (cellID, perCellError[cellID]))
     return perCellError
 
-"""
-Add wall conditions. Wall conditions are everywhere that
-is not an inflow or outflow condition.
-"""
-# This is done in forminit
-#def determineAndAddWallConditions(form, inflows):
-    # do stuff to determine what the wall conditions are and make them
-    #form.addWallCondition(newWall)
 
 # Create ----------------------------------------------------------------------
 """
@@ -75,8 +67,7 @@ def formInit(data):
     outflowRegionsRaw = data.getVariable("outflowRegions")
     outflowRegions = stringToOutflows(outflowRegionsRaw)"""
     meshTopo = MeshFactory.rectilinearMeshTopology(dims, numElements, x0)
-    #wallRegions = determineAndAddWallConditions(form, 
-
+    
     #initialize type to 0
     fType = 0
 
@@ -183,25 +174,13 @@ def autoRefine(data,refType): # refType: 0 is h, 1 is p      why pass data not f
 	return form 
 
 def linearHAutoRefine(form):
-    #print("Automatically refining in h...")
     form.hRefine()
-    #mesh = form.solution().mesh();
-    #elementCount = mesh.numActiveElements()
-    #globalDofCount = mesh.numGlobalDofs()
-    #print("New mesh has %i elements and %i degrees of freedom." % (elementCount, globalDofCount))
     steadyLinearSolve(form)
-    #return form
-
+   
 def linearPAutoRefine(form):
-    #print("Automatically refining in p...")
     form.pRefine()
-    #mesh = form.solution().mesh();
-    #elementCount = mesh.numActiveElements()
-    #globalDofCount = mesh.numGlobalDofs()
-    #print("New mesh has %i elements and %i degrees of freedom." % (elementCount, globalDofCount))
     steadyLinearSolve(form)
-    #return form
-
+    
 def linearHManualRefine(form,cellList):
     print("Manually refining in h..."),
     if not DEBUG:
@@ -229,25 +208,13 @@ def linearPManualRefine(form, cellList):
     return form
 
 def nonlinearHAutoRefine(form):
-    #print("Automatically refining in h..."),
     form.hRefine()
-    #mesh = form.solution().mesh()
-    #elementCount = mesh.numActiveElements()
-    #globalDofCount = mesh.numGlobalDofs() 
-    #print("New mesh has %i elements and %i degrees of freedom." % (elementCount, globalDofCount))
     steadyNonlinearSolve(form)
-    #return form
-
+    
 def nonlinearPAutoRefine(form):
-    #print("Automatically refining in p..."),
     form.pRefine()
-    #mesh = form.solution().mesh()
-    #elementCount = mesh.numActiveElements()
-    #globalDofCount = mesh.numGlobalDofs()
-    #print("New mesh has %i elements and %i degrees of freedom." % (elementCount, globalDofCount))
     steadyNonlinearSolve(form)
-    #return form
-
+    
 def nonlinearHManualRefine(form, cellList):
     print("Manually refining in h..."),
     if not DEBUG:
