@@ -28,9 +28,37 @@ class Model(object):
     Called when plot is pressed
     plotType: a string, etiher Mesh, Error, Stream Function, u1, u2, or p
     """
-    def plot(self, plotType, numPlots):       
+    def plot(self, plotType, numPlots): 
+        spaceDim = 2
+        useConformingTraces = True
+        mu = 1.0
+        polyOrder = 3
+        delta_k = 1
+        dims = [1.0, 1.0]
+        numElements = [8,8]
+        x0 = [0.,0.]
+        meshTopo = MeshFactory.rectilinearMeshTopology(dims, numElements, x0)
+        
+        topBoundary = SpatialFilter.matchingY(1.0)
+        notTopBoundary = SpatialFilter.negatedFilter(topBoundary)
+        x = Function.xn(1)
+        rampWidth = 1./64
+        H_left = Function.heaviside(rampWidth)
+        H_right = Function.heaviside(1.0-rampWidth);
+        ramp = (1-H_right) * H_left + (1./rampWidth) * (1-H_left) * x + (1./rampWidth) * H_right * (1-x)
+        zero = Function.constant(0)
+        topVelocity = Function.vectorize(ramp,zero)
+        
+        form = StokesVGPFormulation(spaceDim,useConformingTraces,mu)
+        form.initializeSolution(meshTopo,polyOrder,delta_k)
+        form.addZeroMeanPressureCondition()
+        form.addInflowCondition(topBoundary,topVelocity)
+        form.solve()
+
+
+      
         # to test, run TestModel
-        Plotter.plot(self.inputData.getVariable("form"), plotType,numPlots)
+        Plotter.plot(form, plotType,numPlots)
         
     """
     Called when reset is pressed
