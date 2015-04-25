@@ -54,9 +54,13 @@ class Model(object):
             #print("finish solve")
             return self.inputData.getVariable(["form"])
         except Exception, e:
-            #print "Model.py Solve exception is: "+str(e)
-            #for key,value in errors.iteritems():
-                #print key + " " + str(value)
+            print "Model.py Solve exception is: "+str(e)
+            for key,value in errors.iteritems():
+                if key == "outflows" or key == "inflows":
+                    for i in value:
+                        print key + " "+str(i)
+                else:
+                    print key + " " + str(value)
             self.errors = errors
             return self.errors
             

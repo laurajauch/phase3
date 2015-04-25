@@ -305,7 +305,8 @@ class ViewApp(App):
     errors: A map from field to boolean, True if error, False if no error
     """
     def setErrors(self, errors):
-        if error 
+        #if error 
+        return
 
 """
 """

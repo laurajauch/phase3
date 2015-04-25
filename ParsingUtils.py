@@ -55,7 +55,7 @@ def stringToInflows(rawRegion, rawXvel, rawYvel): #(rawRegion, rawXvel, rawYvel)
 
 """
 rawRegions: string representation of the region
-returns the SpacialFilter for the outflow
+returns the SpatialFilter for the outflow
 """
 def stringToOutflows(rawRegions):
     try:
@@ -136,7 +136,8 @@ def checkValidInput(rawData):
         if not rawData["stokes"]:
             assert int(rawData["reynolds"])
         errors["reynolds"] = False
-    except:
+    except Exception,e:
+        print "Reynolds: "+str(e)
         errors["reynolds"] = True
 
     # polyOrder: must be an int less than 10 and greater than 0
@@ -144,42 +145,48 @@ def checkValidInput(rawData):
         assert (int(rawData["polyOrder"]) < 10)
         assert (int(rawData["polyOrder"]) > 0)
         errors["polyOrder"] = False
-    except:
+    except Exception,e:
+        print "polyOrder: "+str(e)
         errors["polyOrder"] = True
         
     # numElements: int x int
     try:
         stringToElements(str(rawData["numElements"]))
         errors["numElements"] = False
-    except:
+    except Exception,e:
+        print "numElements: "+str(e)
         errors["numElements"] = True
 
     # meshDimensions: double x double
     try:
         stringToDims(str(rawData["meshDimensions"]))
         errors["meshDimensions"] = False
-    except:
+    except Exception,e:
+        print "meshDimensions: "+str(e)
         errors["meshDimensions"] = True
             
 
     errors["inflows"] = []
     # inflow strings [(condition, xVelocity, yVelocity)]
-    
-    for i in range(0,len(rawData["inflows"])):
+ 
+    for item in rawData["inflows"]:
         try:
-            stringToInflows(rawData["inflows"][i])
-            errors["inflows"][i] = False
-        except:
-            errors["inflows"][i] = True
+            stringToInflows(item)
+            errors["inflows"].append(False)
+        except Exception,e:
+            print "inflows " +": "+str(e)
+            errors["inflows"].append(True)
+
                 
     errors["outflows"] = []
     # outflow: strings [condition]
-    for i in range(0,len(rawData["outflows"])):
+    for item in rawData["outflows"]:
         try:
-            stringToOutflows(rawData["outflows"][i])
-            errors["outflows"][i] = False
-        except:
-            errors["outflows"][i] = True
+            stringToOutflows(item)
+            errors["outflows"].append(False)
+        except Exception,e:
+            print "outflows " +": "+str(e)
+            errors["outflows"].append(True)
     
     return errors
 

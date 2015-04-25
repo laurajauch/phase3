@@ -89,13 +89,21 @@ class TestParsingUtils(unittest.TestCase):
         validData["meshDimensions"] = "1.0x1.0"
         validData["numElements"] = "3x5"
         validData["polyOrder"] = 3
-        validData["inflows"] = expectedData["rawInflows"]
-        validData["outflows"] = stringToOutflows("x<0")
+        validData["inflows"] = [("x<8", "x*y", "x-y")]
+        validData["outflows"] = ["x<0"]
+
         errors = checkValidInput(validData)        
      
         for field, result in errors.iteritems():
             print field + " " + str(result)
-            #self.assertFalse(result)
+            if field == "outflows":
+                self.assertFalse(result[0])
+                print ""
+            elif field == "inflows":
+                self.assertFalse(result[0])
+                print ""
+            else:
+                self.assertFalse(result)
 
 
     """Test checkValidInputWithInvalidData"""
