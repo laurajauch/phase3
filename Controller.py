@@ -375,6 +375,11 @@ class PyButton(Button):
         self.background_color=(1,1,1,1)
         self.text=self.reset_text
 
+class PyDropButton(PyButton):
+    def clear(self):
+        super(PyDropButton, self).clear()
+        self.italic=True
+
 if __name__ == '__main__':
     ViewApp().run()
 
