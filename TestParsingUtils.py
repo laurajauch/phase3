@@ -38,14 +38,14 @@ class TestParsingUtils(unittest.TestCase):
         Points = [0.,1.,2.,-1.,-2.]
         (rawRegion, rawX, rawY) = expectedData["rawInflows"][0]
         (testRegion, testX, testY) = stringToInflows(rawRegion, rawX, rawY)
-        for i in Points:
-            for j in Points:
-                test = (i < 8)
-                xAnsw = i * j
-                yAnsw = i - j
-                self.assertEqual(test, testRegion.matchesPoint(i,j))
-                self.assertEqual(xAnsw, testX.evaluate(i,j))
-                self.assertEqual(yAnsw, testY.evaluate(i,j))
+        for x in Points:
+            for y in Points:
+                test = (x < 8)
+                xAnsw = x * y
+                yAnsw = x - y
+                self.assertEqual(test, testRegion.matchesPoint(x,y))
+                self.assertEqual(xAnsw, testX.evaluate(x,y))
+                self.assertEqual(yAnsw, testY.evaluate(x,y))
            
      
     """Test stringToOutflows"""
@@ -53,12 +53,12 @@ class TestParsingUtils(unittest.TestCase):
         Points = [0.1,1.,2.,-1.,-2.]
         rawOutflow = expectedData["rawOutflows"][0]
         testRegions = stringToOutflows(rawOutflow) # x<0
-        for i in Points:
-            for j in Points:
-                test = (i < 0)
-                if(test != testRegions.matchesPoint(i,j)):
-                    print "missmatch: "+str(i)+" "+str(j)
-                self.assertEqual(test, testRegions.matchesPoint(i,j))
+        for x in Points:
+            for y in Points:
+                test = (x < 0)
+                if(test != testRegions.matchesPoint(x,y)):
+                    print "missmatch: "+str(x)+" "+str(y)
+                self.assertEqual(test, testRegions.matchesPoint(x,y))
                
  
     """Test formatRawData"""
@@ -104,11 +104,11 @@ class TestParsingUtils(unittest.TestCase):
         invalidData = {}
         invalidData["stokes"] = ""
         invalidData["transient"] = ""
-        invalidData["meshDimensions"] = expectedData["rawDims"]
-        invalidData["numElements"] = expectedData["rawNumElements"]
-        invalidData["polyOrder"] = expectedData["polyOrder"]
-        invalidData["inflows"] = expectedData["rawInflows"]
-        invalidData["outflows"] = expectedData["rawOutflows"]
+        invalidData["meshDimensions"] = 5 
+        invalidData["numElements"] = 2
+        invalidData["polyOrder"] = 11
+        invalidData["inflows"] = ["6.0x6.9"]
+        invalidData["outflows"] = ["5x6"]
         errors = checkValidInput(invalidData)        
         
         for field, result in errors.iteritems():
@@ -117,7 +117,8 @@ class TestParsingUtils(unittest.TestCase):
 
     """Test checkValidFile"""
     def test_checkValidFile(self):
-        checkValidFile("ParsingUtils.py")
+        self.assertTrue(checkValidFile("ParsingUtils.py"))
+        self.assertFalse(checkValidFile("xyz"))
                 
 
     if __name__ == '__main__':

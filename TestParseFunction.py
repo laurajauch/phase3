@@ -92,10 +92,6 @@ class TestParseFunction(unittest.TestCase):
                 answ = -3*(y-1)*(y-2)
                 self.assertEqual(answ, func.evaluate(x, y))
 
-    #""Test Parentheses 2"""
-    #def test_parantheses2(self):
-        
-
     """Test HalfAssedDoubles"""
     def test_halfAssedDoubles(self):
         func = parseFunction("2.+.6-x^2+y")
@@ -104,7 +100,8 @@ class TestParseFunction(unittest.TestCase):
                 answ = 2. + .6 - x**2 + y
                 self.assertEqual(answ, func.evaluate(x, y))
 
-    def testBasicRoberts(self):
+    """The basic example test given by Dr. Roberts"""
+    def test_BasicRoberts(self):
         f_actual = parseFunction("-3*(y-1)*(y-2)")
         y = Function.yn(1)
         f_expected = -3*(y-1)*(y-2)
@@ -120,6 +117,7 @@ class TestParseFunction(unittest.TestCase):
                 print str(expectedValue) + ", but value was " + str(actualValue)
                 self.assertAlmostEqual(f_actual.evaluate(xVal,yVal), f_expected.evaluate(xVal,yVal), delta=1e-12)
 
+    """The basic example test given by Dr. Roberts"""      
     def testBasicRoberts2(self):
         f_actual = parseFunction("3*(1-y)*(y-2)")
         y = Function.yn(1)
