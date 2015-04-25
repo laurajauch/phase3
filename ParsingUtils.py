@@ -118,6 +118,7 @@ def formatRawData(rawData):
     
     return data
 
+
 #--------------------------------------------------------------
 
 """
@@ -171,7 +172,7 @@ def checkValidInput(rawData):
  
     for item in rawData["inflows"]:
         try:
-            stringToInflows(item)
+            stringToInflows(*item)
             errors["inflows"].append(False)
         except Exception,e:
             print "inflows " +": "+str(e)
