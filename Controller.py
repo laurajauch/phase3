@@ -60,10 +60,6 @@ class Controller(object):
     """
     def pressSolve(self, data):
         results = self.model.solve(data) # either a form or errors
-        if isinstance(results,dict): # if it's a dict of errors
-            setErrors(results)
-        else:
-            return results # the solved form
             
     """
     Do this when load is pressed.
@@ -80,12 +76,7 @@ class Controller(object):
 
 # Screen Accessors & Mutators ------------------------------------
     
-    """
-    Set the input errors on the GUI
-    errors: A map from field to boolean, True if error, False if no error
-    """
-    def setErrors(self, errors):
-        pass
+        
 
 
 
@@ -287,7 +278,11 @@ class ViewApp(App):
             self.root.ids.save.disabled=False
             self.root.ids.plot.disabled=False
             self.root.ids.refine.disabled=False
-            self.controller.pressSolve(data)
+            results = self.controller.pressSolve(data)
+            if isinstance(results,dict): # if it's a dict of errors
+                setErrors(results)
+            else:
+                return results # the solved form
             self.root.status = "Solved."
             return
         else:
@@ -304,6 +299,13 @@ class ViewApp(App):
     def save(self):
         filename = self.getFilename()
         #self.controller.pressSave(filename)
+
+    """
+    Set the input errors on the GUI
+    errors: A map from field to boolean, True if error, False if no error
+    """
+    def setErrors(self, errors):
+        if error 
 
 """
 """
