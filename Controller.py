@@ -280,7 +280,7 @@ class ViewApp(App):
             self.root.ids.refine.disabled=False
             results = self.controller.pressSolve(data)
             if isinstance(results,dict): # if it's a dict of errors
-                setErrors(results)
+                self.setErrors(results)
             self.root.status = "Solved."
             return
         else:
