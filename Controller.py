@@ -324,6 +324,8 @@ class ViewApp(App):
         self.controller.pressLoad(filename)
     def save(self):
         filename = self.getFilename()
+        if(filename == ''):
+            return
         self.controller.pressSave(filename)
 
     """
