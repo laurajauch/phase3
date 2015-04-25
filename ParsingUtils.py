@@ -162,24 +162,24 @@ def checkValidInput(rawData):
         errors["meshDimensions"] = True
             
 
-    print "inflow length: "+str(len(rawData["inflows"]))
+    errors["inflows"] = []
     # inflow strings [(condition, xVelocity, yVelocity)]
-    try:
-        if len(rawData["inflows"]) > 0:
-            for item in rawData["inflows"]:
-                stringToInflows(item)
-        errors["inflows"] = False
-    except:
-        errors["inflows"] = True
+    
+    for i in range(0,len(rawData["inflows"])):
+        try:
+            stringToInflows(rawData["inflows"][i])
+            errors["inflows"][i] = False
+        except:
+            errors["inflows"][i] = True
                 
+    errors["outflows"] = []
     # outflow: strings [condition]
-    try:
-        if len(rawData["outflows"]) > 0:
-            for item in rawData["outflows"]:
-                stringToOutflows(item)
-        errors["outflows"] = False
-    except:
-        errors["outflows"] = True
+    for i in range(0,len(rawData["outflows"])):
+        try:
+            stringToOutflows(rawData["outflows"][i])
+            errors["outflows"][i] = False
+        except:
+            errors["outflows"][i] = True
     
     return errors
 
