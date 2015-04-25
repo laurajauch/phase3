@@ -104,6 +104,7 @@ although it is somewhat redundant to Controller.
 """
 class ViewApp(App):
     #self.root.status = "running"
+    title = 'PyCamellia Incompressible Flow Solver'
     """
     Added this build function so we can maipulate viewApp when it is created. 
     We just need to specify which .kv file we are building from.
