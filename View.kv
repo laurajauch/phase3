@@ -16,6 +16,7 @@
 Widget: 
 	plot_image: 'data/jeff sax.jpg'
 	status: ""
+	enerygyError: ""
 	#background color, plotting window
 	canvas:
 		Color:
@@ -68,6 +69,12 @@ Widget:
 	Label:
 		text: 'Energy Error: '
 		pos: (440, 140)
+	
+
+	Label:
+		id: energyError
+		text: root.energyError
+		pos: (540, 140)
 
 	Label:
 		text: "Filename: "

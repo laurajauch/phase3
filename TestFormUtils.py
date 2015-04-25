@@ -62,7 +62,7 @@ class TestFormUtils(unittest.TestCase):
 
     """Test formInit"""
     def test_formInit(self):
-        return # does not pass, TypeError: in method 'Function_vectorize', argument 1 of type 'FunctionPtr'
+        #return # does not pass, TypeError: in method 'Function_vectorize', argument 1 of type 'FunctionPtr'
 
         # transient linear, 0
         inputData = InputData()
@@ -295,85 +295,7 @@ class TestFormUtils(unittest.TestCase):
         self.assertEqual(21, expectedElementCount, testElementCount)
         self.assertEqual(3112, expectedGlobalDofCount, testGlobalDofCount)
         self.assertAlmostEqual(expectedEnergyError, testEnergyError)
-        self.assertAlmostEqual(113.18, testEnergyError, 3)
-
-    """Test linearHManualRefine"""
-    def test_linearHManualRefine(self):
-        testForm = steadyLinearInit(data["meshDimensions"], data["numElements"], data["polyOrder"])
-        testForm.addWallCondition(notTopBoundary)
-        testForm.addInflowCondition(topBoundary, topVelocity)
-        steadyLinearSolve(testForm)
-
-        meshTopo = MeshFactory.rectilinearMeshTopology(data["meshDimensions"], data["numElements"], data["x0"])
-        expectedForm = StokesVGPFormulation(data["spaceDim"], data["useConformingTraces"], data["mu"])
-        expectedForm.initializeSolution(meshTopo, data["polyOrder"], data["delta_k"])
-        expectedForm.addZeroMeanPressureCondition()    
-        expectedForm.addWallCondition(notTopBoundary)
-        expectedForm.addInflowCondition(topBoundary,topVelocity)
-        expectedForm.solve()
- 
-        testMesh = testForm.solution().mesh()
-        expectedMesh = expectedForm.solution().mesh()
-        testCellIDs = testMesh.getActiveCellIDs()
-        expectedCellIDs = expectedMesh.getActiveCellIDs()
-
-        linearHManualRefine(testForm, testCellIDs)
-        expectedMesh.hRefine(expectedCellIDs)
-        expectedForm.solve()
-
-        testMesh = testForm.solution().mesh()
-        testEnergyError = testForm.solution().energyErrorTotal()
-        testElementCount = testMesh.numActiveElements()
-        testGlobalDofCount = testMesh.numGlobalDofs()
-        
-        expectedMesh = expectedForm.solution().mesh()
-        expectedEnergyError = expectedForm.solution().energyErrorTotal()   
-        expectedElementCount = expectedMesh.numActiveElements()
-        expectedGlobalDofCount = expectedMesh.numGlobalDofs()
-        
-        self.assertEqual(60, expectedElementCount, testElementCount)
-        self.assertEqual(8778, expectedGlobalDofCount, testGlobalDofCount)
-        self.assertAlmostEqual(expectedEnergyError, testEnergyError)
-        self.assertAlmostEqual(113.18, testEnergyError, 3)
-
-    """Test linearPManualRefine"""
-    def test_linearPManualRefine(self):
-        testForm = steadyLinearInit(data["meshDimensions"], data["numElements"], data["polyOrder"])
-        testForm.addWallCondition(notTopBoundary)
-        testForm.addInflowCondition(topBoundary, topVelocity)
-        steadyLinearSolve(testForm)
-
-        meshTopo = MeshFactory.rectilinearMeshTopology(data["meshDimensions"], data["numElements"], data["x0"])
-        expectedForm = StokesVGPFormulation(data["spaceDim"], data["useConformingTraces"], data["mu"])
-        expectedForm.initializeSolution(meshTopo, data["polyOrder"], data["delta_k"])
-        expectedForm.addZeroMeanPressureCondition()    
-        expectedForm.addWallCondition(notTopBoundary)
-        expectedForm.addInflowCondition(topBoundary,topVelocity)
-        expectedForm.solve()
- 
-        testMesh = testForm.solution().mesh()
-        expectedMesh = expectedForm.solution().mesh()
-        testCellIDs = testMesh.getActiveCellIDs()
-        expectedCellIDs = expectedMesh.getActiveCellIDs()
-
-        linearPManualRefine(testForm, testCellIDs)
-        expectedMesh.pRefine(expectedCellIDs)
-        expectedForm.solve()
-
-        testMesh = testForm.solution().mesh()
-        testEnergyError = testForm.solution().energyErrorTotal()
-        testElementCount = testMesh.numActiveElements()
-        testGlobalDofCount = testMesh.numGlobalDofs()
-        
-        expectedMesh = expectedForm.solution().mesh()
-        expectedEnergyError = expectedForm.solution().energyErrorTotal()   
-        expectedElementCount = expectedMesh.numActiveElements()
-        expectedGlobalDofCount = expectedMesh.numGlobalDofs()
-        
-        self.assertEqual(15, expectedElementCount, testElementCount)
-        self.assertEqual(3357, expectedGlobalDofCount, testGlobalDofCount)
-        self.assertAlmostEqual(expectedEnergyError, testEnergyError)
-        self.assertAlmostEqual(107.4038432214537, testEnergyError, 15)
+        self.assertAlmostEqual(113.18, testEnergyError, 3)   
 
     """Test steadyNonlinearHAutoRefine"""
     def test_steadyNonlinearHAutoRefine(self):
@@ -440,85 +362,7 @@ class TestFormUtils(unittest.TestCase):
         self.assertEqual(15, expectedElementCount, testElementCount)
         self.assertEqual(3385, expectedGlobalDofCount, testGlobalDofCount)
         self.assertAlmostEqual(expectedEnergyError, testEnergyError)
-        self.assertAlmostEqual(0.000, testEnergyError, 3)
-
-    """Test steadyNonlinearHManualRefine"""
-    def test_steadyNonlinearHManualRefine(self):
-        return # test does not pass, seg fault, but not used in this PyCamellia version
-        testForm = steadyNonlinearInit(data["spaceDim"], data["reynolds"], data["meshDimensions"], data["numElements"], data["polyOrder"])
-        testForm.addWallCondition(notTopBoundary)
-        testForm.addInflowCondition(topBoundary, topVelocity)
-        steadyNonlinearSolve(testForm)
-
-        meshTopo = MeshFactory.rectilinearMeshTopology(data["meshDimensions"], data["numElements"], data["x0"])
-        expectedForm = NavierStokesVGPFormulation(meshTopo, data["reynolds"], data["polyOrder"], data["delta_k"])
-        expectedForm.addZeroMeanPressureCondition()
-        expectedForm.addWallCondition(notTopBoundary)
-        expectedForm.addInflowCondition(topBoundary,topVelocity)
-        steadyNonlinearSolve(expectedForm)
-
-        testMesh = testForm.solution().mesh()
-        expectedMesh = expectedForm.solution().mesh()
-        testCellIDs = testMesh.getActiveCellIDs()
-        expectedCellIDs = expectedMesh.getActiveCellIDs()
-
-        nonlinearPManualRefine(testForm, testCellIDs)
-        expectedMesh.pRefine(expectedCellIDs)
-        steadyNonlinearSolve(expectedForm)
-
-        testMesh = testForm.solution().mesh()
-        testEnergyError = testForm.solution().energyErrorTotal()
-        testElementCount = testMesh.numActiveElements()
-        testGlobalDofCount = testMesh.numGlobalDofs()
-        
-        expectedMesh = expectedForm.solution().mesh()
-        expectedEnergyError = expectedForm.solution().energyErrorTotal()   
-        expectedElementCount = expectedMesh.numActiveElements()
-        expectedGlobalDofCount = expectedMesh.numGlobalDofs()
-        
-        self.assertEqual(15, expectedElementCount, testElementCount)
-        self.assertEqual(3357, expectedGlobalDofCount, testGlobalDofCount)
-        self.assertAlmostEqual(expectedEnergyError, testEnergyError)
-        self.assertAlmostEqual(107.4038432214537, testEnergyError, 15)
-       
-    """Test steadyNonlinearPManualRefine"""
-    def test_steadyNonlinearPManualRefine(self):
-        return # test does not pass, seg fault, but not used in this PyCamellia version
-        testForm = steadyNonlinearInit(data["spaceDim"], data["reynolds"], data["meshDimensions"], data["numElements"], data["polyOrder"])
-        testForm.addWallCondition(notTopBoundary)
-        testForm.addInflowCondition(topBoundary, topVelocity)
-        steadyNonlinearSolve(testForm)
-
-        meshTopo = MeshFactory.rectilinearMeshTopology(data["meshDimensions"], data["numElements"], data["x0"])
-        expectedForm = NavierStokesVGPFormulation(meshTopo, data["reynolds"], data["polyOrder"], data["delta_k"])
-        expectedForm.addZeroMeanPressureCondition()
-        expectedForm.addWallCondition(notTopBoundary)
-        expectedForm.addInflowCondition(topBoundary,topVelocity)
-        steadyNonlinearSolve(expectedForm)
-        
-        testMesh = testForm.solution().mesh()
-        expectedMesh = expectedForm.solution().mesh()
-        testCellIDs = testMesh.getActiveCellIDs()
-        expectedCellIDs = expectedMesh.getActiveCellIDs()
-
-        nonlinearHManualRefine(testForm, testCellIDs)
-        expectedMesh.hRefine(expectedCellIDs)
-        steadyNonlinearSolve(expectedForm)
-
-        testMesh = testForm.solution().mesh()
-        testEnergyError = testForm.solution().energyErrorTotal()
-        testElementCount = testMesh.numActiveElements()
-        testGlobalDofCount = testMesh.numGlobalDofs()
-        
-        expectedMesh = expectedForm.solution().mesh()
-        expectedEnergyError = expectedForm.solution().energyErrorTotal()   
-        expectedElementCount = expectedMesh.numActiveElements()
-        expectedGlobalDofCount = expectedMesh.numGlobalDofs()
-        
-        self.assertEqual(15, expectedElementCount, testElementCount)
-        self.assertEqual(3357, expectedGlobalDofCount, testGlobalDofCount)
-        self.assertAlmostEqual(expectedEnergyError, testEnergyError)
-        self.assertAlmostEqual(107.4038432214537, testEnergyError, 15)
+        self.assertAlmostEqual(0.000, testEnergyError, 3)      
 
 
 # Solve -----------------------------------------------------------------
@@ -629,7 +473,7 @@ class TestFormUtils(unittest.TestCase):
         self.assertAlmostEqual(15, expectedElementCount, testElementCount)
         self.assertEqual(2260, expectedGlobalDofCount, testGlobalDofCount)
         self.assertEqual(0.000, expectedEnergyError, testEnergyError)
-        Steady
+        
     """Test steadyNonlinearSolve"""
     def test_steadyNonlinearSolve(self):
         return # does not pass, seg fault

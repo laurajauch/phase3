@@ -1,6 +1,6 @@
 import FormUtils
 import Plotter
-import ParsingUtils
+from ParsingUtils import *
 from PyCamellia import * #only used for random plot test
 from InputData import *
 
@@ -28,9 +28,37 @@ class Model(object):
     Called when plot is pressed
     plotType: a string, etiher Mesh, Error, Stream Function, u1, u2, or p
     """
-    def plot(self, plotType, numPlots):       
+    def plot(self, plotType, numPlots): 
+        spaceDim = 2
+        useConformingTraces = True
+        mu = 1.0
+        polyOrder = 3
+        delta_k = 1
+        dims = [1.0, 1.0]
+        numElements = [8,8]
+        x0 = [0.,0.]
+        meshTopo = MeshFactory.rectilinearMeshTopology(dims, numElements, x0)
+        
+        topBoundary = SpatialFilter.matchingY(1.0)
+        notTopBoundary = SpatialFilter.negatedFilter(topBoundary)
+        x = Function.xn(1)
+        rampWidth = 1./64
+        H_left = Function.heaviside(rampWidth)
+        H_right = Function.heaviside(1.0-rampWidth);
+        ramp = (1-H_right) * H_left + (1./rampWidth) * (1-H_left) * x + (1./rampWidth) * H_right * (1-x)
+        zero = Function.constant(0)
+        topVelocity = Function.vectorize(ramp,zero)
+        
+        form = StokesVGPFormulation(spaceDim,useConformingTraces,mu)
+        form.initializeSolution(meshTopo,polyOrder,delta_k)
+        form.addZeroMeanPressureCondition()
+        form.addInflowCondition(topBoundary,topVelocity)
+        form.solve()
+
+
+      
         # to test, run TestModel
-        Plotter.plot(self.inputData.getVariable("form"), plotType,numPlots)
+        Plotter.plot(form, plotType,numPlots)
         
     """
     Called when reset is pressed
@@ -45,11 +73,11 @@ class Model(object):
     """
     def solve(self, rawData):
         (valid, errors) = self.testData(rawData)
-        #print "In Model.py solve, data validity is: "+str(valid)
+        print "In Model.py solve, data validity is: "+str(valid)
         try:
             assert valid
             self.storeData(rawData)
-            #print "solving"
+            print "solving"
             self.inputData.addVariable("form", FormUtils.solve(self.inputData))
             print("finish solve")
             return self.inputData.getVariable(["form"])
@@ -70,7 +98,7 @@ class Model(object):
     errors: A map from field to boolean, True if error, False if no error
     """
     def testData(self, rawData):
-        errors = ParsingUtils.checkValidInput(rawData)
+        errors = checkValidInput(rawData)
         valid = True
         for key, value in errors.iteritems():
             if value is True:
@@ -84,7 +112,7 @@ class Model(object):
     """
     def storeData(self, rawData):
         print "in storeData"
-        data = ParsingUtils.formatRawData(rawData)              
+        data = formatRawData(rawData)              
         self.inputData.setVariables(data)
 
     """
@@ -92,14 +120,17 @@ class Model(object):
     Param: filename The name of the file to save to
     """
     def save(self, filename):
-        form = context.inputData.getForm()
+        form = self.inputData.getVariable("form")
         form.save(filename)
         
-        memento = context.inputData.createMemento()
+        memento = self.inputData.createMemento()
         output = memento.get()
-        if len(output) >= 9:
+        if len(output) >= 10:
             del output["form"]
-            # don't need to delete anything else since strings
+            del output["inflowRegions"]
+            del output["inflowX"]
+            del output["inflowY"]
+            del output["outflowRegions"]
             
             saveFile = open(filename, 'wb')
             pickle.dump(memento, saveFile)
@@ -139,7 +170,7 @@ class Model(object):
                 
         except:
             # do something to tell the GUI that it was an invalid filename
-            print("No solution was found with the name \"%s\"" % command) 
+            print("No solution was found with the name \"%s\"" % filename) 
  
     if __name__ == '__main__':
         pass
