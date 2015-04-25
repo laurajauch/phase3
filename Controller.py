@@ -67,7 +67,9 @@ class Controller(object):
     Do this when solve is pressed.
     """
     def pressSolve(self, data):
-        return self.model.solve(data) # either a form or errors
+        results = self.model.solve(data)
+        print(type(results))
+        return results # either a form or errors
             
     """
     Do this when load is pressed.
@@ -292,6 +294,7 @@ class ViewApp(App):
             if isinstance(results,dict): # if it's a dict of errors
                 self.setErrors(results)
             else:
+                print(type(results))
                 self.root.energyError = str(results.solution().energyErrorTotal())
             self.root.status = "Solved."
             return
