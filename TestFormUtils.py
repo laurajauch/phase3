@@ -10,24 +10,9 @@ A whole bunch of variable so that the tests are not as cluttered
 
 data = getDataList()
 
-re = data["reynolds"]
-spaceDim = data["spaceDim"]
-useConformingTraces = data["useConformingTraces"]
-mu = data["mu"]
-dims = data["meshDimensions"]
-numElements = data["numElements"]
-x0 = data["x0"]
-polyOrder = data["polyOrder"]
-delta_k = data["delta_k"]
-dt = data["dt"]
-transient = True
-
-meshTopo = MeshFactory.rectilinearMeshTopology(data["meshDimensions"], data["numElements"], data["x0"])
-
 threshold = .05
 totalTime = 2.0
-numTimeSteps = int(totalTime / dt)
-
+numTimeSteps = int(totalTime / data["dt"])
 topBoundary = SpatialFilter.matchingY(1.0)
 notTopBoundary = SpatialFilter.negatedFilter(topBoundary)
 x = Function.xn(1)
