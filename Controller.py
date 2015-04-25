@@ -32,6 +32,7 @@ class Controller(object):
     def pressRefine(self, rType):   
         self.model.refine(rType)
 
+
     """
     Convert a matplotlib.Figure to PNG image.:returns: PNG image bytes
     """
@@ -41,18 +42,27 @@ class Controller(object):
       #  canvas.print_png(data)
       #  return data.getvalue()
 
+
+
+
     """
     Do this when plot is pressed.
     """
     def pressPlot(self, plotType):
+        
         self.model.plot(plotType)
-              
+       
+  
+        
+ 
+      
     """
     Do this when reset is pressed.
     """
     def pressReset(self):
         self.model.reset()
-        
+        pass
+
     """
     Do this when solve is pressed.
     """
@@ -70,6 +80,30 @@ class Controller(object):
     """
     def pressSave(self, filename):
         self.model.save(filename)
+
+
+
+# Screen Accessors & Mutators ------------------------------------
+   
+    """
+    Retrieve the text from the GUI.
+    """
+    def getText(self):
+        pass
+
+    """
+    Retrieve the filename from the text box in the GUI
+    """
+    def getFilename(self):
+        pass
+    
+    """
+    Set the input errors on the GUI
+    errors: A map from field to boolean, True if error, False if no error
+    """
+    def setErrors(self, errors):
+        pass
+
 
 
 """
@@ -100,7 +134,7 @@ class ViewApp(App):
     def plot(self, input):
         self.root.status = "Plotting..."
         self.controller.pressPlot(input)
-        self.root.plot_image = '/tmp/plot.png'
+        self.root.plot_image = 'plot.png'
         self.root.status = "Plotted."
 
     def reset(self):
@@ -136,6 +170,9 @@ class ViewApp(App):
         r.save.disabled=True
         r.filename.clear()
         self.controller.pressReset()
+
+
+
 
     def solve(self):
         self.root.status = "Solving..."
@@ -182,22 +219,76 @@ class ViewApp(App):
             missingEntry = True
             self.root.ids.meshDim.highlight()
 
-        data["inflow"] = []
+        data["inflows"] = []
 
-        data["inflow"].append((r.inf1.text,r.inf1_x.text,r.inf1_y.text))
-        data["inflow"].append((r.inf2.text,r.inf2_x.text,r.inf2_y.text))
-        data["inflow"].append((r.inf3.text,r.inf3_x.text,r.inf3_y.text))
-        data["inflow"].append((r.inf4.text,r.inf4_x.text,r.inf4_y.text))
+        if r.inf1.text != "" and r.inf1_x.text != "" and r.inf1_y.text != "":
+            data["inflows"].append((r.inf1.text,r.inf1_x.text,r.inf1_y.text))
+        elif r.inf1.text != "" or r.inf1_x.text != "" or r.inf1_y.text != "":
+            missingEntry = True
+            r.inf1.highlight()
+            r.inf1_x.highlight()
+            r.inf1_y.highlight()
+        if r.inf2.text != "" and r.inf2_x.text != "" and r.inf2_y.text != "":
+            data["inflows"].append((r.inf2.text,r.inf2_x.text,r.inf2_y.text))
+        elif r.inf2.text != "" or r.inf2_x.text != "" or r.inf2_y.text != "":
+            missingEntry = True
+            r.inf2.highlight()
+            r.inf2_x.highlight()
+            r.inf2_y.highlight()
+        if r.inf3.text != "" and r.inf3_x.text != "" and r.inf3_y.text != "":
+            data["inflows"].append((r.inf2.text,r.inf2_x.text,r.inf2_y.text))
+        elif r.inf3.text != "" or r.inf3_x.text != "" or r.inf3_y.text != "":
+            missingEntry = True
+            r.inf3.highlight()
+            r.inf3_x.highlight()
+            r.inf3_y.highlight()
+        if r.inf4.text != "" and r.inf4_x.text != "" and r.inf4_y.text != "":
+            data["inflows"].append((r.inf4.text,r.inf4_x.text,r.inf4_y.text))
+        elif r.inf4.text != "" or r.inf4_x.text != "" or r.inf4_y.text != "":
+            missingEntry = True
+            r.inf4.highlight()
+            r.inf4_x.highlight()
+            r.inf4_y.highlight()       
 
-        data["outflow"] = []
+        data["outflows"] = []
 
-        data["outflow"].append(r.out1.text)
-        data["outflow"].append(r.out2.text)
-        data["outflow"].append(r.out3.text)
-        data["outflow"].append(r.out4.text)
+        if r.out1.text != "":
+            data["outflows"].append(r.out1.text)
+        if r.out2.text != "":
+            data["outflows"].append(r.out2.text)
+        if r.out3.text != "":
+            data["outflows"].append(r.out3.text)
+        if r.out4.text != "":
+            data["outflows"].append(r.out4.text)
         
         # don't solve unless we have all necessary entries
         if not(missingEntry):
+            # Clear all inflows that have potentially have been highlighted
+            if r.inf1.text == "":
+                r.inf1.clear()
+                r.inf1_x.clear()
+                r.inf1_y.clear()
+            if r.inf2.text == "":
+                r.inf2.clear()
+                r.inf2_x.clear()
+                r.inf2_y.clear()
+            if r.inf3.text == "":
+                r.inf3.clear()
+                r.inf3_x.clear()
+                r.inf3_y.clear()
+            if r.inf4.text == "":
+                r.inf4.clear()
+                r.inf4_x.clear()
+                r.inf4_y.clear()
+            if r.out1.text == "":
+                r.out1.clear()
+            if r.out2.text == "":
+                r.out2.clear()
+            if r.out3.text == "":
+                r.out3.clear()
+            if r.out4.text == "":
+                r.out4.clear()
+
             self.root.ids.save.disabled=False
             self.root.ids.plot.disabled=False
             self.root.ids.refine.disabled=False

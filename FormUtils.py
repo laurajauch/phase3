@@ -30,9 +30,10 @@ def energyPerCell(form):
 Add wall conditions. Wall conditions are everywhere that
 is not an inflow or outflow condition.
 """
-def determineAndAddWallConditions(form, inflows):
+# This is done in forminit
+#def determineAndAddWallConditions(form, inflows):
     # do stuff to determine what the wall conditions are and make them
-    form.addWallCondition(newWall)
+    #form.addWallCondition(newWall)
 
 # Create ----------------------------------------------------------------------
 """
@@ -91,7 +92,7 @@ def formInit(data):
         fType = STEADYNONLINEAR
         form = steadyNonlinearInit(spaceDim, Re, dims, numElements, polyOrder)
 
-    allInflows = None
+    allInflows = None         #Used for adding walls
     i = 0
     while i < len(inflowRegions):
         inflowFunction = Function.vectorize(inflowX[i], inflowY[i])
@@ -105,8 +106,8 @@ def formInit(data):
         else:
             form.addInflowCondition(inflowRegions[i], inflowFunction)
         i += 1
-
-    allOutflows = None
+    
+    allOutflows = None         #Used for adding walls
     i = 0
     while i < len(outflowRegions):
         if allOutflows == None:

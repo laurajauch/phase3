@@ -68,7 +68,7 @@ class Model(object):
     """
     def solve(self, rawData):
         (valid, errors) = self.testData(rawData)
-        print valid
+        print "In Model.py solve, data validity is: "+str(valid)
         try:
             assert valid
             self.storeData(rawData)
