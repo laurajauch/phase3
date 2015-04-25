@@ -305,9 +305,43 @@ class ViewApp(App):
     errors: A map from field to boolean, True if error, False if no error
     """
     def setErrors(self, errors):
-        #if error 
-        return
-
+        r = self.root.ids
+        if errors["reynolds"]:
+            r.reynolds.highlight()
+        if errors["polyOrder"]:
+            r.polyOrder.highlight()
+        if errors["numElements"]:
+            r.meshElems.highlight()
+        if errors["meshDimensions"]:
+            r.meshDim.highlight()
+        for i in range(0, len(errors["inflows"])):
+            if i == 0:
+                r.inf1.highlight()
+                r.inf1_x.highlight()
+                r.inf1_y.highlight()
+            elif i == 1:
+                r.inf2.highlight()
+                r.inf2_x.highlight()
+                r.inf2_y.highlight()
+            elif i == 2:
+                r.inf3.highlight()
+                r.inf3_x.highlight()
+                r.inf3_y.highlight()
+            elif i == 3:
+                r.inf4.highlight()
+                r.inf4_x.highlight()
+                r.inf4_y.highlight()
+        for i in range(0, len(errors["outflows"])):
+            if i == 0:
+                r.out1.highlight()
+            elif i == 1:
+                r.out2.highlight()
+            elif i == 2:
+                r.out3.highlight()
+            elif i == 3:
+                r.out4.highlight()
+        
+        
 """
 """
 class PyTextInput(TextInput):
