@@ -27,7 +27,7 @@ class Model(object):
     Called when plot is pressed
     """
     def plot(self, plotType):       
-        spaceDim = 2
+        """spaceDim = 2
         useConformingTraces = True
         mu = 1.0
         polyOrder = 3
@@ -51,9 +51,9 @@ class Model(object):
         foo.initializeSolution(meshTopo,polyOrder,delta_k)
         foo.addZeroMeanPressureCondition()
         foo.addInflowCondition(topBoundary,topVelocity)
-        foo.solve()
+        foo.solve()"""
 
-        Plotter.plot(foo, plotType)
+        Plotter.plot(self.inputData.getVariable("form"), plotType)
         
     """
     Called when reset is pressed
@@ -67,9 +67,8 @@ class Model(object):
     return: the solved form
     """
     def solve(self, rawData):
-        print("in Model")
         (valid, errors) = self.testData(rawData)
-        print valid
+        print "In Model.py solve, data validity is: "+str(valid)
         try:
             assert valid
             self.storeData(rawData)
@@ -78,7 +77,7 @@ class Model(object):
             print("finish solve")
             return self.inputData.getVariable(["form"])
         except Exception, e:
-            print "Exception is: "+str(e)
+            print "Model.py Solve exception is: "+str(e)
             for key,value in errors.iteritems():
                 print key + " " + str(value)
             # need way to say controller.setErrors(errors)
@@ -160,6 +159,8 @@ class Model(object):
         except:
             # do something to tell the GUI that it was an invalid filename
             print("No solution was found with the name \"%s\"" % command)
+
+    
     
   
 

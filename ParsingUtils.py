@@ -13,7 +13,7 @@ def stringToDims(inputstr):
         y = float(tokenList[1])
         return [x,y]
     except Exception,e:
-        print(str(e))
+        print("ParsingUtils stringToDims: "+str(e))
         raise ValueError
 
 def stringToElements(inputstr):
@@ -23,7 +23,7 @@ def stringToElements(inputstr):
         y = int(tokenList[1])
         return [x,y]
     except Exception,e:
-        print(str(e))
+        print("ParsingUtils stringToElems: "+str(e))
         raise ValueError
 
 """
@@ -34,21 +34,21 @@ def stringToInflows(rawRegion, rawXvel, rawYvel): #(rawRegion, rawXvel, rawYvel)
     try:
         region = (ConditionParser.parseCondition(rawRegion))
     except Exception,e:
-        print "Inflow 1: "+str(e)
+        print "ParsingUtils Inflow 1: "+str(e)
         raise ValueError
         
     try:
         for items in rawXvel:
             xvel = (parseFunction(rawXvel))
     except Exception,e:
-        print "Inflow 2: "+str(e)
+        print "ParsingUtils Inflow 2: "+str(e)
         raise ValueError
     
     try:
         for items in rawYvel:
             yvel = (parseFunction(rawYvel))
     except Exception,e:
-        print "Inflow 3: "+str(e)
+        print "ParsingUtils Inflow 3: "+str(e)
         raise ValueError
     
     return (region, xvel, yvel)
@@ -61,7 +61,7 @@ def stringToOutflows(rawRegions):
     try:
         ret = ConditionParser.parseCondition(rawRegions)
     except Exception,e:
-        print "Outflow: "+str(e)
+        print "ParsingUtils Outflow: "+str(e)
         raise ValueError
     return ret
 
@@ -161,23 +161,24 @@ def checkValidInput(rawData):
     except:
         errors["meshDimensions"] = True
             
+
+    print "inflow length: "+str(len(rawData["inflows"]))
     # inflow strings [(condition, xVelocity, yVelocity)]
     try:
-        if len(rawData["inflow"]) > 0:
-            for item in rawData["inflow"]:
-                stringToInflow(item)
-        errors["inflow"] = False
+        if len(rawData["inflows"]) > 0:
+            for item in rawData["inflows"]:
+                stringToInflows(item)
+        errors["inflows"] = False
     except:
-        errors["inflow"] = True
+        errors["inflows"] = True
                 
     # outflow: strings [condition]
     try:
         if len(rawData["outflows"]) > 0:
             for item in rawData["outflows"]:
-                stringToOutflow(item)
+                stringToOutflows(item)
         errors["outflows"] = False
     except:
-        print("could not parse" + str(rawData["outflows"]))
         errors["outflows"] = True
     
     return errors
