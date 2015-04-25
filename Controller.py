@@ -122,7 +122,10 @@ class ViewApp(App):
     """
     def refine(self, input):
         self.root.status = "Refining..."
-        self.controller.pressRefine(input)
+        if(input[0] == 'h'):
+            self.controller.pressRefine(0)
+        else:
+            self.controller.pressRefine(1)
         self.root.status  = "Refined."
     def plot(self, input):
         self.root.status = "Plotting..."
@@ -324,6 +327,8 @@ class ViewApp(App):
         self.controller.pressLoad(filename)
     def save(self):
         filename = self.getFilename()
+        if(filename == ''):
+            return
         self.controller.pressSave(filename)
 
     """
