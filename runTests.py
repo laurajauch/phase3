@@ -25,6 +25,8 @@ testSuite.addTest(unittest.makeSuite(TestParsingUtils))
 #testSuite.addTest(unittest.makeSuite(TestPlotter))
 #testSuite.addTest(unittest.makeSuite(TestPlotterStream))
 
+
+
 testRunner = unittest.TextTestRunner()
 
 #with Capturing() as output:

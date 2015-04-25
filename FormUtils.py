@@ -158,24 +158,26 @@ def autoRefine(data,refType): # refType: 0 is h, 1 is p      why pass data not f
         print "executing refine"
         if refType == H:
             if fType == STEADYLINEAR or fType == TRANSIENTLINEAR:
-                linearHAutoRefine(form)
+                form = linearHAutoRefine(form)
             elif fType == STEADYNONLINEAR:
-                nonlinearHAutoRefine(form)
+                form = nonlinearHAutoRefine(form)
         elif refType == P:
             if fType == STEADYLINEAR or fType == TRANSIENTLINEAR:
-                linearPAutoRefine(form)
+                form = linearPAutoRefine(form)
             elif fType == STEADYNONLINEAR:
-                nonlinearPAutoRefine(form)
+                form = nonlinearPAutoRefine(form)
 		
 	return form 
 
 def linearHAutoRefine(form):
     form.hRefine()
     steadyLinearSolve(form)
+    return form
    
 def linearPAutoRefine(form):
     form.pRefine()
     steadyLinearSolve(form)
+    return form
     
 def linearHManualRefine(form,cellList):
     print("Manually refining in h..."),
@@ -206,10 +208,12 @@ def linearPManualRefine(form, cellList):
 def nonlinearHAutoRefine(form):
     form.hRefine()
     steadyNonlinearSolve(form)
+    return form
     
 def nonlinearPAutoRefine(form):
     form.pRefine()
     steadyNonlinearSolve(form)
+    return form
     
 def nonlinearHManualRefine(form, cellList):
     print("Manually refining in h..."),
