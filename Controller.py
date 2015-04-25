@@ -298,6 +298,8 @@ class ViewApp(App):
             else:
                 print(type(results))
                 self.root.energyError = str(results.solution().energyErrorTotal())
+                self.root.numElements = str()
+                self.root.degreesFreedom = str()
             self.root.status = "Solved."
             return
         else:
