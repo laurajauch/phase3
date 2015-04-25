@@ -42,7 +42,8 @@ class TestParsingUtils(unittest.TestCase):
                 self.assertEqual(test, testRegion.matchesPoint(i,j))
                 self.assertEqual(xAnsw, testX.evaluate(i,j))
                 self.assertEqual(yAnsw, testY.evaluate(i,j))
-                
+           
+     
     """Test stringToOutflows"""
     def test_stringToOutflows(self):
         Points = [0.,1.,2.,-1.,-2.]
@@ -55,7 +56,8 @@ class TestParsingUtils(unittest.TestCase):
                 if(test != testRegions.matchesPoint(i,j)):
                     print "missmatch: "+str(i)+" "+str(j)
                 self.assertEqual(test, testRegions.matchesPoint(i,j))
-                
+               
+ 
     """Test formatRawData"""
     def test_formatRawData(self):
         rawData = {}
@@ -68,16 +70,47 @@ class TestParsingUtils(unittest.TestCase):
         rawData["inflow"] = expectedData["inflow"]
         rawData["outflow"] = expectedData["outflow"]
         testData = formatRawData(rawData)        
+                
+
+    """Test checkValidInputWithValidData"""
+    def test_checkValidInputWithValidData(self):
+        validData = {}
+        validData["stokes"] = False
+        validData["transient"] = False
+        validData["reynolds"] = 1000.0
+        validData["meshDimensions"] = "1.0x1.0"
+        validData["numElements"] = "3x5"
+        validData["polyOrder"] = 3
+        validData["inflow"] = expectedData["inflow"]
+        validData["outflow"] = expectedData["outflow"]
+        errors = checkValidInput(validData)        
+     
+        for field, result in errors.iteritems():
+            print field + " " + str(result)
+            self.assertFalse(result)
+
+
+    """Test checkValidInputWithInvalidData"""
+    def test_checkValidInputWithInvalidData(self):
+        return
+        invalidData = {}
+        invalidData["stokes"] = ""
+        invalidData["transient"] = ""
+        invalidData["meshDimensions"] = expectedData["rawDims"]
+        invalidData["numElements"] = expectedData["rawNumElements"]
+        invalidData["polyOrder"] = expectedData["polyOrder"]
+        invalidData["inflow"] = expectedData["inflow"]
+        invalidData["outflow"] = expectedData["outflow"]
+        errors = checkValidInput(invalidData)        
         
+        for field, result in errors.iteritems():
+            self.assertTrue(result)
 
-
-    """Test checkValidInput"""
-    def test_checkValidInput(self):
-        pass
 
     """Test checkValidFile"""
     def test_checkValidFile(self):
-        checkValidFile(ParsingUtils.py)
+        checkValidFile("ParsingUtils.py")
                 
+
     if __name__ == '__main__':
         unittest.main()

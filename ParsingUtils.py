@@ -59,8 +59,7 @@ returns the SpacialFilter for the outflow
 """
 def stringToOutflows(rawRegions):
     try:
-        for region in rawRegions:
-            ret = ConditionParser.parseCondition(region)
+        ret = ConditionParser.parseCondition(rawRegions)
     except Exception,e:
         print "Outflow: "+str(e)
         raise ValueError
@@ -75,21 +74,15 @@ def formatRawData(rawData):
     data ={}
 
     # stokes: boolean
-    if rawData["stokes"]:
-        data["stokes"] = True
-    else:
-        data["stokes"] = False
-        
+    data["stokes"] = bool(rawData["stokes"])
+           
     # reynolds: float/int
     if not data["stokes"]:
         data["reynolds"] = int(rawData["reynolds"])
     
     # transient: boolean
-    if rawData["transient"]:
-        data["transient"] = True
-    else:
-        data["transient"] = False
-        
+    data["transient"] = bool(rawData["transient"])
+           
     # meshDimensions: [float, float]
     data["meshDimensions"] = stringToDims(rawData["meshDimensions"])
 
@@ -146,10 +139,10 @@ def checkValidInput(rawData):
     except:
         errors["reynolds"] = True
 
-    # polyOrder: must be an int less than 10
+    # polyOrder: must be an int less than 10 and greater than 0
     try:
-        assert int(rawData["polyOrder"]) < 10
-        assert int(rawData["polyOrder"]) > 0
+        assert (int(rawData["polyOrder"]) < 10)
+        assert (int(rawData["polyOrder"]) > 0)
         errors["polyOrder"] = False
     except:
         errors["polyOrder"] = True

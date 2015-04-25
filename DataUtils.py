@@ -18,9 +18,11 @@ data["rawNumElements"] = "3x5"
 data["polyOrder"] = 3
 data["meshDimensions"] = [3.1,5.0]
 data["rawDims"] = "3.1x5.0"
+data["inflow"] = [("x<8", "x*y", "x-y")] #raw
 data["inflowRegions"] = "x<8"
-data["inflowX"] = "x * y"
-data["inflowY"] = "x - y"
+data["inflowX"] = "x*y"
+data["inflowY"] = "x-y"
+data["outflow"] = ["x<0"] #raw
 data["outflowRegions"] = "x<0"
 data["spaceDim"] = 2
 data["useConformingTraces"] = True
@@ -29,8 +31,7 @@ data["x0"] = [0.,0.]
 data["delta_k"] = 1
 data["dt"] = 0.1
 data["x0"] = [0.,0.]
-data["inflow"] = [(data["inflowRegions"], data["inflowX"], data["inflowY"])] #raw
-data["outflow"] = [data["outflowRegions"]] #raw
+
 
 
 """

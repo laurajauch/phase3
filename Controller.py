@@ -32,7 +32,6 @@ class Controller(object):
     def pressRefine(self, rType):   
         self.model.refine(rType)
 
-
     """
     Convert a matplotlib.Figure to PNG image.:returns: PNG image bytes
     """
@@ -42,27 +41,18 @@ class Controller(object):
       #  canvas.print_png(data)
       #  return data.getvalue()
 
-
-
-
     """
     Do this when plot is pressed.
     """
     def pressPlot(self, plotType):
-        
         self.model.plot(plotType)
-       
-  
-        
- 
-      
+              
     """
     Do this when reset is pressed.
     """
     def pressReset(self):
         self.model.reset()
-        pass
-
+        
     """
     Do this when solve is pressed.
     """
@@ -80,30 +70,6 @@ class Controller(object):
     """
     def pressSave(self, filename):
         self.model.save(filename)
-
-
-
-# Screen Accessors & Mutators ------------------------------------
-   
-    """
-    Retrieve the text from the GUI.
-    """
-    def getText(self):
-        pass
-
-    """
-    Retrieve the filename from the text box in the GUI
-    """
-    def getFilename(self):
-        pass
-    
-    """
-    Set the input errors on the GUI
-    errors: A map from field to boolean, True if error, False if no error
-    """
-    def setErrors(self, errors):
-        pass
-
 
 
 """
@@ -169,10 +135,7 @@ class ViewApp(App):
         r.save.clear()
         r.save.disabled=True
         r.filename.clear()
-        #self.controller.pressReset()
-
-
-
+        self.controller.pressReset()
 
     def solve(self):
         self.root.status = "Solving..."
