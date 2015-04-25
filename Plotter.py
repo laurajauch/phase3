@@ -26,21 +26,21 @@ def plot(form, plotType, numPlots):
         streamSolution = form.streamSolution()
         streamSolution.solve
         streamFunction = Function.solution(form.streamPhi(), streamSolution)
-        plotFunction(streamFunction, streamSolution.mesh(), numPlots)
+        plotFunction(streamFunction, streamSolution.mesh(), numPlots, "Stream Function")
 
 
     elif plotType == "u1":
 
         u1_soln = Function.solution(form.u(1),form.solution())
-        plotFunction(u1_soln, form.solution().mesh(), numPlots)
+        plotFunction(u1_soln, form.solution().mesh(), numPlots, "u1")
 
     elif plotType == "u2":
         u2_soln = Function.solution(form.u(2),form.solution())
-        plotFunction(u2_soln, form.solution().mesh(), numPlots)
+        plotFunction(u2_soln, form.solution().mesh(), numPlots, "u2")
 
     elif plotType == "p":
         p_soln = Function.solution(form.p(), form.solution())
-        plotFunction(p_soln, form.solution().mesh(), numPlots)
+        plotFunction(p_soln, form.solution().mesh(), numPlots,"p")
 
 
 
@@ -48,7 +48,7 @@ def plot(form, plotType, numPlots):
 def plotMesh(mesh, numPlots):
     num_x = 10
     num_y = 10
-    plt.figure(numPlots, figsize=(426/96,320/96))
+    plt.figure(1, figsize=(426/96,320/96))
     plt.subplot(111)
     zList = [] # should have tuples (zVals, (x_min,x_max), (y_min,y_max)) -- one for each cell
     activeCellIDs = mesh.getActiveCellIDs()
@@ -93,7 +93,7 @@ def plotMesh(mesh, numPlots):
 def plotError(error, mesh, numPlots):
     num_x = 10
     num_y = 10
-    plt.figure(numPlots, figsize=(426/96,320/96))
+    plt.figure(1, figsize=(426/96,320/96))
     plt.subplot(111)
     zList = [] # should have tuples (zVals, (x_min,x_max), (y_min,y_max)) -- one for each cell
     activeCellIDs = mesh.getActiveCellIDs()
@@ -136,8 +136,8 @@ def plotError(error, mesh, numPlots):
     
 
 
-def plotFunction(f,mesh, numPlots):
-    plt.figure(numPlots, figsize=(426/96,320/96))
+def plotFunction(f,mesh, numPlots, title):
+    plt.figure(1, figsize=(426/96,320/96))
     plt.subplot(111)
     num_x = 10
     num_y = 10
@@ -181,7 +181,7 @@ def plotFunction(f,mesh, numPlots):
                    extent=[xMinLocal, xMaxLocal, yMinLocal, yMaxLocal],
                    interpolation='bicubic', origin='lower')
 
-    plt.title('Function')
+    plt.title(title)
     plt.colorbar()
     plt.axis([xMin, xMax, yMin, yMax])
     plt.savefig('/tmp/plot'+str(numPlots)+'.png',dpi=96)

@@ -125,6 +125,7 @@ class ViewApp(App):
         self.numPlots += 1
         self.controller.pressPlot(input, self.numPlots)
         self.root.plot_image = '/tmp/plot'+str(self.numPlots)+'.png'
+    
         self.root.status = "Plotted."
     
     """
@@ -290,6 +291,8 @@ class ViewApp(App):
             results = self.controller.pressSolve(data)
             if isinstance(results,dict): # if it's a dict of errors
                 self.setErrors(results)
+            else:
+                self.root.energyError = str(results.solution().energyErrorTotal())
             self.root.status = "Solved."
             return
         else:
