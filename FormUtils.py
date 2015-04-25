@@ -150,31 +150,30 @@ def steadyNonlinearInit(spaceDim, re, dims, numElements, polyOrder):
 
 # Refine----------------------------------------------------------------------
 def autoRefine(data,refType): # refType: 0 is h, 1 is p      why pass data not form?
-    
+
     form = data.getVariable("form")
 
     if refType == H:
-        if fType == STEADYLINEAR or fType == TRANSIENTLINEAR:
+        if data.getVariable("stokes"):
             form = linearHAutoRefine(form)
-        elif fType == STEADYNONLINEAR:
+        else:
             form = nonlinearHAutoRefine(form)
     elif refType == P:
-        if fType == STEADYLINEAR or fType == TRANSIENTLINEAR:
+        if data.getVariable("stokes"):
             form = linearPAutoRefine(form)
-        elif fType == STEADYNONLINEAR:
+        else:
             form = nonlinearPAutoRefine(form)
 
     return form 
-    #return data.getVariable("form")
 
 def linearHAutoRefine(form):
     form.hRefine()
-    steadyLinearSolve(form)
+    form = steadyLinearSolve(form)
     return form
    
 def linearPAutoRefine(form):
     form.pRefine()
-    steadyLinearSolve(form)
+    form = steadyLinearSolve(form)
     return form
     
 def linearHManualRefine(form,cellList):
@@ -205,12 +204,12 @@ def linearPManualRefine(form, cellList):
 
 def nonlinearHAutoRefine(form):
     form.hRefine()
-    steadyNonlinearSolve(form)
+    form = steadyNonlinearSolve(form)
     return form
     
 def nonlinearPAutoRefine(form):
     form.pRefine()
-    steadyNonlinearSolve(form)
+    form = steadyNonlinearSolve(form)
     return form
     
 def nonlinearHManualRefine(form, cellList):
@@ -300,11 +299,13 @@ def nonlinearSolve(form):
         print("L^2 norm of increment: %0.3f" % normOfIncrement)
         stepNumber += 1
 
+    return form
+
 def steadyNonlinearSolve(form):
     print("Solving...")
     start = time()
 
-    nonlinearSolve(form)
+    form = nonlinearSolve(form)
 
     mesh = form.solution().mesh()
     energyError = form.solutionIncrement().energyErrorTotal()
@@ -313,3 +314,4 @@ def steadyNonlinearSolve(form):
     secs = (end - start) % 60
     print("Solve completed in %i minute, %i seconds." % (mins, secs))
     print("Energy error is %0.3f" % (energyError))
+    return form

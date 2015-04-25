@@ -68,7 +68,7 @@ class Controller(object):
     """
     def pressSolve(self, data):
         results = self.model.solve(data)
-        print "what" + str((type(results)))
+        print str((type(results)))
         return results # either a form or errors
             
     """
@@ -121,7 +121,10 @@ class ViewApp(App):
     """
     def refine(self, input):
         self.root.status = "Refining..."
-        self.controller.pressRefine(input)
+        if(input[0] == 'h'):
+            self.controller.pressRefine(0)
+        else:
+            self.controller.pressRefine(1)
         self.root.status  = "Refined."
     def plot(self, input):
         self.root.status = "Plotting..."
