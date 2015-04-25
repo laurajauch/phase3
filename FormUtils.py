@@ -152,11 +152,12 @@ def steadyNonlinearInit(spaceDim, re, dims, numElements, polyOrder):
 
 # Refine----------------------------------------------------------------------
 def autoRefine(data,refType): # refType: 0 is h, 1 is p      why pass data not form?
-	ret = formInit(data)
+"""	ret = formInit(data)
         form = ret[0] 
-        fType = ret[1]	
-        print "executing refine"
-        if refType == H:
+        print str(type(form))
+        fType = ret[1]
+        print "executing refine"""
+        """if refType == H:
             if fType == STEADYLINEAR or fType == TRANSIENTLINEAR:
                 form = linearHAutoRefine(form)
             elif fType == STEADYNONLINEAR:
@@ -165,9 +166,10 @@ def autoRefine(data,refType): # refType: 0 is h, 1 is p      why pass data not f
             if fType == STEADYLINEAR or fType == TRANSIENTLINEAR:
                 form = linearPAutoRefine(form)
             elif fType == STEADYNONLINEAR:
-                form = nonlinearPAutoRefine(form)
+                form = nonlinearPAutoRefine(form)"""
 		
-	return form 
+	#return form 
+        return data["form"]
 
 def linearHAutoRefine(form):
     form.hRefine()
