@@ -58,7 +58,6 @@ rawRegions: string representation of the region
 returns the SpatialFilter for the outflow
 """
 def stringToOutflows(rawRegions):
-    print(rawRegions)
     try:
         ret = ConditionParser.parseCondition(rawRegions)
     except Exception,e:
@@ -118,6 +117,7 @@ def formatRawData(rawData):
     data["outflows"] = rawData["outflows"]
     
     return data
+
 
 #--------------------------------------------------------------
 
