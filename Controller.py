@@ -313,30 +313,30 @@ class ViewApp(App):
         if errors["meshDimensions"]:
             r.meshDim.highlight()
         for i in range(0, len(errors["inflows"])):
-            if i == 0:
+            if (i == 0) and errors["inflows"][i]:
                 r.inf1.highlight()
                 r.inf1_x.highlight()
                 r.inf1_y.highlight()
-            elif i == 1:
+            elif (i == 1) and errors["inflows"][i]:
                 r.inf2.highlight()
                 r.inf2_x.highlight()
                 r.inf2_y.highlight()
-            elif i == 2:
+            elif (i == 2) and errors["inflows"][i]:
                 r.inf3.highlight()
                 r.inf3_x.highlight()
                 r.inf3_y.highlight()
-            elif i == 3:
+            elif (i == 3) and errors["inflows"][i]:
                 r.inf4.highlight()
                 r.inf4_x.highlight()
                 r.inf4_y.highlight()
         for i in range(0, len(errors["outflows"])):
-            if i == 0:
+            if (i == 0) and errors["outflows"][i]:
                 r.out1.highlight()
-            elif i == 1:
+            elif (i == 1) and errors["outflows"][i]:
                 r.out2.highlight()
-            elif i == 2:
+            elif (i == 2) and errors["outflows"][i]:
                 r.out3.highlight()
-            elif i == 3:
+            elif (i == 3) and errors["outflows"][i]:
                 r.out4.highlight()
         
         
