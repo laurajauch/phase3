@@ -76,7 +76,7 @@ class Controller(object):
     Do this when load is pressed.
     """
     def pressLoad(self, filename):
-        return self.model.load(filename)
+        self.model.load(filename)
 
     """
     Do this when save is pressed.
@@ -315,7 +315,9 @@ class ViewApp(App):
         return filename
     def load(self):
         filename = self.getFilename()
-        data = self.controller.pressLoad(filename)
+        if(filename == ''):
+            return
+        self.controller.pressLoad(filename)
     def save(self):
         filename = self.getFilename()
         #self.controller.pressSave(filename)
