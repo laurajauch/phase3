@@ -128,7 +128,8 @@ class Model(object):
             spaceDim = 2
             if not self.inputData.getVariable("stokes"):
                 reynolds = context.inputData.getVariable("reynolds")
-                form = NavierStokesVGPForumlation(filename, spaceDim, reynolds, polyOrder)
+                delta_k = 1
+                form = NavierStokesVGPForumlation(filename, spaceDim, reynolds, polyOrder, delta_k)
             else:
                 useConformingTraces = False
                 mu = 1.0
@@ -140,11 +141,15 @@ class Model(object):
                 mesh = form.solution().mesh()
                 elementCount = mesh.numActiveElements()
                 globalDofCount = mesh.numGlobalDofs()
+
+            self.inputData.addVariable("form", form)
             return self.inputData.vars
                 
         except:
             # do something to tell the GUI that it was an invalid filename
             print("No solution was found with the name \"%s\"" % filename) 
+            raise ValueError
+            
  
     if __name__ == '__main__':
         pass
