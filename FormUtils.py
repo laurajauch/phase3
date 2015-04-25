@@ -208,25 +208,13 @@ def linearPManualRefine(form, cellList):
     return form
 
 def nonlinearHAutoRefine(form):
-    #print("Automatically refining in h..."),
     form.hRefine()
-    #mesh = form.solution().mesh()
-    #elementCount = mesh.numActiveElements()
-    #globalDofCount = mesh.numGlobalDofs() 
-    #print("New mesh has %i elements and %i degrees of freedom." % (elementCount, globalDofCount))
     steadyNonlinearSolve(form)
-    #return form
-
+    
 def nonlinearPAutoRefine(form):
-    #print("Automatically refining in p..."),
     form.pRefine()
-    #mesh = form.solution().mesh()
-    #elementCount = mesh.numActiveElements()
-    #globalDofCount = mesh.numGlobalDofs()
-    #print("New mesh has %i elements and %i degrees of freedom." % (elementCount, globalDofCount))
     steadyNonlinearSolve(form)
-    #return form
-
+    
 def nonlinearHManualRefine(form, cellList):
     print("Manually refining in h..."),
     if not DEBUG:
