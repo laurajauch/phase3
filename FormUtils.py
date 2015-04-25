@@ -99,9 +99,7 @@ def formInit(data):
             allOutflows = outflowRegions[i]
         else:
             allOutflows = SpatialFilter.intersectionFilter(allOutflows,outflowRegions[i])
-        print "precrash"
         form.addOutflowCondition(outflowRegions[i])
-        print "postcrash"
         i += 1  
     
     #add wall conditions
