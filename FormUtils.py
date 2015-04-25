@@ -60,12 +60,6 @@ def formInit(data):
     inflowY = data.getVariable("inflowY")
     outflowRegions = data.getVariable("outflowRegions")
 
-    """inflowRegionsRaw = data.getVariable("inflowRegions")
-    inflowXRaw = data.getVariable("inflowX")
-    inflowYRaw = data.getVariable("inflowY")
-    (inflowRegions,inflowX,inflowY) = stringToInflows((inflowRegionsRaw,inflowXRaw,inflowYRaw))
-    outflowRegionsRaw = data.getVariable("outflowRegions")
-    outflowRegions = stringToOutflows(outflowRegionsRaw)"""
     meshTopo = MeshFactory.rectilinearMeshTopology(dims, numElements, x0)
     
     #initialize type to 0
