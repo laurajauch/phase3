@@ -69,7 +69,7 @@ class Controller(object):
     """
     def pressSolve(self, data):
         results = self.model.solve(data)
-        print(type(results))
+        print "what" + str((type(results)))
         return results # either a form or errors
             
     """
@@ -167,6 +167,7 @@ class ViewApp(App):
         r.save.clear()
         r.save.disabled=True
         r.filename.clear()
+        self.root.energyError = ""
         self.controller.pressReset()
 
     """
@@ -297,7 +298,11 @@ class ViewApp(App):
                 self.setErrors(results)
             else:
                 print(type(results))
-                self.root.energyError = str(results.solution().energyErrorTotal())
+                
+                if(data["stokes"]):
+                    self.root.energyError = str(results.solution().energyErrorTotal())
+                else:
+                    self.root.energyError = str(results.solutionIncrement().energyErrorTotal())
             self.root.status = "Solved."
             return
         else:
