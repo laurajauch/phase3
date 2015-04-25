@@ -8,7 +8,8 @@ A class of utility functions for generating data to
 be used in test code. 
 """
 
-#expectedVars = ["numElements", "polyOrder", "meshDimensions", "inflowRegions", "inflowX", "inflowY", "outflowRegions"]
+# the variables expected in input data, used for testing
+expectedVars = ["numElements", "polyOrder", "meshDimensions", "inflowRegions", "inflowX", "inflowY", "outflowRegions"]
 
 # data, all in one place so it can be altered conveniently
 data = {}
@@ -31,8 +32,6 @@ data["x0"] = [0.,0.]
 data["delta_k"] = 1
 data["dt"] = 0.1
 data["x0"] = [0.,0.]
-
-
 
 """
 An accessor for expectedVars

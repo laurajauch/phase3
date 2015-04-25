@@ -38,9 +38,6 @@ class TestParsingUtils(unittest.TestCase):
         Points = [0.,1.,2.,-1.,-2.]
         (rawRegion, rawX, rawY) = expectedData["rawInflows"][0]
         (testRegion, testX, testY) = stringToInflows(rawRegion, rawX, rawY)
-        #expectedRegions = expectedData["inflowRegions"]
-        #expectedX = expectedData["inflowX"]
-        #expectedY = expectedData["inflowY"]     
         for i in Points:
             for j in Points:
                 test = (i < 8)
@@ -56,7 +53,6 @@ class TestParsingUtils(unittest.TestCase):
         Points = [0.1,1.,2.,-1.,-2.]
         rawOutflow = expectedData["rawOutflows"][0]
         testRegions = stringToOutflows(rawOutflow) # x<0
-        #expectedRegions = expectedData["outflowRegions"][0]    
         for i in Points:
             for j in Points:
                 test = (i < 0)
