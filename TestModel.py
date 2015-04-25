@@ -149,16 +149,22 @@ class TestModel(unittest.TestCase):
 
     """Test LoadValidStokes"""
     def test_loadValidStokes(self):
-        model = Model()
-        self.test_saveStokes()
-        model.load("testLoadSaveStokes")
+        try:
+            model = Model()
+            self.test_saveStokes()
+            model.load("testLoadSaveStokes")
+        except:
+            self.assertTrue(False)
 
     """Test LoadValidNStokes"""
     def test_loadValidNStokes(self):
-        model = Model()
-        self.test_saveNStokes()
-        model.load("testLoadSaveNStokes")
-   
+        try:
+            model = Model()
+            self.test_saveNStokes()
+            model.load("testLoadSaveNStokes")
+        except:
+            self.assertTrue(False)
+
     """Test LoadInvalid"""
     def test_loadInvalid(self):
         try:

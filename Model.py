@@ -1,5 +1,6 @@
 import FormUtils
 import Plotter
+import pickle
 from ParsingUtils import *
 from PyCamellia import * #only used for random plot test
 from InputData import *
@@ -119,7 +120,9 @@ class Model(object):
     """
     def load(self, filename):
         try:           
+            print "about to open file"
             loadFile = open(filename)
+            print "opened file"
             memento = pickle.load(loadFile)
             loadFile.close()
             self.inputData.setMemento(memento)
@@ -128,23 +131,22 @@ class Model(object):
             spaceDim = 2
             if not self.inputData.getVariable("stokes"):
                 reynolds = context.inputData.getVariable("reynolds")
-                form = NavierStokesVGPForumlation(filename, spaceDim, reynolds, polyOrder)
+                delta_k = 1
+                form = NavierStokesVGPForumlation(filename, spaceDim, reynolds, polyOrder, delta_k)
             else:
                 useConformingTraces = False
                 mu = 1.0
                 form = StokesVGPFormulation(spaceDim, useConformingTraces, mu)
                 form.initializeSolution(filename, polyOrder)
                 
-                context.inputData.setForm(form)
-                
-                mesh = form.solution().mesh()
-                elementCount = mesh.numActiveElements()
-                globalDofCount = mesh.numGlobalDofs()
+            self.inputData.addVariable("form", form)
             return self.inputData.vars
                 
         except:
             # do something to tell the GUI that it was an invalid filename
             print("No solution was found with the name \"%s\"" % filename) 
+            raise ValueError
+            
  
     if __name__ == '__main__':
         pass
