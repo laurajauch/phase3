@@ -51,7 +51,7 @@ class Model(object):
             self.storeData(rawData)
             #print "solving"
             self.inputData.addVariable("form", FormUtils.solve(self.inputData))
-            #print("finish solve")
+            print("finish solve")
             return self.inputData.getVariable(["form"])
         except Exception, e:
             print "Model.py Solve exception is: "+str(e)
