@@ -297,9 +297,11 @@ class ViewApp(App):
                 self.setErrors(results)
             else:
                 print(type(results))
-                self.root.energyError = str(results.solution().energyErrorTotal())
-                self.root.numElements = str()
-                self.root.degreesFreedom = str()
+                
+                if(data["stokes"]):
+                    self.root.energyError = str(results.solution().energyErrorTotal())
+                else:
+                    self.root.energyError = str(results.solutionIncrement().energyErrorTotal())
             self.root.status = "Solved."
             return
         else:
