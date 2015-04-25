@@ -2,8 +2,6 @@ from PyCamellia import *
 from FunctionParser import *
 import unittest
 
-
-
 class TestParseFunction(unittest.TestCase):
 
     """Test Add"""
@@ -25,9 +23,9 @@ class TestParseFunction(unittest.TestCase):
     """Test Divide"""
     def test_divide(self):
         func = parseFunction("10/x")
-        for x in range(0,5):
-            for y in range(0,5):
-                answ = 10 / x
+        for x in range(1,5):
+            for y in range(1,5):
+                answ = 10 / float(x)
                 self.assertEqual(answ, func.evaluate(x))
 
     """Test Multiply"""
@@ -106,15 +104,53 @@ class TestParseFunction(unittest.TestCase):
                 answ = 2. + .6 - x**2 + y
                 self.assertEqual(answ, func.evaluate(x, y))
 
+    def testBasicRoberts(self):
+        f_actual = parseFunction("-3*(y-1)*(y-2)")
+        y = Function.yn(1)
+        f_expected = -3*(y-1)*(y-2)
+        testPoints = [[0,0],[0,1],[0,2],[1,3],[1,4],[1,5]]
+        for point in testPoints:
+            xVal = point[0]
+            yVal = point[1]
+            actualValue = f_actual.evaluate(xVal,yVal)
+            expectedValue = f_expected.evaluate(xVal,yVal)
+            tol = 1e-12
+            if abs(actualValue-expectedValue) > tol :
+                print "At (" + str(xVal) + "," + str(yVal) + "), expected ",
+                print str(expectedValue) + ", but value was " + str(actualValue)
+                self.assertAlmostEqual(f_actual.evaluate(xVal,yVal), f_expected.evaluate(xVal,yVal), delta=1e-12)
+
+    def testBasicRoberts2(self):
+        f_actual = parseFunction("3*(1-y)*(y-2)")
+        y = Function.yn(1)
+        f_expected = -3*(y-1)*(y-2)
+        testPoints = [[0,0],[0,1],[0,2],[1,3],[1,4],[1,5]]
+        for point in testPoints:
+            xVal = point[0]
+            yVal = point[1]
+            self.assertAlmostEqual(f_actual.evaluate(xVal,yVal), f_expected.evaluate(xVal,yVal), delta=1e-12)
+
+    def testBasicRoberts3(self):
+        f_actual = parseFunction("-3*y*y+9*y-6")
+        y = Function.yn(1)
+        f_expected = -3*(y-1)*(y-2)
+        testPoints = [[0,0],[0,1],[0,2],[1,3],[1,4],[1,5]]
+        for point in testPoints:
+            xVal = point[0]
+            yVal = point[1]
+            self.assertAlmostEqual(f_actual.evaluate(xVal,yVal), f_expected.evaluate(xVal,yVal), delta=1e-12)
+
     """Test ePowerOfTen"""
+    """
     def test_ePowerOfTen(self):
         try:
-            func = parseFunction("xe2")
+            func = fp.parseFunction("xe2")
         except ValueError:
             error = True
         answ = x * 10 * 10
         #self.assertEqual(answ, func.evaluate(x))
         self.assertEqual(True, error)
+        """
 
     if __name__ == '__main__':
         unittest.main()

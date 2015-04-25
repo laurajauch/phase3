@@ -21,11 +21,12 @@ class InputData:
     meshDimensions = [float, float]
     numElements = [int, int]
     polyOrder = int
-    inflowRegions = [strings]
-    inflowX = [strings]
-    inflowY = [strings]
-    outflowRegions = [strings]
-    wallRegions = [strings]
+    inflow = strings [(inflowRegions, inflowX, inflowY)]
+    inflowRegions = SpacialFilter
+    inflowX = SpacialFilter
+    inflowY = SpacialFilter
+    outflowRegions = SpacialFilter
+    outflow = strings [outflowRegions]
     """
     def __init__(self):
         self.vars = {}
@@ -37,7 +38,7 @@ class InputData:
     def setMemento(self, memento):
         self.vars = memento.get()
 
-# Generic Variable ---------------------------------
+# Variable Accessors & Mutators ---------------------
     def setVariables(self, data):
         self.vars = data
 
@@ -49,13 +50,3 @@ class InputData:
             return self.vars[string]
         except:
             pass
-
-# Form ---------------------------------------------
-    def setForm(self, form):
-        self.vars["form"] = form
-    
-    def getForm(self):
-        try:
-            return self.vars["form"]
-        except:
-            print("InputData does not contain form")

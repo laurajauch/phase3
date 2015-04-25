@@ -1,6 +1,7 @@
 import FormUtils
-#import Plotter
+import Plotter
 import ParsingUtils
+from PyCamellia import * #only used for random plot test
 from InputData import *
 
 
@@ -19,13 +20,40 @@ class Model(object):
     Called when refine is pressed
     """
     def refine(self, rtype): # type: 0 is h, 1 is p
-        FormUtils.autoRefine(data, rtype)
+        self.inputData.addVariable("form",FormUtils.autoRefine(self.inputData, rtype))
+        print "done refine"
             
     """
     Called when plot is pressed
     """
-    def plot(self, plotType):
-        Plotter.plot(form, plotType)
+    def plot(self, plotType):       
+        spaceDim = 2
+        useConformingTraces = True
+        mu = 1.0
+        polyOrder = 3
+        delta_k = 1
+        dims = [1.0, 1.0]
+        numElements = [2,2]
+        x0 = [0.,0.]
+        meshTopo = MeshFactory.rectilinearMeshTopology(dims, numElements, x0)
+        
+        topBoundary = SpatialFilter.matchingY(1.0)
+        notTopBoundary = SpatialFilter.negatedFilter(topBoundary)
+        x = Function.xn(1)
+        rampWidth = 1./64
+        H_left = Function.heaviside(rampWidth)
+        H_right = Function.heaviside(1.0-rampWidth);
+        ramp = (1-H_right) * H_left + (1./rampWidth) * (1-H_left) * x + (1./rampWidth) * H_right * (1-x)
+        zero = Function.constant(0)
+        topVelocity = Function.vectorize(ramp,zero)
+
+        foo = StokesVGPFormulation(spaceDim,useConformingTraces,mu)
+        foo.initializeSolution(meshTopo,polyOrder,delta_k)
+        foo.addZeroMeanPressureCondition()
+        foo.addInflowCondition(topBoundary,topVelocity)
+        foo.solve()
+
+        Plotter.plot(foo, plotType)
         
     """
     Called when reset is pressed
@@ -39,13 +67,20 @@ class Model(object):
     return: the solved form
     """
     def solve(self, rawData):
-        (valid, errors) = testData(rawData)
+        print("in Model")
+        (valid, errors) = self.testData(rawData)
+        print valid
         try:
             assert valid
-            storeData(rawData)
-            self.inputData["form"] = FormUtils.solve(self.inputData)
-            return self.inputData["form"]
-        except:
+            self.storeData(rawData)
+            print "solving"
+            self.inputData.addVariable("form",FormUtils.solve(self.inputData))
+            print("finish solve")
+            return self.inputData.getVariable(["form"])
+        except Exception, e:
+            print "Exception is: "+str(e)
+            for key,value in errors.iteritems():
+                print key + " " + str(value)
             # need way to say controller.setErrors(errors)
             pass
         
@@ -59,7 +94,7 @@ class Model(object):
         errors = ParsingUtils.checkValidInput(rawData)
         valid = True
         for key, value in errors.iteritems():
-            if value is False:
+            if value is True:
                 valid = False
                 break #only need find one error
 
@@ -69,6 +104,7 @@ class Model(object):
     Store the given data in the InputData instance
     """
     def storeData(self, rawData):
+        print "in storeData"
         data = ParsingUtils.formatRawData(rawData)              
         self.inputData.setVariables(data)
 

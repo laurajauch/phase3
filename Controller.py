@@ -12,6 +12,8 @@ from kivy.uix.image import Image
 from kivy.lang import Builder
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
+from kivy.properties import *
+from kivy.core.image import Image as CoreImage
 import re
 """
 Controller
@@ -27,35 +29,30 @@ class Controller(object):
     """
     Do this when refine is pressed.
     """
-    def pressRefine(self, rType):
-        Model.refine(self, rType)
-        print(refineType)
+    def pressRefine(self, rType):   
+        self.model.refine(rType)
+
+    """
+    Convert a matplotlib.Figure to PNG image.:returns: PNG image bytes
+    """
+    #def fig2png(self, fig):
+     #   data = StringIO.StringIO()
+      #  canvas = FigureCanvasAgg(fig)
+      #  canvas.print_png(data)
+      #  return data.getvalue()
 
     """
     Do this when plot is pressed.
     """
     def pressPlot(self, plotType):
-        print(plotType)
-        #self.fig = self.model.plot(plotType)
-        #self.image = fig2png(self.fig)
-        #Set the kivy image to self.image
-        
-    """
-    Convert a matplotlib.Figure to PNG image.:returns: PNG image bytes
-    """
-    def fig2png(fig):
-        data = StringIO.StringIO()
-        canvas = FigureCanvasAgg(fig)
-        canvas.print_png(data)
-        return data.getvalue()
-      
+        self.model.plot(plotType)
+              
     """
     Do this when reset is pressed.
     """
     def pressReset(self):
         self.model.reset()
-        pass
-
+        
     """
     Do this when solve is pressed.
     """
@@ -75,30 +72,6 @@ class Controller(object):
         self.model.save(filename)
 
 
-
-# Screen Accessors & Mutators ------------------------------------
-   
-    """
-    Retrieve the text from the GUI.
-    """
-    def getText(self):
-        pass
-
-    """
-    Retrieve the filename from the text box in the GUI
-    """
-    def getFilename(self):
-        pass
-    
-    """
-    Set the input errors on the GUI
-    errors: A map from field to boolean, True if error, False if no error
-    """
-    def setErrors(self, errors):
-        pass
-
-
-
 """
 ViewApp
 
@@ -109,7 +82,7 @@ Kivy requires this class for interacting with view (PyCamellia.kv),
 although it is somewhat redundant to Controller.
 """
 class ViewApp(App):
-    
+    #self.root.status = "running"
     """
     Added this build function so we can maipulate viewApp when it is created. 
     We just need to specify which .kv file we are building from.
@@ -121,57 +94,119 @@ class ViewApp(App):
         return self.root
 
     def refine(self, input):
+        self.root.status = "Refining..."
         self.controller.pressRefine(input)
+        self.root.status  = "Refined."
     def plot(self, input):
+        self.root.status = "Plotting..."
         self.controller.pressPlot(input)
+        self.root.plot_image = '/tmp/plot.png'
+        self.root.status = "Plotted."
+
     def reset(self):
-        self.root.ids.probType.text="Problem Type >"
-        self.root.ids.stateType.text='State >'
-        self.root.ids.refine.text='Refine >'
-        self.root.ids.plot.text='Plot >'
-        self.root.ids.polyOrder.text=''
-        self.root.ids.meshElems.text=''
-        self.root.ids.meshDim.text=''
-        self.root.ids.reynolds.text=''
-        self.root.ids.out1.text=''
-        self.root.ids.out2.text=''
-        self.root.ids.out3.text=''
-        self.root.ids.out4.text=''
-        self.root.ids.inf1.text=''
-        self.root.ids.inf1_x.text=''
-        self.root.ids.inf1_y.text=''
-        self.root.ids.inf2.text=''
-        self.root.ids.inf2_x.text=''
-        self.root.ids.inf2_y.text=''
-        self.root.ids.inf3.text=''
-        self.root.ids.inf3_x.text=''
-        self.root.ids.inf3_y.text=''
-        self.root.ids.inf4.text=''
-        self.root.ids.inf4_x.text=''
-        self.root.ids.inf4_y.text=''
-        #self.controller.pressReset()
+        # So we don't write out self.root.ids each time:
+        r = self.root.ids
+        r.probType.clear()
+        r.stateType.clear()
+        r.refine.clear()
+        r.refine.disabled=True
+        r.plot.clear()
+        r.plot.disabled=True
+        r.polyOrder.clear()
+        r.meshElems.clear()
+        r.meshDim.clear()
+        r.reynolds.clear()
+        r.out1.clear()
+        r.out2.clear()
+        r.out3.clear()
+        r.out4.clear()
+        r.inf1.clear()
+        r.inf1_x.clear()
+        r.inf1_y.clear()
+        r.inf2.clear()
+        r.inf2_x.clear()
+        r.inf2_y.clear()
+        r.inf3.clear()
+        r.inf3_x.clear()
+        r.inf3_y.clear()
+        r.inf4.clear()
+        r.inf4_x.clear()
+        r.inf4_y.clear()
+        r.save.clear()
+        r.save.disabled=True
+        r.filename.clear()
+        self.controller.pressReset()
+
     def solve(self):
+        self.root.status = "Solving..."
         missingEntry = False # Set to true if an important field is left blank
         data = {}
+        r = self.root.ids
         data["type"] = self.root.ids.probType.text
         # Still says 'Problem Type' so nothing was selected
         if data["type"][:1] == 'P': 
             missingEntry = True
             self.root.ids.probType.highlight()
+        elif data["type"][:1] == 'S':
+            data["stokes"] = True
+        elif data["type"][:1] == 'N':
+            data["stokes"] = False
+        if data["type"][:3] == 'Nav':
+            data["reynolds"] = self.root.ids.reynolds.text
+            # If no Reynolds number specified AND problem type is NOT Stokes
+            if ((data["reynolds"] == '') and not(data["type"][:1] == 'S')):
+                missingEntry = True
+                self.root.ids.reynolds.highlight()
         data["state"] = self.root.ids.stateType.text
         # Still says 'State' so nothing was selected
         if data["state"][:3] == 'Sta':
             missingEntry = True
             self.root.ids.stateType.highlight()
+        elif data["state"][:3] == 'Tra':
+            data["transient"] = True
+        elif data["state"][:3] == 'Ste':
+            data["transient"] = False
         data["polyOrder"] = self.root.ids.polyOrder.text
+        # Is empty so no value was given
+        if data["polyOrder"] == '':
+            missingEntry = True
+            self.root.ids.polyOrder.highlight()
         data["numElements"] = self.root.ids.meshElems.text
+        # Is empty so no value was given
+        if data["numElements"] == '':
+            missingEntry = True
+            self.root.ids.meshElems.highlight()
         data["meshDimensions"] = self.root.ids.meshDim.text
-        #data["inflow"] = [strings]
-        #data["outflow"] = [strings]
+        # Is empty so no value was given
+        if data["meshDimensions"] == '':
+            missingEntry = True
+            self.root.ids.meshDim.highlight()
+
+        data["inflow"] = []
+
+        data["inflow"].append((r.inf1.text,r.inf1_x.text,r.inf1_y.text))
+        data["inflow"].append((r.inf2.text,r.inf2_x.text,r.inf2_y.text))
+        data["inflow"].append((r.inf3.text,r.inf3_x.text,r.inf3_y.text))
+        data["inflow"].append((r.inf4.text,r.inf4_x.text,r.inf4_y.text))
+
+        data["outflow"] = []
+
+        data["outflow"].append(r.out1.text)
+        data["outflow"].append(r.out2.text)
+        data["outflow"].append(r.out3.text)
+        data["outflow"].append(r.out4.text)
+        
         # don't solve unless we have all necessary entries
         if not(missingEntry):
-            #self.controller.pressSolve(data)
-            pass
+            self.root.ids.save.disabled=False
+            self.root.ids.plot.disabled=False
+            self.root.ids.refine.disabled=False
+            self.controller.pressSolve(data)
+            self.root.status = "Solved."
+            return
+        else:
+            self.root.status = "Missing entries."
+
     def getFilename(self):
         filename = self.root.ids.filename.text
         if filename == '':
@@ -185,12 +220,20 @@ class ViewApp(App):
         #self.controller.pressSave(filename)
 
 class PyTextInput(TextInput):
+    reset_text = StringProperty("")
     def highlight(self):
         self.background_color=(1,0,0,1)
+    def clear(self):
+        self.background_color=(1,1,1,1)
+        self.text=self.reset_text
 
 class PyButton(Button):
+    reset_text = StringProperty("")
     def highlight(self):
         self.background_color=(1,0,0,1)
+    def clear(self):
+        self.background_color=(1,1,1,1)
+        self.text=self.reset_text
 
 if __name__ == '__main__':
     ViewApp().run()

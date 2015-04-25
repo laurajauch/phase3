@@ -8,29 +8,43 @@ A class of utility functions for generating data to
 be used in test code. 
 """
 
+expectedVars = ["numElements", "polyOrder", "meshDimensions", "inflowRegions", "inflowX", "inflowY", "outflowRegions"]
+
 # data, all in one place so it can be altered conveniently
 data = {}
 data["reynolds"] = 1000.0
-data["numElements"] = [2,2]
+data["numElements"] = [3,5]
+data["rawNumElements"] = "3x5"
 data["polyOrder"] = 3
-data["meshDimensions"] = [1.0,1.0]
+data["meshDimensions"] = [3.1,5.0]
+data["rawDims"] = "3.1x5.0"
+data["inflow"] = [("x<8", "x*y", "x-y")] #raw
 data["inflowRegions"] = "x<8"
-data["inflowX"] = "4"
-data["inflowY"] = "9"
-data["outflowRegions"] = "<0"
-data["wallRegions"] = "y>9"
+data["inflowX"] = "x*y"
+data["inflowY"] = "x-y"
+data["outflow"] = ["x<0"] #raw
+data["outflowRegions"] = "x<0"
+data["spaceDim"] = 2
+data["useConformingTraces"] = True
+data["mu"] = 1.0
+data["x0"] = [0.,0.]
+data["delta_k"] = 1
+data["dt"] = 0.1
+data["x0"] = [0.,0.]
 
-spaceDim = 2
-useConformingTraces = True
-mu = 1.0
-x0 = [0.,0.]
-delta_k = 1
-dt = 0.1
-x0 = [0.,0.]
+
+
+"""
+An accessor for expectedVars
+This list includes all of the variables that are expected to
+be present in InputData
+"""
+def getExpectedVars():
+   return expectedVars
 
 """
 An accessor for data
-This data includes everything but stokes, reynolds, and transient.
+This data includes everything but stokes, and transient.
 """
 def getDataList():
    return data
@@ -41,7 +55,7 @@ with everything but stokes, reynolds, and transient.
 """
 def populateInputData(inputData):
    for key, value in data.iteritems():
-      if key != "reynolds":
+      if key in expectedVars:
          inputData.addVariable(key, value)
 
 # nStokes, transient, or steady

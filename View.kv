@@ -8,10 +8,11 @@
 <PyButton@Button>:
 	background_color: (1,1,1,1) #defaults to white
 	#if red, reset to white:
-	on_press: self.background_color=(1,1,1,1)	
+	on_press: self.background_color=(1,1,1,1)
 
-Widget:
-
+Widget: 
+	plot_image: 'data/jeff sax.jpg'
+	status: ""
 	#background color, plotting window
 	canvas:
 		Color:
@@ -22,9 +23,11 @@ Widget:
 
 		Rectangle:
 			id: plot
-			source: 'data/jeff sax.jpg'
+			source: root.plot_image
 			pos: (370, 270)
-			size: (426, 420)
+			size: (426, 320)
+
+
 	Label:
 		text: 'Welcome to the PyCamellia Incompressible Flow Solver!'
 		pos: (133, 530)
@@ -46,13 +49,18 @@ Widget:
 		text: 'Velocity:'
 		pos: (170, 367)
 
-	Label:
-		text: 'Solution Reporting Area'
-		pos: (500, 200)
+	#Label:
+	#	text: 'Solution'
+	#	pos: (500, 200)
 
 	Label:
 		text: "Status: "
-		pos: (460, 160)
+		pos: (460, 200)
+
+	Label:
+		id: status
+		text: root.status
+		pos: (560, 200)
 
 	Label:
 		text: 'Energy Error: '
@@ -162,13 +170,15 @@ Widget:
 		on_release: app.load()
 
 	#File save button, should save current solution
-	Button:
+	PyButton:
 		id: save
 		background_color: 
 		height: 5
 		font_size: 15
 		font_name: 'DroidSans'
 		text: "Save"
+		reset_text: "Save"
+		disabled: True
 		pos: (580, 50)
 		color: (1, 1, 1, 1)
 		on_release: app.save()
@@ -183,6 +193,7 @@ Widget:
 		width: '250dp'
 		height: '30dp'
 		text: 'Problem Type »'
+		reset_text: 'Problem Type »'
 		on_release: dropdown.open(self)
 		size_hint_y: None
 
@@ -197,7 +208,7 @@ Widget:
 			size_hint_y: None
 			height: '30dp'
 			on_release: dropdown.select('Stokes »')
-			on_release: reynolds.disabled = True
+			on_release: reynolds.disabled = True; reynolds.clear()
 			on_release: transient.disabled = False
 
 		Button:
@@ -207,7 +218,7 @@ Widget:
 			on_release: dropdown.select('Navier-Stokes »')
 			on_release: reynolds.disabled = False
 			on_release: transient.disabled = True
-			on_release: dropdown1.select('Steady State »')
+			on_release: stateType.clear(); dropdown1.select('Steady State »')
 
 	#State selection dropdown menu
 	PyButton:
@@ -216,6 +227,7 @@ Widget:
 		width: '100dp'
 		height: '30dp'
 		text: 'State »'
+		reset_text: 'State »'
 		on_release: dropdown1.open(self)
 		size_hint_y: None
 
@@ -243,12 +255,14 @@ Widget:
 			on_release: dropdown1.select('Transient »')
 
 	#Refinement selection dropdown menu
-	Button:
+	PyButton:
 		id: refine
 		pos: (220, 195)
 		width: '130dp'
 		height: '30dp'
 		text: 'Refine »'
+		reset_text: 'Refine »'
+		disabled: True
 		on_release: dropdown2.open(self)
 		size_hint_y: None
 
@@ -276,12 +290,14 @@ Widget:
 
 
 	#Plotting selection dropdown menu
-	Button:
+	PyButton:
 		id: plot
 		pos: (220, 146)
 		width: '130dp'
 		height: '30dp'
 		text: 'Plot »'
+		reset_text: 'Plot »'
+		disabled: True
 		on_release: dropdown3.open(self)
 		size_hint_y: None
 
@@ -335,6 +351,14 @@ Widget:
 			size_hint_y: None
 			height: '30dp'
 			on_release: dropdown3.select('Stream Function »')
+			on_release:app.plot(self.text)
+
+		Button:
+			id: p
+			text: 'p'
+			size_hint_y: None
+			height: '30dp'
+			on_release: dropdown3.select('p »')
 			on_release:app.plot(self.text)
 
 	#Inflow conditions

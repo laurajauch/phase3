@@ -1,44 +1,117 @@
-from ParsingUtils import *
-import FormUtils
 import unittest
+from DataUtils import *
+from ParsingUtils import *
+from PyCamellia import *
 
-goodNSData = {"stokes": "nstokes", "transient": "steady", "reynolds": "800", "meshDimensions": "8 x 2", "numElements": "8x2", "polyOrder": "3", "inflow": [("x=0, y > 1", "-3*(y-1)*(y-2)", "0")], "outflow": ["x=30"]}
+# a few variables for testing
+expectedVars = getExpectedVars()
+expectedData = getDataList()
 
-class TestParsingUtils(unittest.TestCase):
-    
-    """Test StringToDims"""
-    def testStringToDims(self):
-        self.assertEqual(stringToDims("0 x 43"), [0,43])
-        self.assertEqual(stringToDims("9.2 x3 "), [9.2,3])
-        self.assertEqual(stringToDims(".2x 3.8"), [.2,3.8])
-    
-    """Test StringToElements"""
-    def testStringToElements(self):
-        self.assertEqual(stringToElements("0 x 43"), [0,43])
-        self.assertEqual(stringToElements("92 x3 "), [92,3])
-        self.assertEqual(stringToElements("2x 38"), [2,38])
-    
-    """Test StringToInflows"""
-    def testStringToInflows(self):
-        pass
-    
-    """Test StringToOutflows"""
-    def testStringToInflows(self):
-        pass
-    
-    
-    """Test FormatRawData"""
-    def testFormatRawData(self):
-        formattedData = formatRawData(goodNSData)
-        self.assertFalse(formattedData["stokes"])
-        self.assertFalse(formattedData["transient"])
-        self.assertEqual(800, formattedData["reynolds"])
-        self.assertEqual(8, formattedData["meshDimensions"][0])
-        self.assertEqual(2, formattedData["meshDimensions"][1])
-        self.assertEqual(8, formattedData["numElements"][0])
-        self.assertEqual(2, formattedData["numElements"][1])
-        self.assertEqual(3, formattedData["polyOrder"])
-    
-    """Test checkValidInput"""
-    
+class TestParsingUtils(unittest.TestCase):      
+        
+    """Test stringToDims"""
+    def test_stringToDims(self):
+        dims = stringToDims("3.1x 5.0")
+        self.assertEqual(dims[0],3.1)
+        self.assertEqual(dims[1],5.0)
+        self.assertRaises(ValueError, lambda: stringToDims("a x 7"))
+
+
+    """Test stringToElements"""
+    def test_stringToElements(self):
+        elements = stringToElements("3 x 5")
+        self.assertEqual(elements[0],3)
+        self.assertEqual(elements[1],5)
+        self.assertRaises(ValueError, lambda: stringToElements("bx7"))
+        self.assertRaises(ValueError, lambda: stringToElements("7.0 x4.2"))
+
+
+    """Test stringToInflows"""
+    def test_stringToInflows(self):
+        Points = [0.,1.,2.,-1.,-2.]
+        (rawRegion, rawX, rawY) = expectedData["inflow"][0]
+        (testRegion, testX, testY) = stringToInflows(rawRegion, rawX, rawY)
+        expectedRegions = expectedData["inflowRegions"]
+        expectedX = expectedData["inflowX"]
+        expectedY = expectedData["inflowY"]     
+        for i in Points:
+            for j in Points:
+                test = (i < 8)
+                xAnsw = i * j
+                yAnsw = i - j
+                self.assertEqual(test, testRegion.matchesPoint(i,j))
+                self.assertEqual(xAnsw, testX.evaluate(i,j))
+                self.assertEqual(yAnsw, testY.evaluate(i,j))
+           
+     
+    """Test stringToOutflows"""
+    def test_stringToOutflows(self):
+        Points = [0.,1.,2.,-1.,-2.]
+        rawOutflow = expectedData["outflow"]
+        testRegions = stringToOutflows(rawOutflow)
+        expectedRegions = expectedData["outflowRegions"]    
+        for i in Points:
+            for j in Points:
+                test = (i < 0)
+                if(test != testRegions.matchesPoint(i,j)):
+                    print "missmatch: "+str(i)+" "+str(j)
+                self.assertEqual(test, testRegions.matchesPoint(i,j))
+               
+ 
+    """Test formatRawData"""
+    def test_formatRawData(self):
+        rawData = {}
+        rawData["stokes"] = False
+        rawData["reynolds"] = expectedData["reynolds"]
+        rawData["transient"] = False
+        rawData["meshDimensions"] = expectedData["rawDims"]
+        rawData["numElements"] = expectedData["rawNumElements"]
+        rawData["polyOrder"] = expectedData["polyOrder"]
+        rawData["inflow"] = expectedData["inflow"]
+        rawData["outflow"] = expectedData["outflow"]
+        testData = formatRawData(rawData)        
+                
+
+    """Test checkValidInputWithValidData"""
+    def test_checkValidInputWithValidData(self):
+        validData = {}
+        validData["stokes"] = False
+        validData["transient"] = False
+        validData["reynolds"] = 1000.0
+        validData["meshDimensions"] = "1.0x1.0"
+        validData["numElements"] = "3x5"
+        validData["polyOrder"] = 3
+        validData["inflow"] = expectedData["inflow"]
+        validData["outflow"] = expectedData["outflow"]
+        errors = checkValidInput(validData)        
+     
+        for field, result in errors.iteritems():
+            print field + " " + str(result)
+            self.assertFalse(result)
+
+
+    """Test checkValidInputWithInvalidData"""
+    def test_checkValidInputWithInvalidData(self):
+        return
+        invalidData = {}
+        invalidData["stokes"] = ""
+        invalidData["transient"] = ""
+        invalidData["meshDimensions"] = expectedData["rawDims"]
+        invalidData["numElements"] = expectedData["rawNumElements"]
+        invalidData["polyOrder"] = expectedData["polyOrder"]
+        invalidData["inflow"] = expectedData["inflow"]
+        invalidData["outflow"] = expectedData["outflow"]
+        errors = checkValidInput(invalidData)        
+        
+        for field, result in errors.iteritems():
+            self.assertTrue(result)
+
+
     """Test checkValidFile"""
+    def test_checkValidFile(self):
+        checkValidFile("ParsingUtils.py")
+                
+
+    if __name__ == '__main__':
+        unittest.main()
+>>>>>>> 48e6c4c41126901a3ae7f563ce9678a66e854b5f

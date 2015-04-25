@@ -1,5 +1,6 @@
 from PyCamellia import *
 from time import *
+from ParsingUtils import *
 
 DEBUG = True # IMPORTANT, needs to be True in order to run tests
 spaceDim = 2 # always two because we aren't handling anything 3D
@@ -25,19 +26,13 @@ def energyPerCell(form):
             print("Energy error for cell %i: %0.3f" % (cellID, perCellError[cellID]))
     return perCellError
 
-
-#def addWall(form, newWall):
-#    form.addWallCondition(newWall)
-
-
-def addInflow(form, newInflow, newVelocity):
-    form.addInflowCondition(newInflow, newVelocity)
-
-
-def addOutflow(form, newStringOutflow):
-    newOutflow = ConditionParser(newStringOutflow)
-    form.addOutflowCondition(newOutflow)
-
+"""
+Add wall conditions. Wall conditions are everywhere that
+is not an inflow or outflow condition.
+"""
+def determineAndAddWallConditions(form, newWall):
+    # do stuff to determine what the wall conditions are and make them
+    form.addWallCondition(newWall)
 
 # Create ----------------------------------------------------------------------
 """
@@ -50,64 +45,70 @@ return:
      fType 0 is transient linear, 1 is steady linear, 2 is steady nonlinear
 """
 def formInit(data): 
-    	spaceDim = 2
-	useConformingTraces = True
-	mu = 1.0
-	x0 = [0.,0.]
-	delta_k = 1
-	dt = 0.1
-	
-	stokes = data.getVariable("stokes")
-	if not stokes:
-	    Re = data.getVariable("reynolds")
-	transient = data.getVariable("transient")
-	dims = data.getVariable("meshDimensions")
-	numElements = data.getVariable("numElements")
-	x0 = [0.,0.]
-	polyOrder = data.getVariable("polyOrder")
-	#numInflows = data.getVariable("numInflows")
-	inflowRegions = data.getVariable("inflowRegions")
-	inflowX = data.getVariable("inflowX")
-	inflowY = data.getVariable("inflowY")
-	#numOutflows = data.getVariable("numOutflows")
-	outflowRegions = data.getVariable("outflowRegions")
-	#numWalls = data.getVariable("numWalls")
-	wallRegions = data.getVariable("wallRegions")
-	meshTopo = MeshFactory.rectilinearMeshTopology(dims, numElements, x0)
+    print "in init"
+    spaceDim = 2
+    useConformingTraces = True
+    mu = 1.0
+    x0 = [0.,0.]
+    delta_k = 1
+    dt = 0.1
 
-        #initialize type to 0
-        fType = 0
+    stokes = data.getVariable("stokes")
+    if not stokes:
+        Re = data.getVariable("reynolds")
+    transient = data.getVariable("transient")
+    dims = data.getVariable("meshDimensions")
+    numElements = data.getVariable("numElements")
+    x0 = [0.,0.]
+    polyOrder = data.getVariable("polyOrder")
 
-	if stokes:
-	    if transient:
-                fType = TRANSIENTLINEAR
-		form = transientLinearInit(spaceDim, dims, numElements, polyOrder, dt)
-	        timeRamp = TimeRamp.timeRamp(form.getTimeFunction(),1.0)
-	    else:
-		fType = STEADYLINEAR
-		form = steadyLinearInit(dims, numElements, polyOrder)
-	else:
-	    fType = STEADYNONLINEAR
-	    form = steadyNonlinearInit(spaceDim, Re, dims, numElements, polyOrder)
-	
-	i = 0
-	while i < len(inflowRegions):
-	    inflowFunction = Function.vectorize(inflowX[i], inflowY[i])
-	    if transient:
-	        form.addInflow(inflowRegions[i], timeRamp*inflowFunction)
-	    else:
-	        form.addInflow(inflowRegions[i], inflowFunction)
-	    i += 1
-	    
-	i = 0
-	for i in outflowRegions:
-	    form.addOutflow(i)
-	    i += 1  
-	#i = 1
-	#for i in wallRegions:
-	    #form.addWall(i)
+    inflowRegions = data.getVariable("inflowRegions")
+    inflowX = data.getVariable("inflowX")
+    inflowY = data.getVariable("inflowY")
+    outflowRegions = data.getVariable("outflowRegions")
 
-        return (form,fType)
+    """inflowRegionsRaw = data.getVariable("inflowRegions")
+    inflowXRaw = data.getVariable("inflowX")
+    inflowYRaw = data.getVariable("inflowY")
+    (inflowRegions,inflowX,inflowY) = stringToInflows((inflowRegionsRaw,inflowXRaw,inflowYRaw))
+    outflowRegionsRaw = data.getVariable("outflowRegions")
+    outflowRegions = stringToOutflows(outflowRegionsRaw)"""
+    meshTopo = MeshFactory.rectilinearMeshTopology(dims, numElements, x0)
+    #wallRegions = determineAndAddWallConditions(form, 
+
+    #initialize type to 0
+    fType = 0
+
+    if stokes:
+        if transient:
+            fType = TRANSIENTLINEAR
+            form = transientLinearInit(spaceDim, dims, numElements, polyOrder, dt)
+            timeRamp = TimeRamp.timeRamp(form.getTimeFunction(),1.0)
+        else:
+            fType = STEADYLINEAR
+            form = steadyLinearInit(dims, numElements, polyOrder)
+    else:
+        fType = STEADYNONLINEAR
+        form = steadyNonlinearInit(spaceDim, Re, dims, numElements, polyOrder)
+
+    i = 0
+    while i < len(inflowRegions):
+        inflowFunction = Function.vectorize(inflowX[i], inflowY[i])
+        if transient:
+            form.addInflowCondition(inflowRegions[i], timeRamp*inflowFunction)
+        else:
+            form.addInflowCondition(inflowRegions[i], inflowFunction)
+        i += 1
+
+    i = 0
+    for i in outflowRegions:
+        form.addOutflowCondition(i)
+        i += 1  
+    #i = 1
+    #for i in wallRegions:
+        #form.addWall(i)
+
+    return (form,fType)
 
 def steadyLinearInit(dims, numElements, polyOrder):
     x0 = [0.,0.]
@@ -146,10 +147,10 @@ def steadyNonlinearInit(spaceDim, re, dims, numElements, polyOrder):
 
 # Refine----------------------------------------------------------------------
 def autoRefine(data,refType): # refType: 0 is h, 1 is p      why pass data not form?
-	ret = init(data)	
+	ret = formInit(data)
         form = ret[0] 
         fType = ret[1]	
-
+        print "executing refine"
         if refType == H:
             if fType == STEADYLINEAR or fType == TRANSIENTLINEAR:
                 linearHAutoRefine(form)

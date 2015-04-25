@@ -1,7 +1,7 @@
 import re
 import os.path
 from FunctionParser import *
-from ConditionParser import *
+import ConditionParser
 
 """
 Some methods for formatting data input
@@ -12,7 +12,8 @@ def stringToDims(inputstr):
         x = float(tokenList[0])
         y = float(tokenList[1])
         return [x,y]
-    except:
+    except Exception,e:
+        print(str(e))
         raise ValueError
 
 def stringToElements(inputstr):
@@ -21,56 +22,48 @@ def stringToElements(inputstr):
         x = int(tokenList[0])
         y = int(tokenList[1])
         return [x,y]
-    except:
+    except Exception,e:
+        print(str(e))
         raise ValueError
 
-# the following 3 methods are not correct yet
 """
 rawInflows: tuple containing strings region, x velocity, and y velocity
 returns tuple containing a filter and two functions
 """
-def stringToInflows((rawRegion, rawXvel, rawYvel)):
+def stringToInflows(rawRegion, rawXvel, rawYvel): #(rawRegion, rawXvel, rawYvel)
     try:
-        #region = stringToFilter(rawRegion) #need parser method
-        pass
-    except:
+        region = (ConditionParser.parseCondition(rawRegion))
+    except Exception,e:
+        print "Inflow 1: "+str(e)
         raise ValueError
         
     try:
-        #xvel = stringToFunction(rawXvel) #need parser method
-        pass
-    except:
+        for items in rawXvel:
+            xvel = (parseFunction(rawXvel))
+    except Exception,e:
+        print "Inflow 2: "+str(e)
         raise ValueError
     
     try:
-        #yvel = stringToFunction(rawYval) #need parser method
-        pass
-    except:
+        for items in rawYvel:
+            yvel = (parseFunction(rawYvel))
+    except Exception,e:
+        print "Inflow 3: "+str(e)
         raise ValueError
     
-    #return (region, xvel, yvel)
+    return (region, xvel, yvel)
 
+"""
+rawRegions: string representation of the region
+returns the SpacialFilter for the outflow
+"""
 def stringToOutflows(rawRegions):
-    Regions = []
-    for region in rawRegions:
-        try:
-            #Regions.append(stringToFilter(region)) #need parser method
-            pass
-        except:
-            raise ValueError
-        #return Regions
-
-"""
-def stringToWalls(datum): # not used?
-    Regions = []
-    i = 1
-    for region in rawRegions:
-        try:
-            Regions.append(stringToFilter(region))
-        except:
-            raise ValueError
-"""
-
+    try:
+        ret = ConditionParser.parseCondition(rawRegions)
+    except Exception,e:
+        print "Outflow: "+str(e)
+        raise ValueError
+    return ret
 
 """
 Precondition: data is valid
@@ -81,20 +74,15 @@ def formatRawData(rawData):
     data ={}
 
     # stokes: boolean
-    if rawData["stokes"] == "stokes":
-        data["stokes"] = True
-    else:
-        data["stokes"] = False
-        
+    data["stokes"] = bool(rawData["stokes"])
+           
     # reynolds: float/int
-    data["reynolds"] = int(rawData["reynolds"])
+    if not data["stokes"]:
+        data["reynolds"] = int(rawData["reynolds"])
     
     # transient: boolean
-    if rawData["transient"] == "transient":
-        data["transient"] = True
-    else:
-        data["transient"] = False
-        
+    data["transient"] = bool(rawData["transient"])
+           
     # meshDimensions: [float, float]
     data["meshDimensions"] = stringToDims(rawData["meshDimensions"])
 
@@ -105,30 +93,29 @@ def formatRawData(rawData):
     data["polyOrder"] = int(rawData["polyOrder"])
         
     # inflowRegions, inflowX, inflowY: string
-    #regions = []
-    #xVel = []
-    #yVel = []
+    regions = []
+    xVel = []
+    yVel = []
     inflow = []
+    # NEED TO FIX
     for item in rawData["inflow"]:
-    #    (region, x, y) = item
-    #    regions.append(region)
-    #    xVel.append(x)
-    #    yVel.append(y)
-    #data["inflowRegions"] = regions
-    #data["inflowX"] = xVel
-    #data["inflowY"] = yVel
-        inflow.append(stringToInflows(item))
-    data["inflow"] = inflow
+        (region, x, y) = stringToInflows(*item)
+        regions.append(region)
+        xVel.append(x)
+        yVel.append(y)
+    data["inflowRegions"] = regions
+    data["inflowX"] = xVel
+    data["inflowY"] = yVel
+    data["inflows"] = rawData["inflow"]
+
     
     # outflowRegions: string
     outflow = []
     for item in rawData["outflow"]:
         outflow.append(stringToOutflows(item))
-    data["outflow"] = outflow
+    data["outflowRegions"] = outflow
+    data["outflows"] = rawData["outflow"]
     
-    # wallRegions: string
-    # ?
-
     return data
 
 #--------------------------------------------------------------
@@ -146,15 +133,16 @@ def checkValidInput(rawData):
     # reynolds: must be a int and nStokes
     try:
         assert not (rawData["stokes"] and "reynolds" in rawData) # missmatch
-        assert int(rawData["reynolds"])
+        if not rawData["stokes"]:
+            assert int(rawData["reynolds"])
         errors["reynolds"] = False
     except:
         errors["reynolds"] = True
 
-    # polyOrder: must be an int less than 10
+    # polyOrder: must be an int less than 10 and greater than 0
     try:
-        assert int(rawData["polyOrder"]) < 10
-        assert int(rawData["polyOrder"]) > 0
+        assert (int(rawData["polyOrder"]) < 10)
+        assert (int(rawData["polyOrder"]) > 0)
         errors["polyOrder"] = False
     except:
         errors["polyOrder"] = True
@@ -173,30 +161,24 @@ def checkValidInput(rawData):
     except:
         errors["meshDimensions"] = True
             
-    # inflow strings (condition, xVelocity, yVelocity)
+    # inflow strings [(condition, xVelocity, yVelocity)]
     try:
-        for item in rawData["inflow"]:
-        #    (condition, xVel, yVel) = item
-        #    stringToFilter(str(condition))
-        #    parseFunction(str(xVel))
-        #    parseFunction(str(yVel)) 
-            stringToInflow(item)
+        if len(rawData["inflow"]) > 0:
+            for item in rawData["inflow"]:
+                stringToInflow(item)
         errors["inflow"] = False
     except:
         errors["inflow"] = True
                 
-    # outflow: strings (condition, xVelocity, yVelocity)
+    # outflow: strings [condition]
     try:
-        for item in rawData["outflow"]:
-        #    (condition, xVel, yVel) = item
-        #    stringToFilter(str(condition))
-        #    parseFunction(str(xVel))
-        #    parseFunction(str(yVel))
-            stringToOutflow(item)
+        if len(rawData["outflow"]) > 0:
+            for item in rawData["outflow"]:
+                stringToOutflow(item)
         errors["outflow"] = False
     except:
         errors["outflow"] = True
-        
+    
     return errors
 
 """
