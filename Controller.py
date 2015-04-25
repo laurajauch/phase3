@@ -75,7 +75,7 @@ class Controller(object):
     Do this when load is pressed.
     """
     def pressLoad(self, filename):
-        self.model.load(filename)
+        return self.model.load(filename)
 
     """
     Do this when save is pressed.
@@ -104,6 +104,7 @@ although it is somewhat redundant to Controller.
 """
 class ViewApp(App):
     #self.root.status = "running"
+    title = 'PyCamellia Incompressible Flow Solver'
     """
     Added this build function so we can maipulate viewApp when it is created. 
     We just need to specify which .kv file we are building from.
@@ -309,7 +310,7 @@ class ViewApp(App):
         return filename
     def load(self):
         filename = self.getFilename()
-        #self.controller.pressLoad(filename)
+        data = self.controller.pressLoad(filename)
     def save(self):
         filename = self.getFilename()
         #self.controller.pressSave(filename)
