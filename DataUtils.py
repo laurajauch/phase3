@@ -8,7 +8,7 @@ A class of utility functions for generating data to
 be used in test code. 
 """
 
-expectedVars = ["numElements", "polyOrder", "meshDimensions", "inflowRegions", "inflowX", "inflowY", "outflowRegions"]
+#expectedVars = ["numElements", "polyOrder", "meshDimensions", "inflowRegions", "inflowX", "inflowY", "outflowRegions"]
 
 # data, all in one place so it can be altered conveniently
 data = {}
@@ -18,12 +18,12 @@ data["rawNumElements"] = "3x5"
 data["polyOrder"] = 3
 data["meshDimensions"] = [3.1,5.0]
 data["rawDims"] = "3.1x5.0"
-data["inflow"] = [("x<8", "x*y", "x-y")] #raw
-data["inflowRegions"] = "x<8"
-data["inflowX"] = "x*y"
-data["inflowY"] = "x-y"
-data["outflow"] = ["x<0"] #raw
-data["outflowRegions"] = "x<0"
+data["rawInflows"] = [("x<8", "x*y", "x-y")] #raw
+data["inflowRegions"] = ["x<8"]
+data["inflowX"] = ["x*y"]
+data["inflowY"] = ["x-y"]
+data["rawOutflows"] = ["x<0"] #raw
+data["outflowRegions"] = ["x<0"]
 data["spaceDim"] = 2
 data["useConformingTraces"] = True
 data["mu"] = 1.0
@@ -57,6 +57,7 @@ def populateInputData(inputData):
    for key, value in data.iteritems():
       if key in expectedVars:
          inputData.addVariable(key, value)
+   #or just #inputData.setVars(data.iteritems()) ?
 
 # nStokes, transient, or steady
 def generateForm(kind):

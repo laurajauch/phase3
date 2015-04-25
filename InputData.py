@@ -22,9 +22,9 @@ class InputData:
     numElements = [int, int]
     polyOrder = int
     inflow = strings [(inflowRegions, inflowX, inflowY)]
-    inflowRegions = SpacialFilter
-    inflowX = SpacialFilter
-    inflowY = SpacialFilter
+    inflowRegions = SpatialFilter
+    inflowX = SpatialFilter
+    inflowY = SpatialFilter
     outflowRegions = SpacialFilter
     outflow = strings [outflowRegions]
     """

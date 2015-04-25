@@ -98,7 +98,7 @@ def formatRawData(rawData):
     yVel = []
     inflow = []
     # NEED TO FIX
-    for item in rawData["inflow"]:
+    for item in rawData["inflows"]:
         (region, x, y) = stringToInflows(*item)
         regions.append(region)
         xVel.append(x)
@@ -106,15 +106,15 @@ def formatRawData(rawData):
     data["inflowRegions"] = regions
     data["inflowX"] = xVel
     data["inflowY"] = yVel
-    data["inflows"] = rawData["inflow"]
+    data["inflows"] = rawData["inflows"]
 
     
     # outflowRegions: string
     outflow = []
-    for item in rawData["outflow"]:
+    for item in rawData["outflows"]:
         outflow.append(stringToOutflows(item))
     data["outflowRegions"] = outflow
-    data["outflows"] = rawData["outflow"]
+    data["outflows"] = rawData["outflows"]
     
     return data
 
@@ -172,12 +172,13 @@ def checkValidInput(rawData):
                 
     # outflow: strings [condition]
     try:
-        if len(rawData["outflow"]) > 0:
-            for item in rawData["outflow"]:
+        if len(rawData["outflows"]) > 0:
+            for item in rawData["outflows"]:
                 stringToOutflow(item)
-        errors["outflow"] = False
+        errors["outflows"] = False
     except:
-        errors["outflow"] = True
+        print("could not parse" + str(rawData["outflows"]))
+        errors["outflows"] = True
     
     return errors
 
