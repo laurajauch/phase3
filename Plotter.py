@@ -24,7 +24,7 @@ def plot(form, plotType, numPlots):
 
     elif plotType == "Stream Function":
         streamSolution = form.streamSolution()
-        streamSolution.solve
+        streamSolution.solve()
         streamFunction = Function.solution(form.streamPhi(), streamSolution)
         plotFunction(streamFunction, streamSolution.mesh(), numPlots, "Stream Function")
 
